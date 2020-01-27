@@ -231,7 +231,7 @@ public final class D_Swerve implements Drivetrain {
 	public void correctFor(final double errorDirection, final double errorMagnitude) {
 		travelTowards(errorDirection);
 		
-		//double speed = PID.get("leash", errorMagnitude);//DO NOT use I gain with this because errorMagnitude is always positive
+		double speed = PID.get("leash", errorMagnitude);//DO NOT use I gain with this because errorMagnitude is always positive
 		if (speed > 0.6) speed = 0.6;
 		
 		setSpeed(speed);
@@ -240,7 +240,7 @@ public final class D_Swerve implements Drivetrain {
 	@Override
 	public double face(final double orientation, double maximumOutput) {
 		final double error = Compass.path(Robot.gyroHeading, orientation);
-		//final double spin = PID.get("spin", error);
+		final double spin = PID.get("spin", error);
 		setSpin(Math.max(-maximumOutput, Math.min(spin, maximumOutput)));
 		return error;
 	}
