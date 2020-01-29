@@ -30,10 +30,10 @@ public class Shooter{
 
   }
 
-  public void spinMotors(){
+  public void shoot(){
     
     if (shooterMotor1.isAlive()) {
-    shooterMotor1.set(TalonFXControlMode.PercentOutput, 0.);
+    shooterMotor1.set(TalonFXControlMode.PercentOutput, 0.5);
     SmartDashboard.putString("Alive", "Is alive");
     //shooterMotor2.set(TalonFXControlMode.Follower, shooterMotor1.getDeviceID());
   } else {

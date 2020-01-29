@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -27,6 +28,7 @@ public class Robot extends TimedRobot {
   public static  double gyroHeading = 0.0;
   private SparkMaxNeo traction = new SparkMaxNeo(37, SparkMaxNeo.IdleMode.kCoast, false);
   private SparkMaxNeo rotation = new SparkMaxNeo(38, SparkMaxNeo.IdleMode.kCoast, false);
+  private SubsystemControl subsystems = new SubsystemControl();
 
   /**
    * This function is run when the robot is first started up and should be
@@ -90,8 +92,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    traction.set(0.0);
-    rotation.setAngle(45.0);
+    subsystems.swervePeriodic();
+    subsystems.shooterPeriodic();
   }
 
   /**
