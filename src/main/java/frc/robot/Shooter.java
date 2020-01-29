@@ -28,7 +28,7 @@ public class Shooter{
   public Shooter(int deviceNumber1,int deviceNumber2){
     shooterMotor1 = new WPI_TalonFX(deviceNumber1);
     shooterMotor2 = new WPI_TalonFX(deviceNumber2);
-    double velocity = shooterMotor1.getSensorCollection().getIntegratedSensorVelocity()/2048*600;
+    
     
     //shooterMotor3 = new WPI_TalonFX(deviceNumber3);
      //shooterMotorEncoder1 = new CANEncoder(shooterMotor1);
@@ -42,6 +42,7 @@ public class Shooter{
     shooterMotor1.set(TalonFXControlMode.PercentOutput, motorSpeed);
     shooterMotor2.set(TalonFXControlMode.PercentOutput, motorSpeed);
     SmartDashboard.putString("Alive", "Is alive");
+    SmartDashboard.putNumber("shooterSpeed(RPM)", shooterMotor1.getSensorCollection().getIntegratedSensorVelocity()/2048*600);
     //shooterMotor2.set(TalonFXControlMode.Follower, shooterMotor1.getDeviceID());
   } else {
           SmartDashboard.putString("Is not Alive", "Is not alive");
