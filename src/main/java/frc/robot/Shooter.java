@@ -37,17 +37,14 @@ public class Shooter {
   //Shoot Method
   public void shoot() {
 
-    if (shooterMotor1.isAlive()/**  && shooterMotor2.isAlive()*/) {
-      shooterMotor1.set(TalonFXControlMode.PercentOutput, motorSpeed);
+      //shooterMotor1.set(TalonFXControlMode.PercentOutput, motorSpeed);
+      shooterMotor1.set(0.5);
       //shooterMotor2.set(TalonFXControlMode.PercentOutput, motorSpeed);
       SmartDashboard.putString("Alive", "Is alive");
       SmartDashboard.putNumber("shooterSpeed(RPM)",
-          shooterMotor1.getSensorCollection().getIntegratedSensorVelocity() / 2048 * 600);
+      shooterMotor1.getSensorCollection().getIntegratedSensorVelocity() / 2048 * 600);
       // shooterMotor2.set(TalonFXControlMode.Follower, shooterMotor1.getDeviceID());
-    } else {
-      SmartDashboard.putString("Is not Alive", "Is not alive");
     }
 
   }
 
-}

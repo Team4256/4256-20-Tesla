@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static double gyroHeading = 0.0;
   private SubsystemControl subsystems = new SubsystemControl();
-
+  private Shooter shootie = new Shooter(32);
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -91,8 +91,10 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //subsystems.swervePeriodic();
-    subsystems.shooterPeriodic();
     subsystems.intakePeriodic();
+    subsystems.shooterPeriodic();
+    
+    
   }
 
   /**

@@ -38,7 +38,7 @@ public class SubsystemControl {
     //Shooter Periodic
     public void shooterPeriodic() {
 
-        if (driver.getRawButtonPressed(driver.BUTTON_LB)) {
+        if (driver.getRawButtonPressed(driver.BUTTON_RB)) {
 
             cellShooter.shoot();
 
@@ -47,14 +47,15 @@ public class SubsystemControl {
     }
     //Intake Periodic
     public void intakePeriodic() {
-        if (driver.getRawButtonPressed(driver.BUTTON_RB)) {
+        if (driver.getRawButtonPressed(driver.BUTTON_LB)) {
 
             succer.succ();
+            
         }
-        if (driver.getRawButtonPressed(driver.BUTTON_LB)) {
+     /**    if (driver.getRawButtonPressed(driver.BUTTON_LB)) {
             succer.spew();
         }
-
+        */
     }
 
 }
