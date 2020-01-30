@@ -5,7 +5,7 @@ public class SubsystemControl {
     private SwerveModule moduleA, moduleB, moduleC, moduleD;
     private Xbox driver = new Xbox(0);
     private D_Swerve swerve = new D_Swerve(moduleA, moduleB, moduleC, moduleD);
-    private Shooter cellShooter = new Shooter(0);
+    private Shooter cellShooter = new Shooter(33, 34);//TODO get device ID for shooter Falcons 
 
     // Swerve Periodic
     public void swervePeriodic() {
