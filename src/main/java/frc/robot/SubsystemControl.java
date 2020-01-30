@@ -4,50 +4,57 @@ public class SubsystemControl {
     // Constants
     private SwerveModule moduleA, moduleB, moduleC, moduleD;
     private Xbox driver = new Xbox(0);
-    private D_Swerve swerve = new D_Swerve(moduleA, moduleB, moduleC, moduleD);
-    private Shooter cellShooter = new Shooter(33, 34);//TODO get device ID for shooter Falcons 
+    private D_Swerve swerve = new D_Swerve(moduleA = new SwerveModule(32, true, 31, false, 0),
+            moduleB = new SwerveModule(0, true, 0, false, 0), moduleC = new SwerveModule(0, true, 0, true, 0),
+            moduleD = new SwerveModule(0, true, 0, false, 0));
+    private Intake succer = new Intake(0);
+    private Shooter cellShooter = new Shooter(32);
 
     // Swerve Periodic
     public void swervePeriodic() {
-        
-            moduleA = new SwerveModule(32, true, 31, false, 0);// PRACTICE BOT
-            moduleB = new SwerveModule(0, true, 0, false, 0);// PRACTICE BOT
-            moduleC = new SwerveModule(0, true, 0, true, 0);// PRACTICE BOT
-            moduleC = new SwerveModule(0, true, 0, false, 0);// PRACTICE BOT
 
-            if (driver.getRawButtonPressed(driver.BUTTON_X)) {
-                swerve.formX();
+        if (driver.getRawButtonPressed(driver.BUTTON_X)) {
+            swerve.formX();
 
-            }
-            if (driver.getRawButtonPressed(driver.BUTTON_START)) {
+        }
+        if (driver.getRawButtonPressed(driver.BUTTON_START)) {
 
-                swerve.setAllModulesToZero();
+            swerve.setAllModulesToZero();
 
-            } else {
+        } else {
 
-                double direction = driver.getCurrentAngle(Xbox.STICK_LEFT, true);
+            double direction = driver.getCurrentAngle(Xbox.STICK_LEFT, true);
 
-                double speed = driver.getCurrentRadius(Xbox.STICK_LEFT, true);
+            double speed = driver.getCurrentRadius(Xbox.STICK_LEFT, true);
 
-                double spin = 0.5 * driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);
+            double spin = 0.5 * driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);
 
-                swerve.completeLoopUpdate();
-                swerve.setSpin(spin);
-                swerve.setSpeed(speed);
-                swerve.travelTowards(direction);
-            }
+            swerve.completeLoopUpdate();
+            swerve.setSpin(spin);
+            swerve.setSpeed(speed);
+            swerve.travelTowards(direction);
+        }
     }
-
-
+    //Shooter Periodic
     public void shooterPeriodic() {
 
-            if (driver.getRawButtonPressed(driver.AXIS_RT)) {
+        if (driver.getRawButtonPressed(driver.BUTTON_LB)) {
 
-                    cellShooter.shoot();
+            cellShooter.shoot();
 
-            }
-
-
+        }
 
     }
+    //Intake Periodic
+    public void intakePeriodic() {
+        if (driver.getRawButtonPressed(driver.BUTTON_RB)) {
+
+            succer.succ();
+        }
+        if (driver.getRawButtonPressed(driver.BUTTON_LB)) {
+            succer.spew();
+        }
+
+    }
+
 }

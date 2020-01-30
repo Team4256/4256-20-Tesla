@@ -1,4 +1,5 @@
 package frc.robot;
+
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -12,7 +13,9 @@ import java.util.logging.Logger;
 /**
  * SparkMax Motor Controller Used With a Neo Brushless Motor.
  * <p>
- * <i>Do not attempt to use followers with this class as it is not intended to be used in such a way and may cause errors.</i>
+ * <i>Do not attempt to use followers with this class as it is not intended to
+ * be used in such a way and may cause errors.</i>
+ * 
  * @author Ian Woodard
  */
 public class SparkMaxNeo extends CANSparkMax {
@@ -32,12 +35,13 @@ public class SparkMaxNeo extends CANSparkMax {
     private CANEncoder angleEncoder = new CANEncoder(this);
     public final Compass compass = new Compass(0, 0);
     private double lastLegalDirection = 1.0;
-    
 
     /**
-     * Offers a simple way of initializing and using NEO Brushless motors with a SparkMax motor controller.
-     * @param deviceID CAN ID of the SparkMax
-     * @param idleMode IdleMode (Coast or Brake)
+     * Offers a simple way of initializing and using NEO Brushless motors with a
+     * SparkMax motor controller.
+     * 
+     * @param deviceID   CAN ID of the SparkMax
+     * @param idleMode   IdleMode (Coast or Brake)
      * @param isInverted Indication of whether the SparkMax's motor is inverted
      */
     public SparkMaxNeo(final int deviceID, final IdleMode idleMode, final boolean isInverted) {
@@ -47,14 +51,17 @@ public class SparkMaxNeo extends CANSparkMax {
         this.idleMode = idleMode;
         this.isInverted = isInverted;
         logger = Logger.getLogger("SparkMax " + Integer.toString(deviceID));
-        
+
     }
 
     /**
-     * Offers a simple way of initializing and using NEO Brushless motors with a SparkMax motor controller.
+     * Offers a simple way of initializing and using NEO Brushless motors with a
+     * SparkMax motor controller.
      * <p>
-     * This constructor is for NEO Brushless motors set by default to coast <code>IdleMode</code>. 
-     * @param deviceID CAN ID of the SparkMax
+     * This constructor is for NEO Brushless motors set by default to coast
+     * <code>IdleMode</code>.
+     * 
+     * @param deviceID   CAN ID of the SparkMax
      * @param isInverted Indication of whether the SparkMax's motor is inverted
      */
     public SparkMaxNeo(final int deviceID, final boolean isInverted) {
@@ -89,44 +96,39 @@ public class SparkMaxNeo extends CANSparkMax {
     }
 
     /**
-     * @return
-     * Counts of the motor
+     * @return Counts of the motor
      */
     public int getCounts() {
-        return (int)(encoder.getPosition()*NEO_COUNTS_PER_REV);
+        return (int) (encoder.getPosition() * NEO_COUNTS_PER_REV);
     }
-    
+
     /**
-     * @return
-     * Rotations of the motor
+     * @return Rotations of the motor
      */
     public double getPosition() {
         return encoder.getPosition();
     }
 
     /**
-     * @return
-     * Revolutions per minute of the motor
+     * @return Revolutions per minute of the motor
      */
     public double getRPM() {
         return encoder.getVelocity();
     }
 
     /**
-     * @return
-     * Revolutions per second of the motor
+     * @return Revolutions per second of the motor
      */
     public double getRPS() {
         return (getRPM() / 60.0);
     }
 
-    //get angle
-    public double getCurrentAngle () {
+    // get angle
+    public double getCurrentAngle() {
         return Math.toDegrees(this.angleEncoder.getPosition());
     }
-    
 
-    //Set Speed
+    // Set Speed
     @Override
     public void set(final double speed) {
         super.set(speed);
@@ -135,11 +137,11 @@ public class SparkMaxNeo extends CANSparkMax {
         logger.log(Level.FINE, Double.toString(speed));
     }
 
-    //Set Angle
-    public void setAngle(double targetAngle ) {    
-        
+    // Set Angle
+    public void setAngle(double targetAngle) {
+
         double encoderPosition = angleEncoder.getPosition() * 20;
-        while ( encoderPosition > 180) {
+        while (encoderPosition > 180) {
             encoderPosition -= 360;
         }
         while (encoderPosition < -180) {
@@ -147,7 +149,7 @@ public class SparkMaxNeo extends CANSparkMax {
         }
         SmartDashboard.putNumber("encoder position", encoderPosition);
 
-        if (Math.abs( targetAngle - encoderPosition) < 2) {
+        if (Math.abs(targetAngle - encoderPosition) < 2) {
             super.set(0.);
             SmartDashboard.putNumber("Percent Output", 0.);
             return;
@@ -155,26 +157,26 @@ public class SparkMaxNeo extends CANSparkMax {
 
         double percentSpeed = anglePIDController.calculate(encoderPosition, targetAngle);
 
-        if(Math.abs(percentSpeed) > .5){
+        if (Math.abs(percentSpeed) > .5) {
             percentSpeed = Math.signum(percentSpeed) * .5;
-        } else if(Math.abs(percentSpeed) < .01){
+        } else if (Math.abs(percentSpeed) < .01) {
             percentSpeed = Math.signum(percentSpeed) * .01;
         }
-        
+
         super.set(percentSpeed);
         SmartDashboard.putNumber("Percent Output", percentSpeed);
-    } 
-        
+    }
 
-    public double pathTo(double target) {//ANGLE
-		final double current = getCurrentAngle();
-		double path = compass.legalPath(current, target);
-		if (current == compass.legalize(current)) lastLegalDirection = Math.signum(path);
-		else if (Math.signum(path) != -lastLegalDirection) path -= Math.copySign(360, path);
-		
-		return path;
-	}
-    
+    public double pathTo(double target) {// ANGLE
+        final double current = getCurrentAngle();
+        double path = compass.legalPath(current, target);
+        if (current == compass.legalize(current))
+            lastLegalDirection = Math.signum(path);
+        else if (Math.signum(path) != -lastLegalDirection)
+            path -= Math.copySign(360, path);
+
+        return path;
+    }
 
     public void completeLoopUpdate() {
         if (!updated) {
@@ -183,9 +185,11 @@ public class SparkMaxNeo extends CANSparkMax {
         updated = false;
     }
 
-    public void setParentLogger(final Logger logger) {this.logger = logger;}
+    public void setParentLogger(final Logger logger) {
+        this.logger = logger;
+    }
 
-	public void getCurrentAngle(double angle) {
-		
-	}
+    public void getCurrentAngle(double angle) {
+
+    }
 }
