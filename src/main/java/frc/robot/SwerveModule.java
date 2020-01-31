@@ -3,16 +3,13 @@ package frc.robot;
 import java.util.logging.Logger;
 
 
-import com.revrobotics.CANSparkMax.IdleMode;
-
-
 public final class SwerveModule {
 	public static final double ROTATOR_GEAR_RATIO = 1.0;
 	public static final double TRACTION_GEAR_RATIO = 52.0/9.0;//updated 2019
 	public static final double TRACTION_WHEEL_CIRCUMFERENCE = 4.0*Math.PI;//inches
 	//private final Talon rotation;
-	private final SparkMaxNeo rotation;
-	private final SparkMaxNeo traction;
+	private final RotationControl rotationControl;
+	private final TractionControl tractionControl;
 	private final double tareAngle;
 	
 	private double decapitated = 1.0;
@@ -22,8 +19,8 @@ public final class SwerveModule {
 	//This constructor is intended for use with the module which has an encoder on the traction motor.
 	public SwerveModule(final int rotatorID, final boolean flippedSensor, final int tractionID, final boolean isTractionInverted, final double tareAngle) {
 		//rotation = new Talon(rotatorID, ROTATOR_GEAR_RATIO, Talon.position, Encoder.ANALOG, flippedSensor);
-		rotation = new SparkMaxNeo(31, IdleMode.kCoast, false);
-		traction = new SparkMaxNeo(tractionID, isTractionInverted);
+		rotationControl = new RotationControl(rotatorID);
+		tractionControl = new TractionControl(tractionID);
 		this.tareAngle = tareAngle;
 	}
 	
@@ -31,15 +28,6 @@ public final class SwerveModule {
 	 * This function prepares each motor individually, including setting PID values for the rotator.
 	**/
 	public void init() {
-		
-
-		setTareAngle(tareAngle);
-		
-
-		//rotation.setNeutralMode(Talon.coast);
-		rotation.setIdleMode(IdleMode.kCoast);		
-		
-		traction.init();
 	}	
 	
 	/**
@@ -52,8 +40,8 @@ public final class SwerveModule {
 	 * If relativeReference is true, tareAngle will be incremented rather than set.
 	**/
 	public void setTareAngle(double tareAngle, final boolean relativeReference) {
-		if (relativeReference) tareAngle += rotation.compass.getTareAngle();
-		rotation.compass.setTareAngle(tareAngle);
+		if (relativeReference) tareAngle += rotationControl.GetTareAngle();
+		rotationControl.SetTareAngle(tareAngle);
 	}
 	
 	
@@ -66,7 +54,7 @@ public final class SwerveModule {
 		
 	//}
 	public void swivelTo(double targetAngle) {
-			rotation.setAngle(targetAngle);
+			rotationControl.SetAngle(targetAngle);
 	}
 	
 	
@@ -82,7 +70,7 @@ public final class SwerveModule {
 	 * This function sets the master and slave traction motors to the specified speed, from -1 to 1.
 	 * It also makes sure that they turn in the correct direction, regardless of decapitated state.
 	**/
-	public void set(final double speed) {traction.set(speed*decapitated);}
+	public void set(final double speed) {tractionControl.set(speed*decapitated);}
 	
 	public void checkTractionEncoder() {
 		final double currentPathLength = tractionPathLength();
@@ -94,15 +82,15 @@ public final class SwerveModule {
 	 * A shortcut to call completeLoopUpdate on all the Talons in the module.
 	**/
 	public void completeLoopUpdate() {
-		rotation.completeLoopUpdate();
-		traction.completeLoopUpdate();
+		rotationControl.completeLoopUpdate();
+		tractionControl.completeLoopUpdate();
 	}
 	
 	
 	/**
 	 * Threshold should be specified in degrees. If the rotator is within that many degrees of its target, this function returns true.
 	**/
-	public boolean isThere(final double threshold) {return Math.abs(rotation.getCurrentAngle()) <= threshold;}
+	public boolean isThere(final double threshold) {return Math.abs(rotationControl.GetCurrentAngle()) <= threshold;}
 	
 	
 	/**
@@ -110,33 +98,34 @@ public final class SwerveModule {
 	 * It should be used every time a new angle is being set to ensure quick rotation.
 	**/
 	public double decapitateAngle(final double endAngle) {
-		decapitated = Math.abs(rotation.pathTo(endAngle)) > 90 ? -1 : 1;
+		decapitated = Math.abs(rotationControl.pathTo(endAngle)) > 90 ? -1 : 1;
 		return decapitated == -1 ? Compass.validate(endAngle + 180) : Compass.validate(endAngle);
 	}
 
 	
 	public double tractionSpeed() {
-		return TRACTION_WHEEL_CIRCUMFERENCE*traction.getRPS();//returns in/sec
+		return TRACTION_WHEEL_CIRCUMFERENCE*tractionControl.getRPS();//returns in/sec
 	}
 	
 	
 	public double tractionPathLength() {
-		return traction.getPosition()*TRACTION_WHEEL_CIRCUMFERENCE/12.0;
+		//return tractionControl.getPosition()*TRACTION_WHEEL_CIRCUMFERENCE/12.0;
+		return 0;
 	}
 	
 	
 	public double deltaDistance() {return tractionDeltaPathLength;}
-	public double deltaXDistance() {return tractionDeltaPathLength*Math.sin(convertToField(rotation.getCurrentAngle(), Robot.gyroHeading)*Math.PI/180.0);}
-	public double deltaYDistance() {return tractionDeltaPathLength*Math.cos(convertToField(rotation.getCurrentAngle(), Robot.gyroHeading)*Math.PI/180.0);}
+	public double deltaXDistance() {return tractionDeltaPathLength*Math.sin(convertToField(rotationControl.GetCurrentAngle(), Robot.gyroHeading)*Math.PI/180.0);}
+	public double deltaYDistance() {return tractionDeltaPathLength*Math.cos(convertToField(rotationControl.GetCurrentAngle(), Robot.gyroHeading)*Math.PI/180.0);}
 	
-	public SparkMaxNeo getRotationMotor() {return rotation;}
-	public SparkMaxNeo getTractionMotor() {return traction;}
+	public RotationControl getRotationMotor() {return rotationControl;}
+	public TractionControl tTractionMotor() {return tractionControl;}
 	public double getDecapitated() {return decapitated;}
 	
 
 	public void setParentLogger(final Logger logger) {
-		rotation.setParentLogger(logger);
-		traction.setParentLogger(logger);
+		//rotationControl.setParentLogger(logger);
+		//tractionControl.setParentLogger(logger);
 	}
 	
 	/**

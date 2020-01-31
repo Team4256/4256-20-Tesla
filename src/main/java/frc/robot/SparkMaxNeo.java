@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * <i>Do not attempt to use followers with this class as it is not intended to be used in such a way and may cause errors.</i>
  * @author Ian Woodard
  */
-public class SparkMaxNeo extends CANSparkMax {
+public class SparkMaxNeo extends CANSparkMax implements Motor{
     private static final int TIMEOUT_MS = 10;
     private static final double RAMP_RATE = 1.0;
     private static final int STALL_CURRENT_LIMIT = 90;
@@ -30,8 +30,7 @@ public class SparkMaxNeo extends CANSparkMax {
     private Logger logger;
     private PIDController anglePIDController = new PIDController(.00278, 0.0, 0.00);
     private CANEncoder angleEncoder = new CANEncoder(this);
-    public final Compass compass = new Compass(0, 0);
-    private double lastLegalDirection = 1.0;
+    
     
 
     /**
@@ -128,7 +127,7 @@ public class SparkMaxNeo extends CANSparkMax {
 
     //Set Speed
     @Override
-    public void set(final double speed) {
+    public void setSpeed(final double speed) {
         super.set(speed);
         lastSetpoint = speed;
         updated = true;
@@ -163,19 +162,7 @@ public class SparkMaxNeo extends CANSparkMax {
         
         super.set(percentSpeed);
         SmartDashboard.putNumber("Percent Output", percentSpeed);
-    } 
-        
-
-    public double pathTo(double target) {//ANGLE
-		final double current = getCurrentAngle();
-		double path = compass.legalPath(current, target);
-		if (current == compass.legalize(current)) lastLegalDirection = Math.signum(path);
-		else if (Math.signum(path) != -lastLegalDirection) path -= Math.copySign(360, path);
-		
-		return path;
-	}
-    
-
+    }
     public void completeLoopUpdate() {
         if (!updated) {
             super.set(lastSetpoint);

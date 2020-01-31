@@ -16,29 +16,29 @@ public class Shooter{
   private static final double UPPER_PORT_SPEED = 0.0; //same as above
 
   //INSTANCE
-  private WPI_TalonFX shooterMotor1;
- // private final WPI_TalonFX shooterMotor2;
-  //private final WPI_TalonFX shooterMotor3;
-  //private CANEncoder shooterMotorEncoder1;
-  //private CANEncoder shooterMotorEncoder2;
+  private final WPI_TalonFX shooterMotor1;
+  private final WPI_TalonFX shooterMotor2;
+  
 
 
-  public Shooter(int deviceNumber1){
-    shooterMotor1 = new WPI_TalonFX(33);
-    //shooterMotor2 = new WPI_TalonFX(deviceNumber2);
-    //shooterMotor3 = new WPI_TalonFX(deviceNumber3);
+  public Shooter(int deviceNumber1, int deviceNumber2){
+    shooterMotor1 = new WPI_TalonFX(deviceNumber1);
+    shooterMotor2 = new WPI_TalonFX(deviceNumber2);
 
   }
 
   public void spinMotors(){
+    shooterMotor1.set(TalonFXControlMode.PercentOutput, 0.0);
     
-    if (shooterMotor1.isAlive()) {
+    /*if (shooterMotor1.isAlive()) {
     shooterMotor1.set(TalonFXControlMode.PercentOutput, 0.);
     SmartDashboard.putString("Alive", "Is alive");
     //shooterMotor2.set(TalonFXControlMode.Follower, shooterMotor1.getDeviceID());
   } else {
           SmartDashboard.putString("Is not Alive", "Is not alive");
+          
   }
+  */
   
   }
     
@@ -48,7 +48,7 @@ public class Shooter{
 
 
     public void smartdashboard(){
-      SmartDashboard.getNumber("speed", 0.0);
+      SmartDashboard.getNumber("percentOutput", 0.0);
         
     }
 
