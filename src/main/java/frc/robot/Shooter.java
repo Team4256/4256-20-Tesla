@@ -1,19 +1,16 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.revrobotics.EncoderType;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 //import com.cyborgcats.reusable.phoenix.Talon;
 //import com.cyborgcats.reusable.spark.SparkMaxNeo;
-import com.revrobotics.CANEncoder;
+
 
 public class Shooter {
 
   // CONSTANTS
-  private static double motorSpeed; // we don't know yet what the engineers are going to do
+  private static double motorSpeed = .5; // we don't know yet what the engineers are going to do
   // private static final double UPPER_PORT_SPEED = 0.0; //same as above
 
   // INSTANCE
@@ -37,8 +34,8 @@ public class Shooter {
   //Shoot Method
   public void shoot() {
 
-      //shooterMotor1.set(TalonFXControlMode.PercentOutput, motorSpeed);
-      shooterMotor1.set(0.5);
+      shooterMotor1.set(TalonFXControlMode.PercentOutput, motorSpeed);
+      //shooterMotor1.set(0.5);
       //shooterMotor2.set(TalonFXControlMode.PercentOutput, motorSpeed);
       SmartDashboard.putString("Alive", "Is alive");
       SmartDashboard.putNumber("shooterSpeed(RPM)",
