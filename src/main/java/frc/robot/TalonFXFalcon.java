@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * 
  * @author Ian Woodard
  */
-public class TalonFXFalcon extends WPI_TalonFX {
+public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     private final int deviceID;
     public final NeutralMode idleMode;
