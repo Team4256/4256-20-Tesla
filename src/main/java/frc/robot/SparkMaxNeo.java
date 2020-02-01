@@ -1,6 +1,9 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkMax;
+
+import edu.wpi.first.wpilibj.AnalogEncoder;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,7 +35,9 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
     private double lastSetpoint = 0.0;
     private Logger logger;
     private PIDController anglePIDController = new PIDController(.00278, 0.0, 0.00);
-    private CANEncoder angleEncoder = new CANEncoder(this);
+    //private CANEncoder angleEncoder = new CANEncoder(this);
+    private AnalogInput encoderport = new AnalogInput(0);
+    private AnalogEncoder angleEncoder = new AnalogEncoder(encoderport);//get the real analoginput
     
     
 
@@ -125,7 +130,8 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
 
     // get angle
     public double getCurrentAngle() {
-        return Math.toDegrees(this.angleEncoder.getPosition());
+       // return Math.toDegrees(this.angleEncoder.getDistance());
+        return this.angleEncoder.get()*360;
     }
 
     // Set Speed
@@ -140,7 +146,7 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
     // Set Angle
     public void setAngle(double targetAngle) {
 
-        double encoderPosition = angleEncoder.getPosition() * 20;
+        double encoderPosition = getCurrentAngle();
         while (encoderPosition > 180) {
             encoderPosition -= 360;
         }
