@@ -119,7 +119,7 @@ public final class SwerveModule {
 	public double deltaYDistance() {return tractionDeltaPathLength*Math.cos(convertToField(rotationControl.GetCurrentAngle(), Robot.gyroHeading)*Math.PI/180.0);}
 	
 	public RotationControl getRotationMotor() {return rotationControl;}
-	public TractionControl tTractionMotor() {return tractionControl;}
+	public TractionControl getTractionMotor() {return tractionControl;}
 	public double getDecapitated() {return decapitated;}
 	
 
