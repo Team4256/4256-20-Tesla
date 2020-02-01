@@ -1,12 +1,10 @@
 package frc.robot;
 
-import com.revrobotics.CANSparkMax;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANError;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,37 +16,32 @@ import java.util.logging.Logger;
  * 
  * @author Ian Woodard
  */
-public class SparkMaxNeo extends CANSparkMax implements Motor{
-    private static final int TIMEOUT_MS = 10;
-    private static final double RAMP_RATE = 1.0;
-    private static final int STALL_CURRENT_LIMIT = 90;
-    private static final int FREE_CURRENT_LIMIT = 50;
-    private static final int NEO_COUNTS_PER_REV = 42;
-    private final CANEncoder encoder;
+public class TalonFXFalcon extends WPI_TalonFX implements Motor {
+
     private final int deviceID;
-    public final IdleMode idleMode;
+    public final NeutralMode idleMode;
     private final boolean isInverted;
+    private final double encoder;
     private boolean updated = false;
     private double lastSetpoint = 0.0;
     private Logger logger;
     private PIDController anglePIDController = new PIDController(.00278, 0.0, 0.00);
-    private CANEncoder angleEncoder = new CANEncoder(this);
-    
-    
+    public final Compass compass = new Compass(0, 0);
+    private double lastLegalDirection = 1.0;
 
     /**
      * Offers a simple way of initializing and using NEO Brushless motors with a
      * SparkMax motor controller.
      * 
-     * @param deviceID   CAN ID of the SparkMax
-     * @param idleMode   IdleMode (Coast or Brake)
-     * @param isInverted Indication of whether the SparkMax's motor is inverted
+     * @param deviceID    CAN ID of the SparkMax
+     * @param neutralMode IdleMode (Coast or Brake)
+     * @param isInverted  Indication of whether the SparkMax's motor is inverted
      */
-    public SparkMaxNeo(final int deviceID, final IdleMode idleMode, final boolean isInverted) {
-        super(deviceID, MotorType.kBrushless);
-        encoder = getEncoder();
+    public TalonFXFalcon(final int deviceID, final NeutralMode neutralMode, final boolean isInverted) {
+        super(deviceID);
+        encoder = getSensorCollection().getIntegratedSensorPosition();
+        idleMode = NeutralMode.Coast;
         this.deviceID = deviceID;
-        this.idleMode = idleMode;
         this.isInverted = isInverted;
         logger = Logger.getLogger("SparkMax " + Integer.toString(deviceID));
 
@@ -64,32 +57,15 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
      * @param deviceID   CAN ID of the SparkMax
      * @param isInverted Indication of whether the SparkMax's motor is inverted
      */
-    public SparkMaxNeo(final int deviceID, final boolean isInverted) {
-        this(deviceID, IdleMode.kCoast, isInverted);
+    public TalonFXFalcon(final int deviceID, final boolean isInverted) {
+        this(deviceID, NeutralMode.Coast, isInverted);
     }
 
     /**
      * Performs necessary initialization
      */
     public void init() {
-        if (clearFaults() != CANError.kOk) {
-            DriverStation.reportError("SparkMax " + deviceID + " could not clear faults.", false);
-        }
-        if (setIdleMode(idleMode) != CANError.kOk) {
-            DriverStation.reportError("SparkMax " + deviceID + " could not set idle mode.", false);
-        }
-        if (setOpenLoopRampRate(RAMP_RATE) != CANError.kOk) {
-            DriverStation.reportError("SparkMax " + deviceID + " could not set open loop ramp rate.", false);
-        }
-        if (setClosedLoopRampRate(RAMP_RATE) != CANError.kOk) {
-            DriverStation.reportError("SparkMax " + deviceID + " could not set closed loop ramp rate.", false);
-        }
-        if (setCANTimeout(TIMEOUT_MS) != CANError.kOk) {
-            DriverStation.reportError("SparkMax " + deviceID + " could not set can timeout.", false);
-        }
-        if (setSmartCurrentLimit(STALL_CURRENT_LIMIT, FREE_CURRENT_LIMIT) != CANError.kOk) {
-            DriverStation.reportError("SparkMax " + deviceID + " could not set smart current limit.", false);
-        }
+
         setInverted(isInverted);
         set(0.0);
         anglePIDController.enableContinuousInput(-180.0, 180.0);
@@ -98,22 +74,24 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
     /**
      * @return Counts of the motor
      */
-    public int getCounts() {
-        return (int) (encoder.getPosition() * NEO_COUNTS_PER_REV);
+
+    public double getCounts() {
+
+        return getSensorCollection().getIntegratedSensorPosition();
     }
 
     /**
      * @return Rotations of the motor
      */
     public double getPosition() {
-        return encoder.getPosition();
+        return getSensorCollection().getIntegratedSensorPosition();
     }
 
     /**
      * @return Revolutions per minute of the motor
      */
     public double getRPM() {
-        return encoder.getVelocity();
+        return getSensorCollection().getIntegratedSensorVelocity();
     }
 
     /**
@@ -125,12 +103,12 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
 
     // get angle
     public double getCurrentAngle() {
-        return Math.toDegrees(this.angleEncoder.getPosition());
+        return Math.toDegrees(getSensorCollection().getIntegratedSensorPosition());
     }
 
     // Set Speed
     @Override
-    public void setSpeed(final double speed) {
+    public void set(final double speed) {
         super.set(speed);
         lastSetpoint = speed;
         updated = true;
@@ -140,7 +118,7 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
     // Set Angle
     public void setAngle(double targetAngle) {
 
-        double encoderPosition = angleEncoder.getPosition() * 20;
+        double encoderPosition = getSensorCollection().getIntegratedSensorPosition() * 20;
         while (encoderPosition > 180) {
             encoderPosition -= 360;
         }
@@ -166,6 +144,18 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
         super.set(percentSpeed);
         SmartDashboard.putNumber("Percent Output", percentSpeed);
     }
+
+    public double pathTo(double target) {// ANGLE
+        final double current = getCurrentAngle();
+        double path = compass.legalPath(current, target);
+        if (current == compass.legalize(current))
+            lastLegalDirection = Math.signum(path);
+        else if (Math.signum(path) != -lastLegalDirection)
+            path -= Math.copySign(360, path);
+
+        return path;
+    }
+
     public void completeLoopUpdate() {
         if (!updated) {
             super.set(lastSetpoint);
