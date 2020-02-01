@@ -7,8 +7,8 @@ public class RotationControl{
     private double lastLegalDirection = 1.0;
 
     //constructor
-   public RotationControl(int deviceID){
-          rotationMotor = MotorFactory.createRotationMotor(deviceID);
+   public RotationControl(int deviceID, int analogEncoderID){
+          rotationMotor = MotorFactory.createRotationMotor(deviceID, analogEncoderID);
           
    }
 

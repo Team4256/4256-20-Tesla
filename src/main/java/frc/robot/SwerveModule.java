@@ -17,9 +17,9 @@ public final class SwerveModule {
     private double tractionPreviousPathLength = 0.0;
 	
 	//This constructor is intended for use with the module which has an encoder on the traction motor.
-	public SwerveModule(final int rotatorID, final boolean flippedSensor, final int tractionID, final boolean isTractionInverted, final double tareAngle) {
+	public SwerveModule(final int rotatorID, int analogEncoderID, final boolean flippedSensor, final int tractionID, final boolean isTractionInverted, final double tareAngle) {
 		//rotation = new Talon(rotatorID, ROTATOR_GEAR_RATIO, Talon.position, Encoder.ANALOG, flippedSensor);
-		rotationControl = new RotationControl(rotatorID);
+		rotationControl = new RotationControl(rotatorID, analogEncoderID);
 		tractionControl = new TractionControl(tractionID);
 		this.tareAngle = tareAngle;
 	}

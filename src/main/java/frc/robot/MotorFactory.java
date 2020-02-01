@@ -15,18 +15,19 @@ public class MotorFactory {
 
     public static Motor createTractionMotor(int deviceID) {
         if (tractionMotorType == MotorType.TALON) {
-            return new TalonFXFalcon(deviceID, NeutralMode.Coast, false);
+            
+            return new TalonFXFalcon(deviceID, false);
 
-        } else if (tractionMotorType == MotorType.NEO) {
+        } else if (tractionMotorType == MotorType.NEO) { 
                 return new SparkMaxNeo(deviceID, IdleMode.kCoast, false);
 
         }
         return null;
         
  }
-    public static Motor createRotationMotor(int deviceID) {
+    public static Motor createRotationMotor(int deviceID, int analogEncoderID) {//TODO add an analog encoder
         if (rotationMotorType == MotorType.TALON) {
-            return new TalonFXFalcon(deviceID, NeutralMode.Coast, false);
+            return new TalonFXFalcon(deviceID, NeutralMode.Coast, false, analogEncoderID);
 
         } else if (tractionMotorType == MotorType.NEO) {
             return new SparkMaxNeo(deviceID, IdleMode.kCoast, false);

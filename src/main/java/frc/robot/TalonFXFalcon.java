@@ -1,7 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.AnalogEncoder;
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -9,6 +7,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import edu.wpi.first.wpilibj.AnalogEncoder;
+import edu.wpi.first.wpilibj.AnalogInput;
 
 /**
  * SparkMax Motor Controller Used With a Neo Brushless Motor.
@@ -30,8 +30,10 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     private PIDController anglePIDController = new PIDController(.00278, 0.0, 0.00);
     public final Compass compass = new Compass();
     private double lastLegalDirection = 1.0;
-    private AnalogInput encoderport = new AnalogInput(0); // TODO get the encoder port
-    private AnalogEncoder angleEncoder = new AnalogEncoder(encoderport);
+    private AnalogInput encoderPort;
+    private AnalogEncoder angleEncoder;
+    private boolean hasAngleEncoder = false;
+    
 
     /**
      * Offers a simple way of initializing and using NEO Brushless motors with a
@@ -41,7 +43,12 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
      * @param neutralMode IdleMode (Coast or Brake)
      * @param isInverted  Indication of whether the SparkMax's motor is inverted
      */
-    public TalonFXFalcon(final int deviceID, final NeutralMode neutralMode, final boolean isInverted) {
+    public TalonFXFalcon(final int deviceID, final boolean isInverted) {
+        this(deviceID, NeutralMode.Coast, isInverted, -1);
+    }
+
+
+    public TalonFXFalcon(final int deviceID, final NeutralMode neutralMode, final boolean isInverted, int analogEncoderID) {
         super(deviceID);
         encoder = getSensorCollection().getIntegratedSensorPosition();
         idleMode = NeutralMode.Coast;
@@ -49,6 +56,11 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         this.isInverted = isInverted;
         logger = Logger.getLogger("SparkMax " + Integer.toString(deviceID));
 
+        if (analogEncoderID >= 0 && analogEncoderID <= 3) {
+                encoderPort = new AnalogInput(analogEncoderID);
+                angleEncoder = new AnalogEncoder(encoderPort);
+                hasAngleEncoder = true;
+        }
     }
 
     /**
@@ -61,9 +73,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
      * @param deviceID   CAN ID of the SparkMax
      * @param isInverted Indication of whether the SparkMax's motor is inverted
      */
-    public TalonFXFalcon(final int deviceID, final boolean isInverted) {
-        this(deviceID, NeutralMode.Coast, isInverted);
-    }
+    
 
     /**
      * Performs necessary initialization
@@ -104,9 +114,11 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     // get angle
     public double getCurrentAngle() {
-       // return Math.toDegrees(getSensorCollection().getIntegratedSensorPosition());
-       return angleEncoder.get()*360;
-       
+        if(hasAngleEncoder == true) {
+        return Math.toDegrees(getSensorCollection().getIntegratedSensorPosition());
+        } else {
+            return 0.0;
+        } 
     }
 
     // Set Speed
@@ -121,7 +133,9 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     // Set Angle
     public void setAngle(double targetAngle) {
 
-        double encoderPosition = getCurrentAngle();
+        double encoderPosition = getSensorCollection().getIntegratedSensorPosition() * 20;
+
+
         while (encoderPosition > 180) {
             encoderPosition -= 360;
         }
