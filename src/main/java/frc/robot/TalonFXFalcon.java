@@ -106,6 +106,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     public double getCurrentAngle() {
        // return Math.toDegrees(getSensorCollection().getIntegratedSensorPosition());
        return angleEncoder.get()*360;
+       
     }
 
     // Set Speed

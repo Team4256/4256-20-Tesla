@@ -8,7 +8,8 @@ public class RotationControl{
 
     //constructor
    public RotationControl(int deviceID){
-       rotationMotor= new SparkMaxNeo(deviceID,false); 
+          rotationMotor = MotorFactory.createRotationMotor(deviceID);
+          
    }
 
    public void SetAngle(double angle){
