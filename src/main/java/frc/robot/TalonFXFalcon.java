@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.AnalogEncoder;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -28,6 +30,8 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     private PIDController anglePIDController = new PIDController(.00278, 0.0, 0.00);
     public final Compass compass = new Compass();
     private double lastLegalDirection = 1.0;
+    private AnalogInput encoderport = new AnalogInput(0); // TODO get the encoder port
+    private AnalogEncoder angleEncoder = new AnalogEncoder(encoderport);
 
     /**
      * Offers a simple way of initializing and using NEO Brushless motors with a
@@ -100,7 +104,8 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     // get angle
     public double getCurrentAngle() {
-        return Math.toDegrees(getSensorCollection().getIntegratedSensorPosition());
+       // return Math.toDegrees(getSensorCollection().getIntegratedSensorPosition());
+       return angleEncoder.get()*360;
     }
 
     // Set Speed
@@ -115,7 +120,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     // Set Angle
     public void setAngle(double targetAngle) {
 
-        double encoderPosition = getSensorCollection().getIntegratedSensorPosition() * 20;
+        double encoderPosition = getCurrentAngle();
         while (encoderPosition > 180) {
             encoderPosition -= 360;
         }
