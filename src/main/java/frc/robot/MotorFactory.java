@@ -21,6 +21,8 @@ public class MotorFactory {
                 return new SparkMaxNeo(deviceID, IdleMode.kCoast, false);
 
         }
+        return null;
+        
  }
     public static Motor createRotationMotor(int deviceID) {
         if (rotationMotorType == MotorType.TALON) {
@@ -29,6 +31,7 @@ public class MotorFactory {
         } else if (tractionMotorType == MotorType.NEO) {
             return new SparkMaxNeo(deviceID, IdleMode.kCoast, false);
         }
+        return null;
     }
 
     

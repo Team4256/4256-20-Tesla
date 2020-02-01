@@ -10,8 +10,6 @@ public double getCurrentAngle();
 
 public void setAngle(double targetAngle);
 
-public int getCounts();
-
 public double getRPM();
 
 public double getRPS();

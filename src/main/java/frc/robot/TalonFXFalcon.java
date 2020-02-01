@@ -26,7 +26,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     private double lastSetpoint = 0.0;
     private Logger logger;
     private PIDController anglePIDController = new PIDController(.00278, 0.0, 0.00);
-    public final Compass compass = new Compass(0, 0);
+    public final Compass compass = new Compass();
     private double lastLegalDirection = 1.0;
 
     /**
@@ -75,10 +75,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
      * @return Counts of the motor
      */
 
-    public double getCounts() {
 
-        return getSensorCollection().getIntegratedSensorPosition();
-    }
 
     /**
      * @return Rotations of the motor
@@ -170,4 +167,12 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     public void getCurrentAngle(double angle) {
 
     }
+
+    @Override
+    public void setSpeed(double speed) {
+        // TODO Auto-generated method stub
+
+    }
+
+    
 }
