@@ -1,35 +1,9 @@
 package frc.robot;//COMPLETE 2016
 
 public class Compass {
-	private double tareAngle = 0.0;
-	private final double protectedZoneStart;// Angles increase as the numbers on a clock increase. This value should be
-											// the first protected angle encountered by a minute hand which starts at
-											// 12:00.
-	private final double protectedZoneSize;// This value should be the number of degrees the minute hand must travel
-											// before reaching the end of the protected section.
 
-	public Compass(final double protectedZoneStart, final double protectedZoneSize) {
-		this.protectedZoneStart = validate(protectedZoneStart);
-		this.protectedZoneSize = Math.abs(protectedZoneSize) % 360;
-	}
-
-	/**
-	 * Tares the compass relative to the current 0
-	 * 
-	 * @param tareAngle the new tare angle; can be positive or negative
-	 */
-	public void setTareAngle(final double tareAngle) {
-		this.tareAngle = tareAngle;
-	}
-
-	/**
-	 * @return the current tare angle relative to original 0, not relative to a
-	 *         previous tare
-	 */
-	public double getTareAngle() {
-		return tareAngle;
-	}
-
+	
+	
 	/**
 	 * Wraps values around a circle
 	 * 
@@ -66,37 +40,13 @@ public class Compass {
 	 *         this denotes angles in [0, 360) but outside (zone start, zone end)
 	 * @see #validate(angle)
 	 */
-	public double legalize(double angle) {
-		if (protectedZoneSize != 0) {
-			final double protectedZoneEnd = protectedZoneStart + protectedZoneSize;
-			double fromStartingEdge = path(protectedZoneStart, angle);
-			final double toEndingEdge = path(angle, protectedZoneEnd);
-
-			if (fromStartingEdge < 0) {
-				fromStartingEdge += 360;
-				fromStartingEdge *= Math.signum(toEndingEdge);
-			}
-			if ((fromStartingEdge > 0) && (fromStartingEdge < protectedZoneSize))
-				angle = fromStartingEdge <= Math.abs(toEndingEdge) ? protectedZoneStart : protectedZoneEnd;
-		}
+	public  static double legalize(double angle) {
+	
 		return validate(angle);
 	}
-
-	/**
-	 * Uses <code>path(start, end)</code> to find the minor arc measure between
-	 * start and the nearest zone border
-	 * 
-	 * @param start degrees; can be positive, negative, huge, or tiny
-	 * @return arc measure in degrees (positive if the arc is clockwise of start,
-	 *         negative if it's counterclockwise of start)
-	 * @see #path(start, end)
-	 */
-	private double borderPath(final double start) {
-		final double toStartingEdge = path(start, protectedZoneStart),
-				toEndingEdge = path(start, protectedZoneStart + protectedZoneSize);
-		return Math.abs(toStartingEdge) <= Math.abs(toEndingEdge) ? toStartingEdge : toEndingEdge;
-	}
-
+	
+	
+	
 	/**
 	 * This function finds the shortest legal path from the start angle to the end
 	 * angle and returns the size of that path in degrees. Positive means clockwise
@@ -115,35 +65,11 @@ public class Compass {
 	 * @see #legalize(angle)
 	 * @see #borderPath(angle)
 	 */
-	public double legalPath(final double start, final double end) {
+	public static double legalPath(final double start, final double end) {
 		final double start_legal = legalize(start);
-		final double path_escape = validate(start) == start_legal ? 0.0 : borderPath(start);// 0 if start was already
-																							// legal, otherwise
-																							// borderPath()
+		final double path_escape = 0;
 		double path_main = path(start_legal, legalize(end));
-
-		if (protectedZoneSize != 0) {
-			double borderPath = borderPath(start_legal);// yes, this is intentionally start_legal not start
-
-			// OPTION A -- condensed
-			double comparator = borderPath == 0 ? 0 : 1;
-			if (borderPath == 0)
-				borderPath = path(start_legal, protectedZoneStart + protectedZoneSize / 2.0);
-			if (path_main / borderPath > comparator)
-				path_main -= Math.copySign(360, path_main);
-
-			// OPTION B -- readable
-			// if (borderPath != 0) {
-			// //equivalent to: if (Math.abs(borderPath) < Math.abs(path_main) &&
-			// Math.signum(path_main) == Math.signum(borderPath))
-			// if (path_main/borderPath > 1) path_main -= Math.copySign(360, path_main);
-			// }else {
-			// //equivalent to: if (Math.signum(path_main) == Math.signum(path(start_legal,
-			// protectedZoneStart + protectedZoneSize/2)))
-			// if (path_main/path(start_legal, protectedZoneStart + protectedZoneSize/2) >
-			// 0) path_main -= Math.copySign(360, path_main);
-			// }
-		}
+		
 		return path_main + path_escape;
 	}
 
