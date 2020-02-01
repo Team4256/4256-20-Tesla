@@ -8,7 +8,7 @@ public class SubsystemControl {
             moduleB = new SwerveModule(0, true, 0, false, 0), moduleC = new SwerveModule(0, true, 0, true, 0),
             moduleD = new SwerveModule(0, true, 0, false, 0));
     private Intake succer = new Intake(0);
-    private Shooter cellShooter = new Shooter(32);
+    private Shooter cellShooter = new Shooter(32,0);
 
     // Swerve Periodic
     public void swervePeriodic() {
@@ -43,6 +43,9 @@ public class SubsystemControl {
             cellShooter.shoot();
 
         }
+        if (driver.getRawButtonReleased(driver.BUTTON_RB)) {
+            cellShooter.stop();
+        }
 
     }
     //Intake Periodic
@@ -52,10 +55,9 @@ public class SubsystemControl {
             succer.succ();
             
         }
-     /**    if (driver.getRawButtonPressed(driver.BUTTON_LB)) {
-            succer.spew();
+        if (driver.getRawButtonReleased(driver.BUTTON_LB)) {
+            succer.stop();
         }
-        */
     }
 
 }

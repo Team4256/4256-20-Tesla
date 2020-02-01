@@ -15,4 +15,7 @@ public class Intake {
     public void spew(){
         succMotor.set(-0.5);
     }
+    public void stop() {
+        succMotor.set(0.0);
+    }
 }
