@@ -36,10 +36,9 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
     private Logger logger;
     private PIDController anglePIDController = new PIDController(.00278, 0.0, 0.00);
     //private CANEncoder angleEncoder = new CANEncoder(this);
-    private AnalogInput encoderport = new AnalogInput(1);
-    private AnalogEncoder angleEncoder = new AnalogEncoder(encoderport);//get the real analoginput
-    
-    
+    private AnalogInput encoderPort;
+    private AnalogEncoder angleEncoder;
+
 
     /**
      * Offers a simple way of initializing and using NEO Brushless motors with a
@@ -50,12 +49,23 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
      * @param isInverted Indication of whether the SparkMax's motor is inverted
      */
     public SparkMaxNeo(final int deviceID, final IdleMode idleMode, final boolean isInverted) {
+        this(deviceID, IdleMode.kCoast, isInverted, -1);
+
+    }
+
+
+    public SparkMaxNeo(final int deviceID, final IdleMode idleMode, final boolean isInverted, int analogEncoderID) {
         super(deviceID, MotorType.kBrushless);
         encoder = getEncoder();
         this.deviceID = deviceID;
         this.idleMode = idleMode;
         this.isInverted = isInverted;
         logger = Logger.getLogger("SparkMax " + Integer.toString(deviceID));
+        if (analogEncoderID >= 0 && analogEncoderID <= 3) {
+            encoderPort = new AnalogInput(analogEncoderID);
+            angleEncoder = new AnalogEncoder(encoderPort);
+            
+    }
 
     }
 

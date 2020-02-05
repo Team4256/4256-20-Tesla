@@ -23,16 +23,16 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     private final int deviceID;
     public final NeutralMode idleMode;
     private final boolean isInverted;
-    private final double encoder;
+    
     private boolean updated = false;
     private double lastSetpoint = 0.0;
     private Logger logger;
-    private PIDController anglePIDController = new PIDController(.00278, 0.0, 0.00);
+    private PIDController anglePIDController = new PIDController(.005, 0.0, 0.00);
     public final Compass compass = new Compass();
     private double lastLegalDirection = 1.0;
     private AnalogInput encoderPort;
     private AnalogEncoder angleEncoder;
-    private boolean hasAngleEncoder = false;
+    
     
 
     /**
@@ -50,7 +50,6 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     public TalonFXFalcon(final int deviceID, final NeutralMode neutralMode, final boolean isInverted, int analogEncoderID) {
         super(deviceID);
-        encoder = getSensorCollection().getIntegratedSensorPosition();
         idleMode = NeutralMode.Coast;
         this.deviceID = deviceID;
         this.isInverted = isInverted;
@@ -59,7 +58,8 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         if (analogEncoderID >= 0 && analogEncoderID <= 3) {
                 encoderPort = new AnalogInput(analogEncoderID);
                 angleEncoder = new AnalogEncoder(encoderPort);
-                hasAngleEncoder = true;
+                angleEncoder.setDistancePerRotation(360);
+                
         }
     }
 
@@ -95,7 +95,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
      * @return Rotations of the motor
      */
     public double getPosition() {
-        return getSensorCollection().getIntegratedSensorPosition();
+        return angleEncoder.get();
     }
 
     /**
@@ -114,8 +114,8 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     // get angle
     public double getCurrentAngle() {
-        if(hasAngleEncoder == true) {
-        return Math.toDegrees(getSensorCollection().getIntegratedSensorPosition());
+        if(angleEncoder != null) {
+        return Math.toDegrees(angleEncoder.get());
         } else {
             return 0.0;
         } 
@@ -123,7 +123,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     // Set Speed
     @Override
-    public void set(final double speed) {
+    public void setSpeed(final double speed) {
         super.set(speed);
         lastSetpoint = speed;
         updated = true;
@@ -133,9 +133,8 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     // Set Angle
     public void setAngle(double targetAngle) {
 
-        double encoderPosition = getSensorCollection().getIntegratedSensorPosition() * 20;
-
-
+        double encoderPosition = angleEncoder.getDistance();
+        SmartDashboard.putNumber("target Angle", targetAngle);
         while (encoderPosition > 180) {
             encoderPosition -= 360;
         }
@@ -149,7 +148,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
             SmartDashboard.putNumber("Percent Output", 0.);
             return;
         }
-
+        
         double percentSpeed = anglePIDController.calculate(encoderPosition, targetAngle);
 
         if (Math.abs(percentSpeed) > .5) {
@@ -188,11 +187,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     }
 
-    @Override
-    public void setSpeed(double speed) {
-        // TODO Auto-generated method stub
-
-    }
+    
 
     
 }

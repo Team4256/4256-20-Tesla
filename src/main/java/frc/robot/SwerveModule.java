@@ -23,7 +23,6 @@ public final class SwerveModule {
 		tractionControl = new TractionControl(tractionID);
 		this.tareAngle = tareAngle;
 	}
-	
 	/**
 	 * This function prepares each motor individually, including setting PID values for the rotator.
 	**/

@@ -1,4 +1,6 @@
-package frc.robot; 
+package frc.robot;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RotationControl{
 
@@ -14,6 +16,7 @@ public class RotationControl{
 
    public void SetAngle(double angle){
         rotationMotor.setAngle(angle);
+        
    }
 
    public void SetTareAngle(double inputAngle){
