@@ -196,4 +196,8 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
     public void getCurrentAngle(double angle) {
 
     }
+
+    public void resetEncoder() {
+        angleEncoder.reset();
+    }
 }

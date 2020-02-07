@@ -27,7 +27,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     private boolean updated = false;
     private double lastSetpoint = 0.0;
     private Logger logger;
-    private PIDController anglePIDController = new PIDController(.005, 0.0, 0.00);
+    private PIDController anglePIDController = new PIDController(.002, 0.0, 0.00);
     public final Compass compass = new Compass();
     private double lastLegalDirection = 1.0;
     private AnalogInput encoderPort;
@@ -58,7 +58,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         if (analogEncoderID >= 0 && analogEncoderID <= 3) {
                 encoderPort = new AnalogInput(analogEncoderID);
                 angleEncoder = new AnalogEncoder(encoderPort);
-                angleEncoder.setDistancePerRotation(360);
+                //angleEncoder.setDistancePerRotation(360);
                 
         }
     }
@@ -133,8 +133,11 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     // Set Angle
     public void setAngle(double targetAngle) {
 
-        double encoderPosition = angleEncoder.getDistance();
+        double encoderPosition = angleEncoder.get() * 3600;
+        
         SmartDashboard.putNumber("target Angle", targetAngle);
+        SmartDashboard.putNumber("Encoder port channel", encoderPort.getChannel());
+        
         while (encoderPosition > 180) {
             encoderPosition -= 360;
         }
@@ -144,8 +147,8 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         SmartDashboard.putNumber("encoder position", encoderPosition);
 
         if (Math.abs(targetAngle - encoderPosition) < 2) {
-            super.set(0.);
-            SmartDashboard.putNumber("Percent Output", 0.);
+            super.set(0.0);
+            SmartDashboard.putNumber("Percent Output", 0.0);
             return;
         }
         
@@ -153,12 +156,15 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
         if (Math.abs(percentSpeed) > .5) {
             percentSpeed = Math.signum(percentSpeed) * .5;
-        } else if (Math.abs(percentSpeed) < .01) {
-            percentSpeed = Math.signum(percentSpeed) * .01;
         }
 
         super.set(percentSpeed);
         SmartDashboard.putNumber("Percent Output", percentSpeed);
+    }
+
+
+    public void resetEncoder() {
+        angleEncoder.reset();
     }
 
     public double pathTo(double target) {// ANGLE

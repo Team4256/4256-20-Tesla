@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RotationControl{
@@ -36,6 +37,10 @@ public class RotationControl{
    public double GetCurrentAngle(){
 
        return rotationMotor.getCurrentAngle();
+   }
+
+   public void resetEncoder() {
+        rotationMotor.resetEncoder();
    }
 
    public double pathTo(double target) {//ANGLE
