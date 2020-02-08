@@ -27,4 +27,7 @@ public class ClimbingControl {
         climbMotorRight.set(-speed);
         climbMotorLeft.set(-speed);
     }
+    public void retractPoleRight(){
+        
+    }
 }
