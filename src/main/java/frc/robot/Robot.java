@@ -24,7 +24,7 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static double gyroHeading = 0.0;
-  private SubsystemControl subsystems = new SubsystemControl();
+  private JoystickControl subsystems = new JoystickControl();
  
   /**
    * This function is run when the robot is first started up and should be used

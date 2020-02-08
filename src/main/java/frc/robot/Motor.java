@@ -18,6 +18,8 @@ public void init();
 
 public void completeLoopUpdate();
 
+public void resetEncoder();
+
 
 
 

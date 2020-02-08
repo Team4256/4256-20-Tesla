@@ -2,15 +2,16 @@ package frc.robot;
 
 public class TractionControl{
 
-    private final SparkMaxNeo tractionMotor;
+    private final Motor tractionMotor;
 
     //constructor
    public TractionControl(int deviceID){
-       tractionMotor= new SparkMaxNeo(deviceID,false); 
-   }
+       tractionMotor = MotorFactory.createTractionMotor(deviceID);
+      
+    }
 
    public void set(double speed){
-        tractionMotor.set(speed);
+        tractionMotor.setSpeed(speed);
    }
 
    public void completeLoopUpdate(){

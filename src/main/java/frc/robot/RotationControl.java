@@ -1,4 +1,7 @@
-package frc.robot; 
+package frc.robot;
+
+import edu.wpi.first.wpilibj.AnalogEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RotationControl{
 
@@ -7,12 +10,14 @@ public class RotationControl{
     private double lastLegalDirection = 1.0;
 
     //constructor
-   public RotationControl(int deviceID){
-       rotationMotor= new SparkMaxNeo(deviceID,false); 
+   public RotationControl(int deviceID, int analogEncoderID){
+          rotationMotor = MotorFactory.createRotationMotor(deviceID, analogEncoderID);
+          
    }
 
    public void SetAngle(double angle){
         rotationMotor.setAngle(angle);
+        
    }
 
    public void SetTareAngle(double inputAngle){
@@ -32,6 +37,10 @@ public class RotationControl{
    public double GetCurrentAngle(){
 
        return rotationMotor.getCurrentAngle();
+   }
+
+   public void resetEncoder() {
+        rotationMotor.resetEncoder();
    }
 
    public double pathTo(double target) {//ANGLE

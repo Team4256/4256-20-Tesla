@@ -1,14 +1,16 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.AnalogEncoder;
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.revrobotics.CANEncoder;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import edu.wpi.first.wpilibj.AnalogEncoder;
+import edu.wpi.first.wpilibj.AnalogInput;
 
 /**
  * SparkMax Motor Controller Used With a Neo Brushless Motor.
@@ -23,15 +25,17 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     private final int deviceID;
     public final NeutralMode idleMode;
     private final boolean isInverted;
-    private final double encoder;
+    private CANEncoder angleEcoder2;
     private boolean updated = false;
     private double lastSetpoint = 0.0;
     private Logger logger;
-    private PIDController anglePIDController = new PIDController(.00278, 0.0, 0.00);
+    private PIDController anglePIDController = new PIDController(.002, 0.0, 0.01);
     public final Compass compass = new Compass();
     private double lastLegalDirection = 1.0;
-    private AnalogInput encoderport = new AnalogInput(0); // TODO get the encoder port
-    private AnalogEncoder angleEncoder = new AnalogEncoder(encoderport);
+    private AnalogInput encoderPort;
+    private AnalogEncoder angleEncoder;
+    
+    
 
     /**
      * Offers a simple way of initializing and using NEO Brushless motors with a
@@ -41,14 +45,24 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
      * @param neutralMode IdleMode (Coast or Brake)
      * @param isInverted  Indication of whether the SparkMax's motor is inverted
      */
-    public TalonFXFalcon(final int deviceID, final NeutralMode neutralMode, final boolean isInverted) {
+    public TalonFXFalcon(final int deviceID, final boolean isInverted) {
+        this(deviceID, NeutralMode.Coast, isInverted, -1);
+    }
+
+
+    public TalonFXFalcon(final int deviceID, final NeutralMode neutralMode, final boolean isInverted, int analogEncoderID) {
         super(deviceID);
-        encoder = getSensorCollection().getIntegratedSensorPosition();
         idleMode = NeutralMode.Coast;
         this.deviceID = deviceID;
         this.isInverted = isInverted;
         logger = Logger.getLogger("SparkMax " + Integer.toString(deviceID));
 
+        if (analogEncoderID >= 0 && analogEncoderID <= 3) {
+                encoderPort = new AnalogInput(analogEncoderID);
+                angleEncoder = new AnalogEncoder(encoderPort);
+                //angleEncoder.setDistancePerRotation(360);
+                
+        }
     }
 
     /**
@@ -61,9 +75,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
      * @param deviceID   CAN ID of the SparkMax
      * @param isInverted Indication of whether the SparkMax's motor is inverted
      */
-    public TalonFXFalcon(final int deviceID, final boolean isInverted) {
-        this(deviceID, NeutralMode.Coast, isInverted);
-    }
+    
 
     /**
      * Performs necessary initialization
@@ -85,7 +97,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
      * @return Rotations of the motor
      */
     public double getPosition() {
-        return getSensorCollection().getIntegratedSensorPosition();
+        return angleEncoder.get();
     }
 
     /**
@@ -104,13 +116,12 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     // get angle
     public double getCurrentAngle() {
-       // return Math.toDegrees(getSensorCollection().getIntegratedSensorPosition());
-       return angleEncoder.get()*360;
+        return (double)encoderPort.getAverageValue();
     }
 
     // Set Speed
     @Override
-    public void set(final double speed) {
+    public void setSpeed(final double speed) {
         super.set(speed);
         lastSetpoint = speed;
         updated = true;
@@ -120,7 +131,12 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     // Set Angle
     public void setAngle(double targetAngle) {
 
-        double encoderPosition = getCurrentAngle();
+        double encoderPosition = (getSensorCollection().getIntegratedSensorPosition() / 4096) * 360 / 3;
+        
+        SmartDashboard.putNumber("target Angle", targetAngle);
+        SmartDashboard.putNumber("Encoder port channel", encoderPort.getChannel());
+        SmartDashboard.putData(this);
+
         while (encoderPosition > 180) {
             encoderPosition -= 360;
         }
@@ -128,23 +144,29 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
             encoderPosition += 360;
         }
         SmartDashboard.putNumber("encoder position", encoderPosition);
-
+        SmartDashboard.putNumber("encoder position 2", encoderPosition);
+        SmartDashboard.putNumber("Velocity error", anglePIDController.getVelocityError());
+        SmartDashboard.putNumber("Get Postion Error", anglePIDController.getPositionError());
+        
         if (Math.abs(targetAngle - encoderPosition) < 2) {
-            super.set(0.);
-            SmartDashboard.putNumber("Percent Output", 0.);
+            super.set(0.0);
+            SmartDashboard.putNumber("Percent Output", 0.0);
             return;
         }
-
+        SmartDashboard.putNumber("Error", targetAngle - encoderPosition);
         double percentSpeed = anglePIDController.calculate(encoderPosition, targetAngle);
-
+        
         if (Math.abs(percentSpeed) > .5) {
             percentSpeed = Math.signum(percentSpeed) * .5;
-        } else if (Math.abs(percentSpeed) < .01) {
-            percentSpeed = Math.signum(percentSpeed) * .01;
         }
 
         super.set(percentSpeed);
         SmartDashboard.putNumber("Percent Output", percentSpeed);
+    }
+
+
+    public void resetEncoder() {
+        getSensorCollection().setIntegratedSensorPosition(0.0, 10);
     }
 
     public double pathTo(double target) {// ANGLE
@@ -157,6 +179,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
         return path;
     }
+    
 
     public void completeLoopUpdate() {
         if (!updated) {
@@ -173,11 +196,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     }
 
-    @Override
-    public void setSpeed(double speed) {
-        // TODO Auto-generated method stub
-
-    }
+    
 
     
 }
