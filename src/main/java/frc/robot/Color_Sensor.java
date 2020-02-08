@@ -11,7 +11,6 @@ public class Color_Sensor {
 
   private ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
   final ColorMatch colorMatcher = new ColorMatch();
-
   final Color myBlue = ColorMatch.makeColor(0.128174, 0.431152, 0.440674);
   final Color myGreen = ColorMatch.makeColor(0.172363, 0.579834, 0.247803);
   final Color myRed = ColorMatch.makeColor(0.513428, 0.351807, 0.134766);

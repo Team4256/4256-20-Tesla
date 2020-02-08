@@ -131,7 +131,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     // Set Angle
     public void setAngle(double targetAngle) {
 
-        double encoderPosition = (getSensorCollection().getIntegratedSensorPosition() / 4096) * 360 / 3;
+        double encoderPosition = (getSensorCollection().getIntegratedSensorPosition() / 4096) * 360 / 5.9333;
         
         SmartDashboard.putNumber("target Angle", targetAngle);
         SmartDashboard.putNumber("Encoder port channel", encoderPort.getChannel());
