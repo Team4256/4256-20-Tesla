@@ -6,7 +6,7 @@ public class Intake {
     private final WPI_TalonFX succMotor;
 
     public Intake(int deviceID) {
-        succMotor = new WPI_TalonFX(33);
+        succMotor = new WPI_TalonFX(Parameters.SuccMotor_ID);
     }
 
     public void succ() {

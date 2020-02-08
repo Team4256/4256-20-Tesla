@@ -12,6 +12,10 @@ public class JoystickControl {
     //         moduleB = new SwerveModule(0, true, 0, false, 0), moduleC = new SwerveModule(0, true, 0, true, 0),
     //         moduleD = new SwerveModule(0, true, 0, false, 0));
     
+
+    private ClimbingPrep climbPrep = new ClimbingPrep(0,0);
+    private ClimbingControl climbCont = new ClimbingControl();
+
     private Intake succer = new Intake(0);
     private Shooter cellShooter = new Shooter(32,0,0,0);
     private boolean rotationMode = false;
@@ -69,7 +73,6 @@ public class JoystickControl {
         if (driver.getRawButtonReleased(driver.BUTTON_RB)) {
             cellShooter.stop();
         }
-
     }
     //Intake Periodic
     public void intakePeriodic() {
@@ -80,7 +83,28 @@ public class JoystickControl {
         }
         if (driver.getRawButtonReleased(driver.BUTTON_LB)) {
             succer.stop();
+/*
+        if (driver.getRawButtonPressed(driver.BUTTON_RB)) {
+
+            succer.spew();
+            
+        }
+        if (driver.getRawButtonReleased(driver.BUTTON_RB)) {
+            succer.stop();
+*/
         }
     }
+    //probably different buttons for both Control and Prep
 
+   
+        public void ClimbingPeriodic(){
+        if (driver.getRawButtonPressed(driver.BUTTON_A)){
+            climbPrep.rotateArmUp();
+            climbCont.extendPole();
+        }
+        if (driver.getRawButtonPressed(driver.BUTTON_B)){
+            climbCont.retractPole();
+            climbPrep.rotateArmDown();
+        }
+    }
 }
