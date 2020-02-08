@@ -25,11 +25,11 @@ public class Shooter {
   // private CANEncoder shooterMotorEncoder2;
 
   //Constructor
-  public Shooter(int SHOOTER_MOTOR_1ID, int SHOOTER_MOTOR_2ID, int HOPPER_MOTOR_ID, int FEEDER_MOTOR_ID) {
-    shooterMotor1 = new WPI_TalonFX(SHOOTER_MOTOR_1ID);
-    shooterMotor2 = new WPI_TalonFX(SHOOTER_MOTOR_2ID);
-    hopperMotor = new WPI_TalonFX(HOPPER_MOTOR_ID);
-    feederMotor = new WPI_TalonFX(FEEDER_MOTOR_ID);
+  public Shooter() {
+    shooterMotor1 = new WPI_TalonFX(Parameters.ShooterMotor_1_ID);
+    shooterMotor2 = new WPI_TalonFX(Parameters.ShooterMoror_2_ID);
+    hopperMotor = new WPI_TalonFX(Parameters.HopperMotor_ID);
+    feederMotor = new WPI_TalonFX(Parameters.FeederMotor_ID);
 
     
     // shooterMotorEncoder1 = new CANEncoder(shooterMotor1);

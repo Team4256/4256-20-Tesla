@@ -7,22 +7,20 @@
 
 package frc.robot;
 
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class ClimbingPrep {
-    private DoubleSolenoid LarmRotationSolenoid;
-    private DoubleSolenoid RarmRotationSolenoid;
-    public ClimbingPrep( int forwardChannel, int reverseChannel ){
-        //need numbers for Forward Channel and Reverse Channel by Engineering team
-        LarmRotationSolenoid = new DoubleSolenoid( forwardChannel, reverseChannel);
-        RarmRotationSolenoid = new DoubleSolenoid( forwardChannel, reverseChannel);
+    private DoubleSolenoid armRotationSolenoid;
+    public ClimbingPrep(){
+        
+        armRotationSolenoid = new DoubleSolenoid(Parameters.SOLENOID_Up_CHANNEL,Parameters.SOLENOID_Down_CHANNEL);
     }
     public void rotateArmUp(){
-        LarmRotationSolenoid.set(DoubleSolenoid.Value.kReverse);
+        armRotationSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
 
     public void rotateArmDown() {
-        RarmRotationSolenoid.set(DoubleSolenoid.Value.kForward);
+        armRotationSolenoid.set(DoubleSolenoid.Value.kForward);
     }
 }
