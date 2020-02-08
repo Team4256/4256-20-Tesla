@@ -1,4 +1,4 @@
-package frc.robot;
+/*package frc.robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
@@ -9,10 +9,11 @@ public class ColorWheelPrep {
 
         public void wheelUpCW(){
             CSolenoid.set(DoubleSolenoid.Value.kReverse);
-
+        }
         public void wheelDownCW() {
             CSolenoid.set(DoubleSolenoid.Value.kForward);
         }
     }
     
 }
+*/

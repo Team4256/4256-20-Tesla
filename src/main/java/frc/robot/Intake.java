@@ -5,7 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 public class Intake {
     private final WPI_TalonFX succMotor;
 
-    public Intake(int deviceID) {
+    public Intake() {
         succMotor = new WPI_TalonFX(Parameters.SuccMotor_ID);
     }
 

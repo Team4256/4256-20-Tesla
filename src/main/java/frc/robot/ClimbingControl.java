@@ -11,13 +11,13 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class ClimbingControl {
     //Will need to set speed to something else 
-    double speed = 0.5;
+    private double speed = 0.5;
+    public double climbingSpeed;
     private WPI_TalonFX climbMotorRight;
     private WPI_TalonFX climbMotorLeft;
     //need to add device numbers based on excel sheet
     public ClimbingControl(){
-        climbMotorRight = new WPI_TalonFX(Parameters.R_CLIMBER_MOTOR_ID);
-        climbMotorLeft = new WPI_TalonFX(Parameters.L_CLIMBER_MOTOR_ID);
+        climbMotorRight = new WPI_TalonFX(Parameters.R_CLIMBER_MOTOR_ID); 
     }
     public void extendPole(){
         climbMotorRight.set(speed);
@@ -27,7 +27,10 @@ public class ClimbingControl {
         climbMotorRight.set(-speed);
         climbMotorLeft.set(-speed);
     }
-    public void retractPoleRight(){
-        
+    public void retractPoleRight(double climbingSpeed){
+        climbMotorRight.set(-climbingSpeed);
+    }
+    public void retractPoleLeft(double climbingSpeed){
+        climbMotorLeft.set(-climbingSpeed);
     }
 }
