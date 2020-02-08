@@ -82,5 +82,11 @@ public class SubsystemControl {
             climbCont.retractPole();
             climbPrep.rotateArmDown();
         }
+        public void colorPeriodic(){
+            if (driver.getRawButtonPressed(driver.BUTTON_X)){
+                ColorWheelPrep.rotateArmDown();
+
+            }
+        }
     }
 }
