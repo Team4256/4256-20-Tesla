@@ -90,10 +90,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    subsystems.swervePeriodic();
-    
+    //subsystems.swervePeriodic();
+    subsystems.intakePeriodic();
+    subsystems.shooterPeriodic();
+    subsystems.ClimbingPeriodic();
     
   }
+  
+
 
   /**
    * This function is called periodically during test mode.
