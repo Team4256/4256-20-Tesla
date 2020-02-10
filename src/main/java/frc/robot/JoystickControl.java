@@ -2,7 +2,6 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTypeResolverBuilder;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class JoystickControl {
@@ -15,8 +14,8 @@ public class JoystickControl {
     //         moduleD = new SwerveModule(0, true, 0, false, 0));
     
 
-    private ClimbingPrep climbPrep = new ClimbingPrep();
-    private ClimbingControl climbCont = new ClimbingControl();
+    private ClimbingPrep climbPrep = new ClimbingPrep(Parameters.SOLENOID_Up_CHANNEL, Parameters.SOLENOID_Down_CHANNEL);
+    private ClimbingControl climbCont = new ClimbingControl(Parameters.R_CLIMBER_MOTOR_ID,Parameters.L_CLIMBER_MOTOR_ID);
 
     private Intake succer = new Intake();
     private Shooter cellShooter = new Shooter();
@@ -105,6 +104,7 @@ public class JoystickControl {
             climbCont.extendPole();
         }
         if (driver.getRawButtonPressed(driver.BUTTON_B)){
+
             climbCont.retractPole();
             climbPrep.rotateArmDown();
         }

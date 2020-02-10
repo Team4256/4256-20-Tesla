@@ -10,7 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+//import edu.wpi.first.wpilibj.Compressor;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static double gyroHeading = 0.0;
   private JoystickControl subsystems = new JoystickControl();
- 
+  //private Compressor compress = new Compressor();
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -35,6 +35,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+   // compress.start();
   }
 
   /**

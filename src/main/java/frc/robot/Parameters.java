@@ -17,9 +17,9 @@ public class Parameters{
     public static final int COLOR_WHEEL_UP_SOLENOID_ID = 4; //EXTEND
     public static final int COLOR_WHEEL_DOWN_SOLENOID_ID = 5; // RETRACT
 
-    //soloniod motor stuff
-    public static final int SOLENOID_Up_CHANNEL = 2; //solenoid port Extend 
-    public static final int SOLENOID_Down_CHANNEL = 3; //solenoid port Retract
+    //soloniod motor stuff in competition up will be 2 down will be 3
+    public static final int SOLENOID_Up_CHANNEL = 0; //solenoid port Extend 
+    public static final int SOLENOID_Down_CHANNEL = 1; //solenoid port Retract
     //public static final int A = 69420; Nice ;)
 // add motors for arm going up and down
     public static final int R_CLIMBER_MOTOR_ID = 29; //Climber Motor right
