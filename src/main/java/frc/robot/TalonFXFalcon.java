@@ -29,14 +29,16 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     private boolean updated = false;
     private double lastSetpoint = 0.0;
     private Logger logger;
-    private PIDController anglePIDController = new PIDController(.002, 0.0, 0.01);
+    private PIDController anglePIDController = new PIDController(.025, 0.0, 0.05);
     public final Compass compass = new Compass();
     private double lastLegalDirection = 1.0;
     private AnalogInput encoderPort;
     private AnalogEncoder angleEncoder;
-    
+    double maxAngle = 0;
+    double minAngle = 360;
     
 
+    
     /**
      * Offers a simple way of initializing and using NEO Brushless motors with a
      * SparkMax motor controller.
@@ -60,7 +62,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         if (analogEncoderID >= 0 && analogEncoderID <= 3) {
                 encoderPort = new AnalogInput(analogEncoderID);
                 angleEncoder = new AnalogEncoder(encoderPort);
-                //angleEncoder.setDistancePerRotation(360);
+                angleEncoder.setDistancePerRotation(360);
                 
         }
     }
@@ -84,7 +86,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
         setInverted(isInverted);
         set(0.0);
-        anglePIDController.enableContinuousInput(-180.0, 180.0);
+        //anglePIDController.enableContinuousInput(0, 360.0);
     }
 
     /**
@@ -131,37 +133,56 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     // Set Angle
     public void setAngle(double targetAngle) {
 
-        double encoderPosition = (getSensorCollection().getIntegratedSensorPosition() / 4096) * 360 / 5.9333;
+        //double encoderPosition = (getSensorCollection().getIntegratedSensorPosition() / 4096) * 360 / 19.77466;
+        //double encoderPosition = 360 - encoderPort.getVoltage() / 5 * 360;
+        double encoderPosition = 360 - (encoderPort.getVoltage() - 0.015869)/(4.788818 - 0.015869) * 360;
+        if (encoderPort.getVoltage() > maxAngle) maxAngle = encoderPort.getVoltage();
+        if (encoderPort.getVoltage() < minAngle) minAngle = encoderPort.getVoltage();
+        SmartDashboard.putNumber("minAngle", minAngle);
+        SmartDashboard.putNumber("maxAngle", maxAngle);
+        while (targetAngle <= -180) {
+            targetAngle += 360;
+        } 
+        while (targetAngle > 180) {
+            targetAngle -= 360;
+        }
+
+        
         
         SmartDashboard.putNumber("target Angle", targetAngle);
-        SmartDashboard.putNumber("Encoder port channel", encoderPort.getChannel());
-        SmartDashboard.putData(this);
-
-        while (encoderPosition > 180) {
-            encoderPosition -= 360;
-        }
-        while (encoderPosition < -180) {
-            encoderPosition += 360;
-        }
         SmartDashboard.putNumber("encoder position", encoderPosition);
-        SmartDashboard.putNumber("encoder position 2", encoderPosition);
-        SmartDashboard.putNumber("Velocity error", anglePIDController.getVelocityError());
-        SmartDashboard.putNumber("Get Postion Error", anglePIDController.getPositionError());
+        SmartDashboard.putNumber("Encoder Voltage", encoderPort.getVoltage());
+
+        double error = targetAngle - encoderPosition;
+        SmartDashboard.putNumber("PID error", anglePIDController.getPositionError());
         
-        if (Math.abs(targetAngle - encoderPosition) < 2) {
-            super.set(0.0);
-            SmartDashboard.putNumber("Percent Output", 0.0);
-            return;
+        if (Math.abs(error) > 180) {
+            encoderPosition -= 360;
+            error = targetAngle - encoderPosition;
+            
         }
-        SmartDashboard.putNumber("Error", targetAngle - encoderPosition);
-        double percentSpeed = anglePIDController.calculate(encoderPosition, targetAngle);
+
+
         
+        // if (Math.abs(error) < 2) {
+        //     super.set(0.0);
+        //     SmartDashboard.putNumber("Percent Output", 0.0);
+        //     return;
+        // }
+        
+        SmartDashboard.putNumber("Error", error);
+        
+        
+        double percentSpeed = anglePIDController.calculate(encoderPosition, targetAngle);
+        SmartDashboard.putNumber("Percent Output", percentSpeed);
+        percentSpeed = anglePIDController.getP() * error;
         if (Math.abs(percentSpeed) > .5) {
             percentSpeed = Math.signum(percentSpeed) * .5;
         }
-
         super.set(percentSpeed);
-        SmartDashboard.putNumber("Percent Output", percentSpeed);
+        SmartDashboard.putNumber("Percent Output Us", percentSpeed);
+        SmartDashboard.putNumber("offeset", angleEncoder.getPositionOffset());
+        
     }
 
 

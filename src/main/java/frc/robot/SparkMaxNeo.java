@@ -34,10 +34,11 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
     private boolean updated = false;
     private double lastSetpoint = 0.0;
     private Logger logger;
-    private PIDController anglePIDController = new PIDController(.00278, 0.0, 0.00);
+    private PIDController anglePIDController = new PIDController(.02, 0.0, 0);
     //private CANEncoder angleEncoder = new CANEncoder(this);
     private AnalogInput encoderPort;
     private AnalogEncoder angleEncoder;
+
 
 
     /**

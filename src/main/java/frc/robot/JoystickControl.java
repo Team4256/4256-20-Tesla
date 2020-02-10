@@ -21,6 +21,10 @@ public class JoystickControl {
     private Shooter cellShooter = new Shooter();
     private boolean rotationMode = false;
     private double angle = 0;
+    private double spin = 0.5 * driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);
+    private double direction = driver.getCurrentAngle(Xbox.STICK_LEFT, true);
+    private double speed = driver.getCurrentRadius(Xbox.STICK_LEFT, true);
+
     // Swerve Periodic
     
     public void swervePeriodic() {
@@ -28,19 +32,22 @@ public class JoystickControl {
         // if (driver.getRawButtonPressed(driver.BUTTON_A)) {
         //     moduleA.getTractionMotor().set(.3);
         // }
-        if (driver.getRawButtonPressed(driver.BUTTON_A)) {
-            moduleA.getRotationMotor().resetEncoder();
-        } 
-        if (driver.getRawButtonPressed(driver.BUTTON_X)) {
-            rotationMode = true;
-            angle = 90;
-        }
-        if (driver.getRawButtonPressed(driver.BUTTON_Y)) {
+        // if (driver.getRawButtonPressed(driver.BUTTON_X)) {
+        //     rotationMode = true;
+        //     angle = 360;
+        // }
+        // if (driver.getRawButtonPressed(driver.BUTTON_Y)) {
+        //     rotationMode = true;
+        //     angle = 10;
+        // }
+        if (true) {
             rotationMode = true;
             angle = 0;
         }
         if (rotationMode) {
-            moduleA.getRotationMotor().SetAngle(angle);
+           // moduleA.getRotationMotor().SetAngle(angle);
+            moduleA.getRotationMotor().SetAngle(driver.getCurrentAngle(Xbox.STICK_RIGHT, true));
+            moduleA.getTractionMotor().set(driver.getCurrentRadius(Xbox.STICK_LEFT, true));
         }
         
         
@@ -50,12 +57,7 @@ public class JoystickControl {
         //     swerve.setAllModulesToZero();
 
         // } else {
-
-        //     double direction = driver.getCurrentAngle(Xbox.STICK_LEFT, true);
-
-        //     double speed = driver.getCurrentRadius(Xbox.STICK_LEFT, true);
-
-        //     double spin = 0.5 * driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);
+             
 
         //     swerve.completeLoopUpdate();
         //     swerve.setSpin(spin);

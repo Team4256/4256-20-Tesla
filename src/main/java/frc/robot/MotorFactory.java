@@ -27,7 +27,7 @@ public class MotorFactory {
  }
     public static Motor createRotationMotor(int deviceID, int analogEncoderID) {//TODO add an analog encoder
         if (rotationMotorType == MotorType.TALON) {
-            return new TalonFXFalcon(deviceID, NeutralMode.Coast, false, analogEncoderID);
+            return new TalonFXFalcon(deviceID, NeutralMode.Brake, false, analogEncoderID);
 
         } else if (tractionMotorType == MotorType.NEO) {
             return new SparkMaxNeo(deviceID, IdleMode.kCoast, false);
