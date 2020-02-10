@@ -12,13 +12,13 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class ClimbingPrep {
     private DoubleSolenoid armRotationSolenoid;
-    public ClimbingPrep(){
+    public ClimbingPrep(int forwardChannel, int reverseChannel){
         
-        armRotationSolenoid = new DoubleSolenoid(Parameters.SOLENOID_Up_CHANNEL,Parameters.SOLENOID_Down_CHANNEL);
+        armRotationSolenoid = new DoubleSolenoid(forwardChannel, reverseChannel);
     }
     public void rotateArmUp(){
         armRotationSolenoid.set(DoubleSolenoid.Value.kReverse);
-    }
+    }   
 
     public void rotateArmDown() {
         armRotationSolenoid.set(DoubleSolenoid.Value.kForward);

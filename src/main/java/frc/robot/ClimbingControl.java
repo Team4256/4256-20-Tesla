@@ -16,8 +16,9 @@ public class ClimbingControl {
     private WPI_TalonFX climbMotorRight;
     private WPI_TalonFX climbMotorLeft;
     //need to add device numbers based on excel sheet
-    public ClimbingControl(){
-        climbMotorRight = new WPI_TalonFX(Parameters.R_CLIMBER_MOTOR_ID); 
+    public ClimbingControl( int RMotorID, int LMotorID){
+        climbMotorRight = new WPI_TalonFX(RMotorID); 
+        climbMotorLeft = new WPI_TalonFX(LMotorID);
     }
     public void extendPole(){
         climbMotorRight.set(speed);
