@@ -147,7 +147,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
             targetAngle -= 360;
         }
 
-        
+
         
         SmartDashboard.putNumber("target Angle", targetAngle);
         SmartDashboard.putNumber("encoder position", encoderPosition);
