@@ -68,23 +68,23 @@ public class JoystickControl {
     //Shooter Periodic
     public void shooterPeriodic() {
 
-        if (gunner.getRawButtonPressed(gunner.BUTTON_RB)) {
+        if (gunner.getRawButtonPressed(Xbox.BUTTON_RB)) {
 
             cellShooter.shoot();
 
         }
-        if (gunner.getRawButtonReleased(gunner.BUTTON_RB)) {
+        if (gunner.getRawButtonReleased(Xbox.BUTTON_RB)) {
             cellShooter.stop();
         }
     }
     //Intake Periodic
     public void intakePeriodic() {
-        if (gunner.getRawButtonPressed(gunner.BUTTON_LB)) {
+        if (gunner.getRawButtonPressed(Xbox.BUTTON_LB)) {
 
             succer.succ();
             
         }
-        if (gunner.getRawButtonReleased(gunner.BUTTON_LB)) {
+        if (gunner.getRawButtonReleased(Xbox.BUTTON_LB)) {
             succer.stop();
 /*
         if (gunner.getRawButtonPressed(gunner.BUTTON_RB)) {
@@ -101,29 +101,24 @@ public class JoystickControl {
 
    
     public void ClimbingPeriodic(){
-        if (driver.getRawButtonPressed(driver.BUTTON_A)){
+        if (gunner.getRawButtonPressed(Xbox.DPAD_NORTH)){
             climbPrep.rotateArmUp();
-            climbCont.extendPole();
         }
-        if (driver.getRawButtonPressed(driver.BUTTON_B)){
-
+        if (gunner.getRawButtonPressed(Xbox.DPAD_SOUTH)){
             climbCont.retractPole();
-            climbPrep.rotateArmDown();
+            
         }
-        final double LTAxis = driver.getRawAxis(driver.AXIS_LT);
-        final double RTAxis = driver.getRawAxis(driver.AXIS_RT);
-        if (LTAxis >= 0.1){
-            climbCont.retractPoleLeft(LTAxis);
+        if (gunner.getRawButtonPressed(Xbox.DPAD_WEST)){
+           while (climbCont.extendPoles(ClimbingControl.MED_HEIGHT_COUNT));
         }
-        if (RTAxis >= 0.1){
-            climbCont.retractPoleRight(RTAxis);
+        if (gunner.getRawButtonPressed(Xbox.DPAD_EAST)){
+          while (climbCont.extendPoles(ClimbingControl.MAX_HEIGHT_COUNT));
         }
-
-    }
     /*public void colorPeriodic(){
-        if (driver.getRawButtonPressed(driver.BUTTON_X)){
+        if (gunner.getRawButtonPressed(Xbox.BUTTON_X)){
             ColorWheelPrep.rotateArmDown();
 
         }
-    }*/
+        */
+    }
 }
