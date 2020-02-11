@@ -16,7 +16,7 @@ public class JoystickControl {
 
     private ClimbingPrep climbPrep = new ClimbingPrep(Parameters.ClimberForwardChannel, Parameters.ClimberReverseChannel);
     private ClimbingControl climbCont = new ClimbingControl(Parameters.R_CLIMBER_MOTOR_ID,Parameters.L_CLIMBER_MOTOR_ID);
-
+    private ColorWheelPrep cwPrep = new ColorWheelPrep(Parameters.COLOR_WHEEL_UP_SOLENOID_ID, Parameters.COLOR_WHEEL_DOWN_SOLENOID_ID);
     private Intake succer = new Intake();
     private Shooter cellShooter = new Shooter(Parameters.ShooterMotor_1_ID, Parameters.ShooterMoror_2_ID, Parameters.HopperMotor_ID, Parameters.FeederMotor_ID, Parameters.ShroudForwardChannel, Parameters.ShroudReverseChannel);
     private boolean rotationMode = false;
@@ -125,10 +125,14 @@ public class JoystickControl {
         }
 
     }
-    /*public void colorPeriodic(){
-        if (driver.getRawButtonPressed(driver.BUTTON_X)){
-            ColorWheelPrep.rotateArmDown();
+    public void colorPeriodic(){
+        if (gunner.getRawButtonPressed(Xbox.BUTTON_A)){
+            cwPrep.wheelDownCW();
 
         }
-    }*/
+        if (gunner.getRawButtonPressed(Xbox.BUTTON_Y)){
+            cwPrep.wheelUpCW();
+
+        }
+    }
 }
