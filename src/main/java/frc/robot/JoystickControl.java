@@ -14,11 +14,11 @@ public class JoystickControl {
     //         moduleD = new SwerveModule(0, true, 0, false, 0));
     
 
-    private ClimbingPrep climbPrep = new ClimbingPrep(Parameters.SOLENOID_Up_CHANNEL, Parameters.SOLENOID_Down_CHANNEL);
+    private ClimbingPrep climbPrep = new ClimbingPrep(Parameters.ClimberForwardChannel, Parameters.ClimberReverseChannel);
     private ClimbingControl climbCont = new ClimbingControl(Parameters.R_CLIMBER_MOTOR_ID,Parameters.L_CLIMBER_MOTOR_ID);
 
     private Intake succer = new Intake();
-    private Shooter cellShooter = new Shooter();
+    private Shooter cellShooter = new Shooter(Parameters.ShooterMotor_1_ID, Parameters.ShooterMoror_2_ID, Parameters.HopperMotor_ID, Parameters.FeederMotor_ID, Parameters.ShroudForwardChannel, Parameters.ShroudReverseChannel);
     private boolean rotationMode = false;
     private double angle = 0;
     private double spin = 0.5 * driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);
@@ -66,12 +66,17 @@ public class JoystickControl {
         // }
     }
     //Shooter Periodic
+    //create a button that tells the shooter wheel to spin, when the shoot mode started, the shooter wheel continue to spin. 
     public void shooterPeriodic() {
 
         if (gunner.getRawButtonPressed(gunner.BUTTON_RB)) {
 
             cellShooter.shoot();
 
+        }
+        if (gunner.getRawButton(Xbox.BUTTON_LB)){
+
+            cellShooter.passBall();
         }
         if (gunner.getRawButtonReleased(gunner.BUTTON_RB)) {
             cellShooter.stop();

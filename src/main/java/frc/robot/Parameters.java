@@ -18,8 +18,8 @@ public class Parameters{
     public static final int COLOR_WHEEL_DOWN_SOLENOID_ID = 5; // RETRACT
 
     //soloniod motor stuff in competition up will be 2 down will be 3
-    public static final int SOLENOID_Up_CHANNEL = 0; //solenoid port Extend 
-    public static final int SOLENOID_Down_CHANNEL = 1; //solenoid port Retract
+    public static final int ClimberForwardChannel = 0; //solenoid port Extend 
+    public static final int ClimberReverseChannel = 1; //solenoid port Retract
     //public static final int A = 69420; Nice ;)
 // add motors for arm going up and down
     public static final int R_CLIMBER_MOTOR_ID = 29; //Climber Motor right
@@ -30,4 +30,7 @@ public class Parameters{
     public static final int ShooterMoror_2_ID = 0;
     public static final int HopperMotor_ID = 0;
     public static final int FeederMotor_ID = 0;
+    public static final int ShroudForwardChannel = 2;//TODO get the real ID
+    public static final int ShroudReverseChannel = 3;//TODO get the real ID
+
 }
