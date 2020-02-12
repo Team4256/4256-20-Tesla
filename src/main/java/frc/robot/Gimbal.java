@@ -11,7 +11,7 @@ public class Gimbal {
 		this.y = new BetterServo(portY);
 		this.K = scalingFactor;
 	}
-	
+
 	public void set(final double degreesX, final double degreesY) {x.setAngle(degreesX);	y.setAngle(degreesY);}
 	public void increment(final double amountX, final double amountY) {x.increment(amountX*K);	y.increment(amountY*K);}
 	

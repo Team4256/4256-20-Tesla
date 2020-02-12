@@ -1,35 +1,37 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 public final class D_Swerve implements Drivetrain {
 
 	public static enum SwerveMode {
 		FIELD_CENTRIC, ROBOT_CENTRIC
 	}
-	
+
 	private static final double PIVOT_TO_FRONT_X = 8.25,//inches, pivot point to front wheel tip, x
 								PIVOT_TO_FRONT_Y = 5.25,//inches, pivot point to front wheel tip, y
 								PIVOT_TO_AFT_X   = 8.25,//inches, pivot point to aft wheel tip, x
 								PIVOT_TO_AFT_Y   = 5.25;//inches, pivot point to aft wheel tip, y
 	private static final double PIVOT_TO_FRONT = Math.hypot(PIVOT_TO_FRONT_X, PIVOT_TO_FRONT_Y),
 								PIVOT_TO_AFT = Math.hypot(PIVOT_TO_AFT_X, PIVOT_TO_AFT_Y);
-	
+
 	private final SwerveModule moduleA, moduleB, moduleC, moduleD;
 	private final SwerveModule[] modules;
-	
+
 	private double moduleD_maxSpeed = 70.0;//always put max slightly higher than max observed
 	private double moduleD_previousAngle = 0.0;
 	private double previousSpin = 0.0;
 	
 	private double direction = 0.0, speed = 0.0, spin = 0.0;
-	
+
 	private SwerveMode currentSwerveMode = SwerveMode.FIELD_CENTRIC;
 
-	public D_Swerve(final SwerveModule moduleA, final SwerveModule moduleB, final SwerveModule moduleC, final SwerveModule moduleD) {
-		this.moduleA = moduleA;	this.moduleB = moduleB;	this.moduleC = moduleC;	this.moduleD = moduleD;
-		this.modules = new SwerveModule[] {moduleA, moduleB, moduleC, moduleD};
-	}
+	public D_Swerve() {
+		moduleA = new SwerveModule(Parameters.ROTATION_MOTOR_A_ID,0, true, Parameters.TRACTION_MOTOR_A_ID, false, 0);
+		moduleB = new SwerveModule(Parameters.ROTATION_MOTOR_B_ID,1, true, Parameters.TRACTION_MOTOR_B_ID, false, 0);
+		moduleC = new SwerveModule(Parameters.ROTATION_MOTOR_C_ID,2, true, Parameters.TRACTION_MOTOR_C_ID, false, 0);
+		moduleD = new SwerveModule(Parameters.ROTATION_MOTOR_D_ID,3, true, Parameters.TRACTION_MOTOR_D_ID, false, 0);
+		
+	this.modules = new SwerveModule[] {moduleA /** , moduleB, moduleC, moduleD*/};
+	}	
 	
 	/**
 	 * This function prepares each swerve module individually.
@@ -41,7 +43,7 @@ public final class D_Swerve implements Drivetrain {
 		moduleC.init();	
 		moduleD.init();
 	}
-	
+
 	/**
 	 * @deprecated
 	 * This function is now deprecated.
@@ -82,13 +84,13 @@ public final class D_Swerve implements Drivetrain {
 		
 		//{CONTROL MOTORS, using above angles and computing traction outputs as needed}
 		if (!bad) {
-			for (int i = 0; i < 4; i++) modules[i].swivelTo(angles_final[i]);//control rotation if good
+			for (int i = 0; i < 1; i++) modules[i].swivelTo(angles_final[i]);//control rotation if good
 			moduleD_previousAngle = angles_final[3];
 		}
 		
 		if (!bad && isThere(6.0)) {
 			final double[] speeds_final = computeSpeeds(comps_desired);
-			for (int i = 0; i < 4; i++) modules[i].set(speeds_final[i]);//control traction if good and there
+			for (int i = 0; i < 1; i++) modules[i].set(speeds_final[i]);//control traction if good and there
 		}else stop();//otherwise, stop traction
 		
 		if (spin < 0.07) moduleD.checkTractionEncoder();
@@ -119,12 +121,12 @@ public final class D_Swerve implements Drivetrain {
 		//{CONTROL MOTORS, computing outputs as needed}
 		if (!bad) {
 			final double[] angles_final = computeAngles(comps_desired);
-			for (int i = 0; i < 4; i++) modules[i].swivelTo(angles_final[i]);//control rotation if driver input
+			for (int i = 0; i < 1; i++) modules[i].swivelTo(angles_final[i]);//control rotation if driver input
 		}
 
 		if (!bad && isThere(10.0)) {
 			final double[] speeds_final = computeSpeeds(comps_desired);
-			for (int i = 0; i < 4; i++) modules[i].set(speeds_final[i]);//control traction if good and there
+			for (int i = 0; i < 1; i++) modules[i].set(speeds_final[i]);//control traction if good and there
 		}else stop();//otherwise, stop traction
 		
 		if (spin < 0.07) moduleD.checkTractionEncoder();
@@ -238,7 +240,7 @@ public final class D_Swerve implements Drivetrain {
 		
 		setSpeed(speed);
 	}
-	
+
 	@Override
 	public double face(final double orientation, double maximumOutput) {
 		final double error = Compass.path(Robot.gyroHeading, orientation);
