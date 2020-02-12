@@ -132,8 +132,11 @@ public class JoystickControl {
             controlPanel.wheelUpCW();
 
         }
-        if(gunner.getRawButtonPressed(Xbox.BUTTON_B)){
-            controlPanel.spinControlPenal3Revs();
+        if(gunner.getRawButtonPressed(Xbox.BUTTON_X)){
+            controlPanel.spinControlPanel3Revs();
+        }
+        if( gunner.getRawButtonPressed(Xbox.BUTTON_B)){
+            controlPanel.spinToTheTargetColor();
         }
     }
 }

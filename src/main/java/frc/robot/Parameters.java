@@ -18,6 +18,8 @@ public class Parameters{
     public static final int WHEEL_ARM_MOTOR_ID = 15; // Main
     public static final int WHEEL_ARM_UP_SOLENOID_CHANNEL = 4; //EXTEND
     public static final int WHEEL_ARM_DOWN_SOLENOID_CHANNEL = 5; // RETRACT
+    public static final double COLOR_MOTOR_SPEED = 0.5;
+    public static final int TARGET_WEDGE_COUNT = 3*8+4; // 3 REVOLUTIONS, 8 WEDGES PER REVOLUTION, + 4 EXTRA WEDGES
 
     //Color Sensor
     public static final Color myBlue = ColorMatch.makeColor(0.128174, 0.431152, 0.440674);
