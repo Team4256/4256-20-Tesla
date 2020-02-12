@@ -1,21 +1,25 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class Intake {
-    private final WPI_TalonFX succMotor;
+    private double intakeSpeed = 0.5;
+    private double stopSpeed = 0.0;
+    private final TalonSRX succMotor;
 
     public Intake() {
-        succMotor = new WPI_TalonFX(Parameters.SuccMotor_ID);
+        succMotor = new TalonSRX(Parameters.SuccMotor_ID);
     }
 
     public void succ() {
-        succMotor.set(.5);
+        succMotor.set(ControlMode.PercentOutput, intakeSpeed);
     }
     public void spew(){
-        succMotor.set(-0.5);
+        succMotor.set(ControlMode.PercentOutput, -intakeSpeed);
     }
     public void stop() {
-        succMotor.set(0.0);
+        succMotor.set(ControlMode.PercentOutput, stopSpeed);
     }
 }

@@ -14,8 +14,8 @@ public class Parameters{
     public static final int TRACTION_MOTOR_D_ID = 24; // AFT Right
    // Color Wheel
     public static final int COLOR_WHEEL_MOTOR_ID = 15; // Main
-    public static final int COLOR_WHEEL_UP_SOLENOID_ID = 4; //EXTEND
-    public static final int COLOR_WHEEL_DOWN_SOLENOID_ID = 5; // RETRACT
+    public static final int COLOR_WHEEL_UP_SOLENOID_ID = 0; //EXTEND
+    public static final int COLOR_WHEEL_DOWN_SOLENOID_ID = 1; // RETRACT
 
     //soloniod motor stuff in competition up will be 2 down will be 3
     public static final int ClimberForwardChannel = 0; //solenoid port Extend 
