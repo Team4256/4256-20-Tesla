@@ -14,13 +14,11 @@ public class JoystickControl {
     //         moduleD = new SwerveModule(0, true, 0, false, 0));
     
 
-    private ClimbingPrep climbPrep =  new ClimbingPrep(Parameters.ClimberForwardChannel, Parameters.ClimberReverseChannel);
+    private ClimbingPrep climbPrep = new ClimbingPrep(Parameters.ClimberForwardChannel, Parameters.ClimberReverseChannel);
     private ClimbingControl climbCont = new ClimbingControl(Parameters.R_CLIMBER_MOTOR_ID,Parameters.L_CLIMBER_MOTOR_ID);
-    private ControlPanelSystem controlPanel = new ControlPanelSystem();
+    private ControlPanelSystem cwPrep = new ControlPanelSystem(Parameters.WHEEL_ARM_UP_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_DOWN_SOLENOID_CHANNEL,Parameters.WHEEL_ARM_MOTOR_ID);
     private Intake succer = new Intake();
     private Shooter cellShooter = new Shooter(Parameters.ShooterMotor_1_ID, Parameters.ShooterMoror_2_ID, Parameters.HopperMotor_ID, Parameters.FeederMotor_ID, Parameters.ShroudForwardChannel, Parameters.ShroudReverseChannel);
-
-
     private boolean rotationMode = false;
     private double angle = 0;
     private double spin = 0.5 * driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);
@@ -72,6 +70,21 @@ public class JoystickControl {
     public void shooterPeriodic() {
 
         if (gunner.getRawButtonPressed(Xbox.BUTTON_RB)) {
+              /* if (target is found && motorSpeed >= a certain number){
+      cellshooter.shoot();
+   }
+   else if(target is found && motorSpeed !>= certain number){
+      increase the motorspeed
+   }
+   else if(target is not found && motorSpeed >= a certain number){
+      look for target
+   }
+   else{
+     look for target 
+     increase the motorspeed
+   }
+
+*/
 
             cellShooter.shoot();
 
@@ -80,7 +93,7 @@ public class JoystickControl {
 
             cellShooter.passBall();
         }
-        if (gunner.getRawButtonReleased(Xbox.BUTTON_RB)) {
+        if (gunner.getRawButtonReleased(gunner.BUTTON_RB)) {
             cellShooter.stop();
         }
     }
@@ -125,15 +138,12 @@ public class JoystickControl {
     }
     public void colorPeriodic(){
         if (gunner.getRawButtonPressed(Xbox.BUTTON_A)){
-            controlPanel.wheelDownCW();
+            cwPrep.wheelDownCW();
 
         }
         if (gunner.getRawButtonPressed(Xbox.BUTTON_Y)){
-            controlPanel.wheelUpCW();
+            cwPrep.wheelUpCW();
 
-        }
-        if(gunner.getRawButtonPressed(Xbox.BUTTON_B)){
-            controlPanel.spinControlPenal3Revs();
         }
     }
 }
