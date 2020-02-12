@@ -10,15 +10,15 @@ public class JoystickControl {
     // Constants
     
     private Xbox driver = new Xbox(0);
-    //private Xbox gunner = new Xbox(1);
+    private Xbox gunner = new Xbox(1);
     private D_Swerve swerve = new D_Swerve();
     //private SwerveModule moduleAB = new SwerveModule(Parameters.ROTATION_MOTOR_A_ID,0, true, Parameters.TRACTION_MOTOR_A_ID, false, 0);
     
-    private ClimbingPrep climbPrep = new ClimbingPrep(Parameters.SOLENOID_Up_CHANNEL,Parameters.SOLENOID_Down_CHANNEL);
+    //private ClimbingPrep climbPrep = new ClimbingPrep(Parameters.SOLENOID_Up_CHANNEL,Parameters.SOLENOID_Down_CHANNEL);
     private ClimbingControl climbCont = new ClimbingControl(0, 0);
 
     private Intake succer = new Intake();
-    private Shooter cellShooter = new Shooter();
+    private Shooter cellShooter = new Shooter(Parameters.ShooterMotor_1_ID, Parameters.ShooterMoror_2_ID, Parameters.HopperMotor_ID, Parameters.FeederMotor_ID, Parameters.ShroudForwardChannel, Parameters.ShroudReverseChannel);
     private boolean rotationMode = false;
     private double angle = 0;
     double spin;
@@ -81,6 +81,7 @@ public class JoystickControl {
         // }
     //}
     //Shooter Periodic
+    //create a button that tells the shooter wheel to spin, when the shoot mode started, the shooter wheel continue to spin. 
     public void shooterPeriodic() {
 
     //     if (gunner.getRawButtonPressed(gunner.BUTTON_RB)) {
@@ -116,28 +117,29 @@ public class JoystickControl {
 
    
     public void ClimbingPeriodic(){
-        if (driver.getRawButtonPressed(driver.BUTTON_A)){
-            climbPrep.rotateArmUp();
-            climbCont.extendPole();
-        }
-        if (driver.getRawButtonPressed(driver.BUTTON_B)){
-            climbCont.retractPole();
-            climbPrep.rotateArmDown();
-        }
-        final double LTAxis = driver.getRawAxis(driver.AXIS_LT);
-        final double RTAxis = driver.getRawAxis(driver.AXIS_RT);
-        if (LTAxis >= 0.1){
-            climbCont.retractPoleLeft(LTAxis);
-        }
-        if (RTAxis >= 0.1){
-            climbCont.retractPoleRight(RTAxis);
-        }
+        // if (gunner.getRawButtonPressed(Xbox.DPAD_NORTH)){
+        //     climbPrep.rotateArmUp();
+        // }
+        // if (driver.getRawButtonPressed(driver.BUTTON_B)){
+        //     climbCont.retractPole();
+            
+        // }
+        // if (gunner.getRawButtonPressed(Xbox.DPAD_WEST)){
+        //    while (climbCont.extendPoles(ClimbingControl.MED_HEIGHT_COUNT));
+        // }
+        // if (gunner.getRawButtonPressed(Xbox.DPAD_EAST)){
+        //   while (climbCont.extendPoles(ClimbingControl.MAX_HEIGHT_COUNT));
+        // }
 
     }
-    /*public void colorPeriodic(){
-        if (driver.getRawButtonPressed(driver.BUTTON_X)){
-            ColorWheelPrep.rotateArmDown();
+    public void colorPeriodic(){
+        // if (gunner.getRawButtonPressed(Xbox.BUTTON_A)){
+        //     cwPrep.wheelDownCW();
 
-        }
-    }*/
+        // }
+        // if (gunner.getRawButtonPressed(Xbox.BUTTON_Y)){
+        //     cwPrep.wheelUpCW();
+
+        // }
+    }
 }
