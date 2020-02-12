@@ -96,7 +96,6 @@ public class Robot extends TimedRobot {
     subsystems.shooterPeriodic();
     subsystems.ClimbingPeriodic();
     subsystems.colorPeriodic();
-    
   }
   
 
