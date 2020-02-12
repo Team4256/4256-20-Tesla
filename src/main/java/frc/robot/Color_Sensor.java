@@ -6,50 +6,46 @@ import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorMatch;
 
+
+
 public class Color_Sensor {
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
 
   private ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
   final ColorMatch colorMatcher = new ColorMatch();
-  final Color myBlue = ColorMatch.makeColor(0.128174, 0.431152, 0.440674);
-  final Color myGreen = ColorMatch.makeColor(0.172363, 0.579834, 0.247803);
-  final Color myRed = ColorMatch.makeColor(0.513428, 0.351807, 0.134766);
-  final Color myYellow = ColorMatch.makeColor(0.320557, 0.556641, 0.122803);
-  final Color detectedColor = colorSensor.getColor();
-  final ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
   final int colorThreshold = 140;
-  final Color targetColor = myBlue;
-  int distance = colorSensor.getProximity();
+  
 
-  public void init() {
-    colorMatcher.addColorMatch(myBlue);
-    colorMatcher.addColorMatch(myGreen);
-    colorMatcher.addColorMatch(myRed);
-    colorMatcher.addColorMatch(myYellow);
+  public Color_Sensor(){
+    colorMatcher.addColorMatch(Parameters.myBlue);
+    colorMatcher.addColorMatch(Parameters.myGreen);
+    colorMatcher.addColorMatch(Parameters.myRed);
+    colorMatcher.addColorMatch(Parameters.myYellow);
   }
+    
+  
 
-  public void outputColor() {
-    String colorString;
+  public Color getCurrentColor() {
+    int distance = colorSensor.getProximity();
+    Color detectedColor = colorSensor.getColor();
+    ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
     {
       if (distance >= colorThreshold) {
 
-        if (match.color == myBlue) {
+        if (match.color == Parameters.myBlue || match.color == Parameters.myGreen || match.color == Parameters.myRed || match.color == Parameters.myYellow ) {
 
-          colorString = "Blue";
-        } else if (match.color == myGreen) {
-          colorString = "Green";
+          return match.color;
 
-        } else if (match.color == myRed) {
-          colorString = "Red";
-        } else if (match.color == myYellow) {
-          colorString = "Yellow";
         } else {
-          colorString = "Unknown";
+
+          return null;
         }
       } else {
 
-        colorString = "Color not found";
+        return null;
       }
     }
   }
+  
+  
 }
