@@ -5,12 +5,12 @@ import com.revrobotics.ColorMatch;
 public class Parameters{
 
     // Swerve Motors
-    public static final int ROTATION_MOTOR_A_ID = 46; //Front Left
+    public static final int ROTATION_MOTOR_A_ID = 46; //Front Left Should be 11 
     public static final int ROTATION_MOTOR_B_ID = 12; //Front Right
     public static final int ROTATION_MOTOR_C_ID = 13; // AFT Left
     public static final int ROTATION_MOTOR_D_ID = 14; // AFT Right
 
-    public static final int TRACTION_MOTOR_A_ID = 45; //Front Left
+    public static final int TRACTION_MOTOR_A_ID = 45; //Front Left should be 21
     public static final int TRACTION_MOTOR_B_ID = 22; //Front Right
     public static final int TRACTION_MOTOR_C_ID = 23; // AFT Left
     public static final int TRACTION_MOTOR_D_ID = 24; // AFT Right
@@ -28,19 +28,20 @@ public class Parameters{
     public static final Color myYellow = ColorMatch.makeColor(0.320557, 0.556641, 0.122803);
 
     //soloniod motor stuff in competition up will be 2 down will be 3
-    public static final int ClimberForwardChannel = 0; //solenoid port Extend 
-    public static final int ClimberReverseChannel = 1; //solenoid port Retract
+    public static final int CLIMBER_FORWARD_CHANNEL = 2; //solenoid port Extend 
+    public static final int CLIMBER_REVERSE_CHANNEL = 3; //solenoid port Retract
+    public static final double CLIMBING_SPEED_LOW = 0.3;
     //public static final int A = 69420; Nice ;)
 // add motors for arm going up and down
     public static final int R_CLIMBER_MOTOR_ID = 29; //Climber Motor right
     public static final int L_CLIMBER_MOTOR_ID = 28; //Climber Motor RIGHT
 
-    public static final int SuccMotor_ID = 33; //Intake Motor
-    public static final int ShooterMotor_1_ID = 0;
-    public static final int ShooterMoror_2_ID = 0;
-    public static final int HopperMotor_ID = 0;
-    public static final int FeederMotor_ID = 0;
-    public static final int ShroudForwardChannel = 2;//TODO get the real ID
-    public static final int ShroudReverseChannel = 3;//TODO get the real ID
+    public static final int SUCCMOTOR_ID = 16; //Intake Motor
+    public static final int SHOOTERMOTOR_L_ID = 26;
+    public static final int SHOOTERMOTOR_R_ID = 27;
+    public static final int STIRRERMOTOR_ID = 18;
+    public static final int FEEDERMOTOR_ID = 17;
+    public static final int SHROUD_DOWN_CHANNEL = 0;//TODO get the real ID
+    public static final int SHROUD_UP_CHANNEL = 1;//TODO get the real ID
 
 }

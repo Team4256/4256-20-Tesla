@@ -14,11 +14,12 @@ public class JoystickControl {
     private D_Swerve swerve = new D_Swerve();
     //private SwerveModule moduleAB = new SwerveModule(Parameters.ROTATION_MOTOR_A_ID,0, true, Parameters.TRACTION_MOTOR_A_ID, false, 0);
     
-    //private ClimbingPrep climbPrep = new ClimbingPrep(Parameters.SOLENOID_Up_CHANNEL,Parameters.SOLENOID_Down_CHANNEL);
+    private ClimbingPrep climbPrep = new ClimbingPrep(Parameters.CLIMBER_FORWARD_CHANNEL,Parameters.CLIMBER_REVERSE_CHANNEL);
     private ClimbingControl climbCont = new ClimbingControl(0, 0);
-
+    private ControlPanelSystem cwPrep = new ControlPanelSystem(Parameters.WHEEL_ARM_MOTOR_ID,Parameters.WHEEL_ARM_UP_SOLENOID_CHANNEL,Parameters.WHEEL_ARM_DOWN_SOLENOID_CHANNEL);
     private Intake succer = new Intake();
-    private Shooter cellShooter = new Shooter(Parameters.ShooterMotor_1_ID, Parameters.ShooterMoror_2_ID, Parameters.HopperMotor_ID, Parameters.FeederMotor_ID, Parameters.ShroudForwardChannel, Parameters.ShroudReverseChannel);
+    private Shooter cellShooter = new Shooter(Parameters.SHOOTERMOTOR_L_ID, Parameters.SHOOTERMOTOR_R_ID,Parameters.STIRRERMOTOR_ID, Parameters.FEEDERMOTOR_ID, Parameters.SHROUD_UP_CHANNEL,
+            Parameters.SHROUD_DOWN_CHANNEL);
     private boolean rotationMode = false;
     private double angle = 0;
     double spin;
@@ -60,7 +61,6 @@ public class JoystickControl {
             // SmartDashboard.putNumber("SwervesDirection", direction);
             // SmartDashboard.putNumber("Swervespeed", speed);
             }
-        }
         
 
 
@@ -96,8 +96,8 @@ public class JoystickControl {
     //         cellShooter.stop();
     //     }
     // }
-    // //Intake Periodic
-    // public void intakePeriodic() {
+    //Intake Periodic
+    //public void intakePeriodic() {
     //     if (gunner.getRawButtonPressed(gunner.BUTTON_LB)) {
 
     //         succer.succ();
@@ -120,35 +120,43 @@ public class JoystickControl {
 
    
     public void ClimbingPeriodic(){
-        // if (gunner.getRawButtonPressed(Xbox.DPAD_NORTH)){
-        //     climbPrep.rotateArmUp();
-        // }
-        // if (driver.getRawButtonPressed(driver.BUTTON_B)){
-        //     climbCont.retractPole();
+         if (gunner.getRawButtonPressed(Xbox.DPAD_NORTH)){
+             climbPrep.rotateArmUp();
+         }
+         if (gunner.getRawButtonPressed(Xbox.BUTTON_B)){
+             climbCont.retractPole();
             
-        // }
-        // if (gunner.getRawButtonPressed(Xbox.DPAD_WEST)){
-        //    while (climbCont.extendPoles(ClimbingControl.MED_HEIGHT_COUNT));
-        // }
-        // if (gunner.getRawButtonPressed(Xbox.DPAD_EAST)){
-        //   while (climbCont.extendPoles(ClimbingControl.MAX_HEIGHT_COUNT));
-        // }
-
+         }
+         if (gunner.getRawButtonPressed(Xbox.DPAD_WEST)){
+            while (climbCont.extendPoles(ClimbingControl.MED_HEIGHT_COUNT));
+         }
+         if (gunner.getRawButtonPressed(Xbox.DPAD_EAST)){
+           while (climbCont.extendPoles(ClimbingControl.MAX_HEIGHT_COUNT));
+         }
+        if(gunner.getAxisPress(Xbox.AXIS_RIGHT_Y,0.2)){
+            private double climbspeedR = gunner.getRawAxis(Xbox.AXIS_LEFT_Y);
+            climbCont.movePoleRight(climbspeedR);
+        }
+        if (gunner.getAxisPress(Xbox.AXIS_LEFT_Y,0.2)){
+            private double climbspeedL = gunner.getRawAxis(Xbox.AXIS_LEFT_Y);
+            climbCont.movePoleLeft(climbspeedL);
+        }
     }
     public void colorPeriodic(){
-        // if (gunner.getRawButtonPressed(Xbox.BUTTON_A)){
-        //     cwPrep.wheelDownCW();
+         if (gunner.getRawButtonPressed(Xbox.BUTTON_A)){
+             cwPrep.wheelDownCW();
 
-        // }
-        // if (gunner.getRawButtonPressed(Xbox.BUTTON_Y)){
-        //     cwPrep.wheelUpCW();
+         }
+         if (gunner.getRawButtonPressed(Xbox.BUTTON_Y)){
+             cwPrep.wheelUpCW();
 
         }
         if(gunner.getRawButtonPressed(Xbox.BUTTON_X)){
-            controlPanel.spinControlPanel3Revs();
+            ControlPanelSystem.spinControlPanel3Revs();
         }
         if( gunner.getRawButtonPressed(Xbox.BUTTON_B)){
-            controlPanel.spinToTheTargetColor();
+            ControlPanelSystem.spinToTheTargetColor();
         }
     }
+}
 }

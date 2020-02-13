@@ -13,7 +13,6 @@ import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 public class ClimbingControl {
     //Will need to set speed to something else 
     private double speed = 0.5;
-    public double climbingSpeed;
    
     public static double MED_HEIGHT_COUNT = 2000;
     public static double MAX_HEIGHT_COUNT = 4200;//NICE
@@ -52,20 +51,11 @@ public class ClimbingControl {
         climbMotorRight.set(-speed);
         climbMotorLeft.set(-speed);
     }
-    public void retractPoleRight(double climbingSpeed){
-        this.climbingSpeed = climbingSpeed;
-        climbMotorRight.set(-climbingSpeed);
+    public void movePoleRight(int speed){
+        climbMotorRight.set(-speed);
     }
-    public void retractPoleLeft(double climbingSpeed){
-        this.climbingSpeed = climbingSpeed;
-        climbMotorLeft.set(-climbingSpeed);
+    public void movePoleLeft(int speed){
+        climbMotorLeft.set(-speed);
     }
    // add extracts (thumsticks)
-    
-    public void extendPoleMed(){
-        extendPoles(MED_HEIGHT_COUNT);
-    }
-    public void extendPoleMAX(){
-        extendPoles(MAX_HEIGHT_COUNT);
-}
 }
