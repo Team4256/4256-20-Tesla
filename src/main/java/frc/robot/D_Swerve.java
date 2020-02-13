@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public final class D_Swerve implements Drivetrain {
 
 	public static enum SwerveMode {
@@ -14,7 +16,7 @@ public final class D_Swerve implements Drivetrain {
 								PIVOT_TO_AFT = Math.hypot(PIVOT_TO_AFT_X, PIVOT_TO_AFT_Y);
 
 	private final SwerveModule moduleA, moduleB, moduleC, moduleD;
-	private final SwerveModule[] modules;
+	public final SwerveModule[] modules;
 
 	private double moduleD_maxSpeed = 70.0;//always put max slightly higher than max observed
 	private double moduleD_previousAngle = 0.0;
@@ -116,11 +118,15 @@ public final class D_Swerve implements Drivetrain {
 
 		final double[] comps_desired = computeComponents(strafe, forward, spin);
 		
+		SmartDashboard.putNumber("compsDesired0", comps_desired[0]);
+
+		SmartDashboard.putNumber("compsDesired1", comps_desired[1]);
 		final boolean bad = speed == 0.0 && spin == 0.0;
 		
 		//{CONTROL MOTORS, computing outputs as needed}
 		if (!bad) {
 			final double[] angles_final = computeAngles(comps_desired);
+			SmartDashboard.putNumber("anglesFinal", angles_final[0]);
 			for (int i = 0; i < 1; i++) modules[i].swivelTo(angles_final[i]);//control rotation if driver input
 		}
 

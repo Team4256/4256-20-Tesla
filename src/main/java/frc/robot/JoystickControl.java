@@ -48,14 +48,17 @@ public class JoystickControl {
             //moduleAB.getRotationMotor().SetAngle(driver.getCurrentAngle(Xbox.STICK_RIGHT, true));
             //moduleAB.getTractionMotor().set(driver.getCurrentRadius(Xbox.STICK_LEFT, true));
             
-            spin *= spin * Math.signum(spin);
-            swerve.setSpeed(speed);
-            swerve.setSpin(spin);
-            swerve.travelTowards(direction);
-            swerve.completeLoopUpdate();
-            SmartDashboard.putNumber("Swervespin", spin);
-            SmartDashboard.putNumber("SwervesDirection", direction);
-            SmartDashboard.putNumber("Swervespeed", speed);
+            swerve.modules[0].getRotationMotor().SetAngle(driver.getCurrentAngle(Xbox.STICK_RIGHT, true));
+            swerve.modules[0].getTractionMotor().set(driver.getCurrentRadius(Xbox.STICK_LEFT, true));
+
+            // spin *= spin * Math.signum(spin);
+            // swerve.setSpeed(speed);
+            // swerve.setSpin(spin);
+            // swerve.travelTowards(direction);
+            // swerve.completeLoopUpdate();
+            // SmartDashboard.putNumber("Swervespin", spin);
+            // SmartDashboard.putNumber("SwervesDirection", direction);
+            // SmartDashboard.putNumber("Swervespeed", speed);
             }
         }
         
