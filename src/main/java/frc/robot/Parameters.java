@@ -5,12 +5,12 @@ import com.revrobotics.ColorMatch;
 public class Parameters{
 
     // Swerve Motors
-    public static final int ROTATION_MOTOR_A_ID = 50; //Front Left
+    public static final int ROTATION_MOTOR_A_ID = 46; //Front Left
     public static final int ROTATION_MOTOR_B_ID = 12; //Front Right
     public static final int ROTATION_MOTOR_C_ID = 13; // AFT Left
     public static final int ROTATION_MOTOR_D_ID = 14; // AFT Right
 
-    public static final int TRACTION_MOTOR_A_ID = 51; //Front Left
+    public static final int TRACTION_MOTOR_A_ID = 45; //Front Left
     public static final int TRACTION_MOTOR_B_ID = 22; //Front Right
     public static final int TRACTION_MOTOR_C_ID = 23; // AFT Left
     public static final int TRACTION_MOTOR_D_ID = 24; // AFT Right
@@ -18,6 +18,8 @@ public class Parameters{
     public static final int WHEEL_ARM_MOTOR_ID = 15; // Main
     public static final int WHEEL_ARM_UP_SOLENOID_CHANNEL = 4; //EXTEND
     public static final int WHEEL_ARM_DOWN_SOLENOID_CHANNEL = 5; // RETRACT
+    public static final double COLOR_MOTOR_SPEED = 0.5;
+    public static final int TARGET_WEDGE_COUNT = 3*8+4; // 3 REVOLUTIONS, 8 WEDGES PER REVOLUTION, + 4 EXTRA WEDGES
 
     //Color Sensor
     public static final Color myBlue = ColorMatch.makeColor(0.128174, 0.431152, 0.440674);

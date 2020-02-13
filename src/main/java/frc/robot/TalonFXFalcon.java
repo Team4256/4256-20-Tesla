@@ -174,7 +174,6 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         
         
         double percentSpeed = anglePIDController.calculate(encoderPosition, targetAngle);
-        SmartDashboard.putNumber("Percent Output", percentSpeed);
         percentSpeed = anglePIDController.getP() * error;
         if (Math.abs(percentSpeed) > .5) {
             percentSpeed = Math.signum(percentSpeed) * .5;
