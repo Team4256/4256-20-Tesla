@@ -14,8 +14,7 @@ public class ClimbingControl {
     //Will need to set speed to something else 
     private double speed = 0.5;
    
-    public static double MED_HEIGHT_COUNT = 2000;
-    public static double MAX_HEIGHT_COUNT = 4200;//NICE
+
     
   private WPI_TalonFX climbMotorRight;
     private WPI_TalonFX climbMotorLeft;

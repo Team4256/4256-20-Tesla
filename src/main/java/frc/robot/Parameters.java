@@ -33,7 +33,7 @@ public class Parameters{
     public static final double CLIMBING_SPEED_LOW = 0.3;
     //public static final int A = 69420; Nice ;)
 // add motors for arm going up and down
-    public static final int R_CLIMBER_MOTOR_ID = 29; //Climber Motor right
+    public static final int R_CLIMBER_MOTOR_ID = 32; //Climber Motor right
     public static final int L_CLIMBER_MOTOR_ID = 28; //Climber Motor RIGHT
 
     public static final int SUCCMOTOR_ID = 16; //Intake Motor
