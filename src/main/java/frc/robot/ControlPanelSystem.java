@@ -14,8 +14,18 @@ public class ControlPanelSystem {
     private boolean hasStartedSpinning = false;
     String gameData; 
     private Color_Sensor colorSensor = new Color_Sensor();
-    Color currentColor = colorSensor.getCurrentColor();
+    private ControlPanelSystemStates currentControlPanelSystemStates = ControlPanelSystemStates.STOP;
 
+
+    public enum ControlPanelSystemStates{
+      ARMUP,
+      ARMDOWN,
+      SPINREVS,
+      SPINTOACOLOR,
+      STOP;
+
+    }
+    
     
   
 
@@ -26,9 +36,11 @@ public class ControlPanelSystem {
         
     public void wheelUpCW(){
         wheelArmSolenoid.set(DoubleSolenoid.Value.kReverse);
+        currentControlPanelSystemStates = ControlPanelSystemStates.ARMUP;
         }
     public void wheelDownCW() {
         wheelArmSolenoid.set(DoubleSolenoid.Value.kForward);
+        currentControlPanelSystemStates = ControlPanelSystemStates.ARMDOWN;
         }
 
 
@@ -43,12 +55,13 @@ public class ControlPanelSystem {
 
 
    private void checkColorChanged(){
-     
+    Color currentColor = colorSensor.getCurrentColor();
      if(currentColor == null) return;
      if(currentColor != previousColor){
        ++colorWedgeCount;
        previousColor = currentColor;
-     }
+     }  
+     
    }
 
 
@@ -58,11 +71,14 @@ public class ControlPanelSystem {
       checkColorChanged();
       if(colorWedgeCount< Parameters.TARGET_WEDGE_COUNT){
         colorMotor.set(Parameters.COLOR_MOTOR_SPEED);
+        currentControlPanelSystemStates = ControlPanelSystemStates.SPINREVS;
       }
       else{
         colorMotor.set(0.0);
         hasStartedSpinning = false;
+        currentControlPanelSystemStates = ControlPanelSystemStates.STOP;
       }
+      
     }
 
 
@@ -97,12 +113,17 @@ public class ControlPanelSystem {
 
 
     public void spinToTheTargetColor(){
-      if(currentColor != targetColor){
+      Color currentColor = colorSensor.getCurrentColor();
+      getTargetColor();
+      if(targetColor != null && currentColor != targetColor){
         colorMotor.set(Parameters.COLOR_MOTOR_SPEED);
+        currentControlPanelSystemStates = ControlPanelSystemStates.SPINTOACOLOR;
       }
       else{
-         colorMotor.set(0.0);        
+         colorMotor.set(0.0);
+         currentControlPanelSystemStates = ControlPanelSystemStates.STOP;         
       }
+      
 
     }
     
