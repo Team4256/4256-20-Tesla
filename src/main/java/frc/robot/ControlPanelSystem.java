@@ -29,9 +29,9 @@ public class ControlPanelSystem {
     
   
 
-    public ControlPanelSystem() {
-        wheelArmSolenoid = new DoubleSolenoid(Parameters.WHEEL_ARM_UP_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_DOWN_SOLENOID_CHANNEL); 
-        colorMotor = new WPI_TalonFX(Parameters.WHEEL_ARM_MOTOR_ID);
+    public ControlPanelSystem(int upChannel, int downChannel,int colorMotorID) {
+        wheelArmSolenoid = new DoubleSolenoid(upChannel, downChannel); 
+        colorMotor = new WPI_TalonFX(colorMotorID);
     }
         
     public void wheelUpCW(){

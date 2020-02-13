@@ -59,7 +59,13 @@ public class ClimbingControl {
     public void retractPoleLeft(double climbingSpeed){
         this.climbingSpeed = climbingSpeed;
         climbMotorLeft.set(-climbingSpeed);
-   // add extracts (thumsticks)
-  
     }
+   // add extracts (thumsticks)
+    
+    public void extendPoleMed(){
+        extendPoles(MED_HEIGHT_COUNT);
+    }
+    public void extendPoleMAX(){
+        extendPoles(MAX_HEIGHT_COUNT);
+}
 }
