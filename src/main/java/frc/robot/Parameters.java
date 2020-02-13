@@ -30,7 +30,7 @@ public class Parameters{
     public static final int ClimberReverseChannel = 1; //solenoid port Retract
     //public static final int A = 69420; Nice ;)
 // add motors for arm going up and down
-    public static final int R_CLIMBER_MOTOR_ID = 29; //Climber Motor right
+    public static final int R_CLIMBER_MOTOR_ID = 32; //Climber Motor right
     public static final int L_CLIMBER_MOTOR_ID = 28; //Climber Motor RIGHT
 
     public static final int SuccMotor_ID = 33; //Intake Motor
@@ -40,5 +40,8 @@ public class Parameters{
     public static final int FeederMotor_ID = 0;
     public static final int ShroudForwardChannel = 2;//TODO get the real ID
     public static final int ShroudReverseChannel = 3;//TODO get the real ID
-
+    //need actual encoder values, from engineering team
+    public static double MED_HEIGHT_COUNT = 2000;
+    public static double MAX_HEIGHT_COUNT = 4200;//NICE
+    public static double ClimbingSpeed = 0.3;
 }

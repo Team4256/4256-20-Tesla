@@ -129,12 +129,16 @@ public class JoystickControl {
             
         }
         if (gunner.getRawButtonPressed(Xbox.DPAD_WEST)){
-           while (climbCont.extendPoles(ClimbingControl.MED_HEIGHT_COUNT));
+           while (climbCont.extendPoles(Parameters.MED_HEIGHT_COUNT));
         }
         if (gunner.getRawButtonPressed(Xbox.DPAD_EAST)){
-          while (climbCont.extendPoles(ClimbingControl.MAX_HEIGHT_COUNT));
+          while (climbCont.extendPoles(Parameters.MAX_HEIGHT_COUNT));
         }
-
+        if(gunner.getAxisActivity(Xbox.AXIS_LEFT_Y)){
+        }
+        if (gunner.getAxisActivity(Xbox.AXIS_RIGHT_Y)){
+            climbCont.retractPoleRight(Parameters.ClimbingSpeed);
+        }
     }
     public void colorPeriodic(){
         if (gunner.getRawButtonPressed(Xbox.BUTTON_A)){

@@ -15,8 +15,7 @@ public class ClimbingControl {
     private double speed = 0.5;
     public double climbingSpeed;
    
-    public static double MED_HEIGHT_COUNT = 2000;
-    public static double MAX_HEIGHT_COUNT = 4200;//NICE
+
     
   private WPI_TalonFX climbMotorRight;
     private WPI_TalonFX climbMotorLeft;
@@ -61,11 +60,4 @@ public class ClimbingControl {
         climbMotorLeft.set(-climbingSpeed);
     }
    // add extracts (thumsticks)
-    
-    public void extendPoleMed(){
-        extendPoles(MED_HEIGHT_COUNT);
-    }
-    public void extendPoleMAX(){
-        extendPoles(MAX_HEIGHT_COUNT);
-}
 }
