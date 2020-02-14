@@ -8,48 +8,77 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;				
+import com.fasterxml.jackson.databind.deser.impl.CreatorCandidate.Param;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
+import edu.wpi.first.wpilibj.DoubleSolenoid;				
 
 public class ClimbingControl {
-    //Will need to set speed to something else 
-    private double speed = 0.5;
+    
     public double climbingSpeed;
-   
+    private WPI_TalonFX climbMotorRight;
+    private WPI_TalonFX climbMotorLeft;
+    private DoubleSolenoid armRotationSolenoid;
+    
+    public enum ClimbingStates{
+        ROTATEARMSUP,
+        ROTATEARMSDOWN,
+        EXTENDPOLES,
+        CLIMB,
+        STOP;
+    }
+    public ClimbingStates currentStates = ClimbingStates.STOP;
 
     
-  private WPI_TalonFX climbMotorRight;
-    private WPI_TalonFX climbMotorLeft;
     //need to add device numbers based on excel sheet
     public ClimbingControl( int RMotorID, int LMotorID){
         climbMotorRight = new WPI_TalonFX(RMotorID); 
         climbMotorLeft = new WPI_TalonFX(LMotorID);
+        climbMotorLeft.setNeutralMode(NeutralMode.Brake);
+        climbMotorRight.setNeutralMode(NeutralMode.Brake);
+        armRotationSolenoid = new DoubleSolenoid(Parameters.ClimberForwardChannel, Parameters.ClimberReverseChannel);
         climbMotorRight.getSensorCollection().setIntegratedSensorPosition(0,0);
 
-    }
-    public void extendPole(){
-        climbMotorRight.set(speed);
-        climbMotorLeft.set(speed);
-    }
-    public boolean extendPoles(double height)
-    {
-        if  (climbMotorRight.getSensorCollection().getIntegratedSensorPosition() >= height)
-        { 
-            climbMotorRight.set(0);
-            climbMotorLeft.set(0);
-            return false;
 
-        } 
+
+    }
+
+
+
+    public void rotateArmUp(){
+        armRotationSolenoid.set(DoubleSolenoid.Value.kReverse);
+    } 
+
+
+
+    public void rotateArmDown() {
+        armRotationSolenoid.set(DoubleSolenoid.Value.kForward);
+    }
+
     
+    
+    public void extendPoles(double height)
+    {
+        if  (climbMotorRight.getSensorCollection().getIntegratedSensorPosition() < height)
+        { 
+            climbMotorRight.set(Parameters.CLIMBER_MOTOR_SPEED);
+            climbMotorLeft.set(Parameters.CLIMBER_MOTOR_SPEED);
+        } 
         else 
         {
-          climbMotorRight.set(.3);
-          climbMotorLeft.set(.3);
-          return true;
+          climbMotorRight.set(0.0);
+          climbMotorLeft.set(0.0);
+         
         }
-    }   
+    }  
+    
+    
+
+
     public void retractPole(){
-        climbMotorRight.set(-speed);
-        climbMotorLeft.set(-speed);
+        
+        climbMotorRight.set();
+        climbMotorLeft.set();
     }
     public void retractPoleRight(double climbingSpeed){
         this.climbingSpeed = climbingSpeed;
