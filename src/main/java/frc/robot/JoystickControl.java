@@ -60,7 +60,6 @@ public class JoystickControl {
             // SmartDashboard.putNumber("SwervesDirection", direction);
             // SmartDashboard.putNumber("Swervespeed", speed);
             }
-        }
         
 
 
@@ -96,8 +95,8 @@ public class JoystickControl {
     //         cellShooter.stop();
     //     }
     // }
-    // //Intake Periodic
-    // public void intakePeriodic() {
+    //Intake Periodic
+    //public void intakePeriodic() {
     //     if (gunner.getRawButtonPressed(gunner.BUTTON_LB)) {
 
     //         succer.succ();

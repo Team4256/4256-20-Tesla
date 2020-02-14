@@ -80,13 +80,11 @@ public class ClimbingControl {
         climbMotorRight.set();
         climbMotorLeft.set();
     }
-    public void retractPoleRight(double climbingSpeed){
-        this.climbingSpeed = climbingSpeed;
-        climbMotorRight.set(-climbingSpeed);
+    public void movePoleRight(int speed){
+        climbMotorRight.set(-speed);
     }
-    public void retractPoleLeft(double climbingSpeed){
-        this.climbingSpeed = climbingSpeed;
-        climbMotorLeft.set(-climbingSpeed);
+    public void movePoleLeft(int speed){
+        climbMotorLeft.set(-speed);
     }
    // add extracts (thumsticks)
 }
