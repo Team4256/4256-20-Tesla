@@ -6,25 +6,66 @@ import edu.wpi.first.wpilibj.DriverStation;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class ControlPanelSystem {
-    private WPI_TalonFX colorMotor;
-    private DoubleSolenoid wheelArmSolenoid;
-    private Color previousColor;
-    private Color targetColor;
-    private int colorWedgeCount = 0;
-    private boolean hasStartedSpinning = false;
-    String gameData; 
-    private Color_Sensor colorSensor = new Color_Sensor();
-    private ControlPanelSystemStates currentControlPanelSystemStates = ControlPanelSystemStates.STOP;
+  public enum ControlPanelSystemStates{
+    ARMDOWN,
+    ARMUP,
+    SPIN3REVS,
+    SPINTOACOLOR,
+    STOP;
+
+  }
+  private ControlPanelSystemStates currentState = ControlPanelSystemStates.STOP;
+  private WPI_TalonFX colorMotor;
+  private DoubleSolenoid wheelArmSolenoid;
+  private Color previousColor;
+  private Color targetColor;
+  private int colorWedgeCount = 0;
+  private boolean hasStartedSpinning = false;
+  String gameData; 
+  private Color_Sensor colorSensor = new Color_Sensor();
 
 
-    public enum ControlPanelSystemStates{
-      ARMUP,
-      ARMDOWN,
-      SPINREVS,
-      SPINTOACOLOR,
-      STOP;
+  public void ArmDown(){
+    currentState = ControlPanelSystemStates.ARMDOWN;
+  }
+  public void ArmUp(){
+    currentState = ControlPanelSystemStates.ARMUP;
+  }
+  public void spin3Revs(){
+    currentState = ControlPanelSystemStates.SPIN3REVS;
+  }
+  public void spinToAColor(){
+    currentState = ControlPanelSystemStates.SPINTOACOLOR;
+  }
+  public void stop(){
+    currentState = ControlPanelSystemStates.STOP;
+  }
+
+
+
+  public void periodic(){
+    switch(currentState){
+      case ARMDOWN:
+        moveArmSolenoidDown();
+        break;
+      case ARMUP:
+        moveArmSolenoidUp();
+        break;
+      case SPIN3REVS:
+        spinControlPanel3Revs();
+        break;
+      case SPINTOACOLOR:
+        spinToTheTargetColor();
+        break;
+      case STOP:
+
+        break;
+
 
     }
+
+  }
+    
     
     
   
@@ -34,13 +75,13 @@ public class ControlPanelSystem {
         colorMotor = new WPI_TalonFX(colorMotorID);
     }
         
-    public void wheelUpCW(){
+    public void moveArmSolenoidUp(){
         wheelArmSolenoid.set(DoubleSolenoid.Value.kReverse);
-        currentControlPanelSystemStates = ControlPanelSystemStates.ARMUP;
+        
         }
-    public void wheelDownCW() {
+    public void moveArmSolenoidDown() {
         wheelArmSolenoid.set(DoubleSolenoid.Value.kForward);
-        currentControlPanelSystemStates = ControlPanelSystemStates.ARMDOWN;
+      
         }
 
 
@@ -71,12 +112,13 @@ public class ControlPanelSystem {
       checkColorChanged();
       if(colorWedgeCount< Parameters.TARGET_WEDGE_COUNT){
         colorMotor.set(Parameters.COLOR_MOTOR_SPEED);
-        currentControlPanelSystemStates = ControlPanelSystemStates.SPINREVS;
+        
       }
       else{
         colorMotor.set(0.0);
         hasStartedSpinning = false;
-        currentControlPanelSystemStates = ControlPanelSystemStates.STOP;
+        currentState = ControlPanelSystemStates.STOP;
+        
       }
       
     }
@@ -117,16 +159,16 @@ public class ControlPanelSystem {
       getTargetColor();
       if(targetColor != null && currentColor != targetColor){
         colorMotor.set(Parameters.COLOR_MOTOR_SPEED);
-        currentControlPanelSystemStates = ControlPanelSystemStates.SPINTOACOLOR;
+       
       }
       else{
          colorMotor.set(0.0);
-         currentControlPanelSystemStates = ControlPanelSystemStates.STOP;         
+         currentState = ControlPanelSystemStates.STOP;
+                 
       }
       
 
     }
-    
     
 }
 
