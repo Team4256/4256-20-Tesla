@@ -36,15 +36,31 @@ public class ClimbingControl {
         climbMotorLeft = new WPI_TalonFX(LMotorID);
         climbMotorLeft.setNeutralMode(NeutralMode.Brake);
         climbMotorRight.setNeutralMode(NeutralMode.Brake);
-        armRotationSolenoid = new DoubleSolenoid(Parameters.ClimberForwardChannel, Parameters.ClimberReverseChannel);
+        armRotationSolenoid = new DoubleSolenoid(Parameters.CLIMBER_FORWARD_CHANNEL, Parameters.CLIMBER_REVERSE_CHANNEL);
         climbMotorRight.getSensorCollection().setIntegratedSensorPosition(0,0);
 
 
 
     }
-
-
-
+    public void periodic(){
+        switch(currentStates){
+          case ROTATEARMSUP:
+            rotateArmUp();
+            break;
+          case ROTATEARMSDOWN:
+            rotateArmDown();
+            break;
+          case EXTENDPOLES:
+            ;
+            break;
+          case CLIMB:
+            ;
+            break;
+          case STOP:
+    
+            break;
+        }
+    }
     public void rotateArmUp(){
         armRotationSolenoid.set(DoubleSolenoid.Value.kReverse);
     } 
@@ -61,8 +77,8 @@ public class ClimbingControl {
     {
         if  (climbMotorRight.getSensorCollection().getIntegratedSensorPosition() < height)
         { 
-            climbMotorRight.set(Parameters.CLIMBER_MOTOR_SPEED);
-            climbMotorLeft.set(Parameters.CLIMBER_MOTOR_SPEED);
+            climbMotorRight.set(Parameters.CLIMBING_SPEED_LOW);
+            climbMotorLeft.set(Parameters.CLIMBING_SPEED_LOW);
         } 
         else 
         {
@@ -77,8 +93,8 @@ public class ClimbingControl {
 
     public void retractPole(){
         
-        climbMotorRight.set();
-        climbMotorLeft.set();
+        climbMotorRight.set(Parameters.CLIMBING_SPEED_LOW);
+        climbMotorLeft.set(Parameters.CLIMBING_SPEED_LOW);
     }
     public void movePoleRight(int speed){
         climbMotorRight.set(-speed);

@@ -10,7 +10,7 @@ public class Intake {
     private final TalonSRX succMotor;
 
     public Intake() {
-        succMotor = new TalonSRX(Parameters.SuccMotor_ID);
+        succMotor = new TalonSRX(Parameters.SUCCMOTOR_ID);
     }
 
     public void succ() {

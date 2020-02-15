@@ -17,7 +17,8 @@ public class JoystickControl {
     private ClimbingControl climber = new ClimbingControl(0, 0);
 
     private Intake succer = new Intake();
-    private Shooter cellShooter = new Shooter(Parameters.ShooterMotor_1_ID, Parameters.ShooterMoror_2_ID, Parameters.HopperMotor_ID, Parameters.FeederMotor_ID, Parameters.ShroudForwardChannel, Parameters.ShroudReverseChannel);
+    private Aligner aligner = new Aligner();
+    private Shooter cellShooter = new Shooter(aligner, Parameters.SHOOTERMOTOR_L_ID, Parameters.SHOOTERMOTOR_R_ID, Parameters.STIRRERMOTOR_ID, Parameters.FEEDERMOTOR_ID, Parameters.SHROUD_UP_CHANNEL, Parameters.SHROUD_DOWN_CHANNEL);
     private ControlPanelSystem controlPanel = new ControlPanelSystem(Parameters.WHEEL_ARM_UP_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_DOWN_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_MOTOR_ID);
     private boolean rotationMode = false;
     private double angle = 0;
@@ -50,6 +51,7 @@ public class JoystickControl {
             
             swerve.modules[0].getRotationMotor().SetAngle(driver.getCurrentAngle(Xbox.STICK_RIGHT, true));
             swerve.modules[0].getTractionMotor().set(driver.getCurrentRadius(Xbox.STICK_LEFT, true));
+        }
 
             // spin *= spin * Math.signum(spin);
             // swerve.setSpeed(speed);
@@ -86,35 +88,41 @@ public class JoystickControl {
     //create a button that tells the shooter wheel to spin, when the shoot mode started, the shooter wheel continue to spin. 
     public void shooterPeriodic() {
 
-    //     if (gunner.getRawButtonPressed(gunner.BUTTON_RB)) {
+        if (driver.getRawButtonPressed(Xbox.AXIS_RT)) {
+        
+             cellShooter.ShootAlign();
 
-    //         cellShooter.shoot();
-
-    //     }
-    //     if (gunner.getRawButtonReleased(gunner.BUTTON_RB)) {
-    //         cellShooter.stop();
-    //     }
-    // }
+         }
+         if (driver.getRawButtonReleased(Xbox.BUTTON_RB)) {
+             cellShooter.ShootNoAlign();
+         }
+        if (gunner.getRawButtonPressed(Xbox.AXIS_LT)){
+            cellShooter.SpinShooterPrep();
+        }
+        if (gunner.getRawButtonPressed(Xbox.AXIS_RT)){
+            cellShooter.ShooterRange();
+        }
+     }
     //Intake Periodic
-    //public void intakePeriodic() {
-    //     if (gunner.getRawButtonPressed(gunner.BUTTON_LB)) {
+    public void intakePeriodic() {
+         if (gunner.getRawButtonPressed(Xbox.BUTTON_LB)) {
 
-    //         succer.succ();
+             succer.succ();
             
-    //     }
-    //     if (gunner.getRawButtonReleased(gunner.BUTTON_LB)) {
-    //         succer.stop();
-/*
-        if (gunner.getRawButtonPressed(gunner.BUTTON_RB)) {
+         }
+         if (gunner.getRawButtonReleased(Xbox.BUTTON_LB)) {
+             succer.stop();
+        }
+        if (gunner.getRawButtonPressed(Xbox.BUTTON_RB)) {
 
             succer.spew();
             
         }
-        if (gunner.getRawButtonReleased(gunner.BUTTON_RB)) {
+        if (gunner.getRawButtonReleased(Xbox.BUTTON_RB)) {
             succer.stop();
-*/
+
         }
-    
+    }
     //probably different buttons for both Control and Prep
 
    
@@ -122,7 +130,7 @@ public class JoystickControl {
         if (gunner.getRawButtonPressed(Xbox.DPAD_NORTH)){
             climber.rotateArmUp();
         }
-        if (driver.getRawButtonPressed(driver.BUTTON_B)){
+        if (driver.getRawButtonPressed(Xbox.BUTTON_B)){
             climber.retractPole();
         }   
         if (gunner.getRawButtonPressed(Xbox.DPAD_WEST)){
@@ -156,7 +164,6 @@ public class JoystickControl {
             controlPanel.spinToAColor();
         }
         controlPanel.periodic();
-        
-        }
+        }   
         
     }
