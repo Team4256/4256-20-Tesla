@@ -161,7 +161,7 @@ public void spinShooterMotors(double speed){
     }
     public double distanceSpeed(){
       double distance = shooterAligner.DistanceToTarget();
-      if (distance >= Parameters.DISTANCE_LOW_MIN && distance <= Parameters.DISTANCE_LOW_MAX){
+      if (distance >= Parameters.DISTANCE_LOW_MIN && distance <= Parameters.DISTANCE_LOW_MAX) {
         return Parameters.MOTORSPEEDLOW;
       }
       else if(distance >= Parameters.DISTANCE_MED_MIN && distance <= Parameters.DISTANCE_MED_MAX){
