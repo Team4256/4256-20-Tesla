@@ -13,14 +13,14 @@ public class JoystickControl {
     private Xbox driver = new Xbox(0);
     private Xbox gunner = new Xbox(1);
     private D_Swerve swerve = new D_Swerve();
-    private SwerveModule moduleAB = new SwerveModule(Parameters.ROTATION_MOTOR_A_ID,0, true, Parameters.TRACTION_MOTOR_A_ID, false, 0);
+    //private SwerveModule moduleAB = new SwerveModule(Parameters.ROTATION_MOTOR_A_ID,0, true, Parameters.TRACTION_MOTOR_A_ID, false, 0);
     
     private ClimbingControl climber = new ClimbingControl(0, 0);
 
     private Intake succer = new Intake();
     private Aligner aligner = new Aligner();
     private Shooter cellShooter = new Shooter(aligner, Parameters.SHOOTERMOTOR_L_ID, Parameters.SHOOTERMOTOR_R_ID, Parameters.STIRRERMOTOR_ID, Parameters.FEEDERMOTOR_ID, Parameters.SHROUD_UP_CHANNEL, Parameters.SHROUD_DOWN_CHANNEL);
-    private ControlPanelSystem controlPanel = new ControlPanelSystem(Parameters.WHEEL_ARM_UP_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_DOWN_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_MOTOR_ID);
+   // private ControlPanelSystem controlPanel = new ControlPanelSystem(Parameters.WHEEL_ARM_UP_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_DOWN_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_MOTOR_ID);
     private boolean rotationMode = false;
     private double angle = 0;
     double spin;
@@ -34,15 +34,15 @@ public class JoystickControl {
         direction = driver.getCurrentAngle(Xbox.STICK_LEFT, true);
         spin = 0.5 * driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);// normal mode
         
-            if (driver.getRawButtonPressed(driver.BUTTON_A)) {
-            moduleAB.getTractionMotor().set(.3);
-            moduleAB.getRotationMotor().SetAngle(90);
-        }
-        if (driver.getRawButtonPressed(driver.BUTTON_X)) {
-            rotationMode = true;
+        //     if (driver.getRawButtonPressed(driver.BUTTON_A)) {
+        //     moduleAB.getTractionMotor().set(.3);
+        //     moduleAB.getRotationMotor().SetAngle(90);
+        // }
+        // if (driver.getRawButtonPressed(driver.BUTTON_X)) {
+        //     rotationMode = true;
 
-            angle = 360;
-        }
+        //     angle = 360;
+        // }
         if (true) {
             rotationMode = true;
             
@@ -153,21 +153,20 @@ public class JoystickControl {
 
 
 
-    public void colorPeriodic(){
-        if (gunner.getRawButtonPressed(Xbox.BUTTON_Y)){
-            controlPanel.ArmDown();
-        }
+    // public void colorPeriodic(){
+    //     if (gunner.getRawButtonPressed(Xbox.BUTTON_Y)){
+    //         controlPanel.ArmDown();
+    //     }
 
-        if (gunner.getRawButtonPressed(Xbox.BUTTON_A)){
-            controlPanel.ArmUp();
+    //     if (gunner.getRawButtonPressed(Xbox.BUTTON_A)){
+    //         controlPanel.ArmUp();
+    //     }
+    //     if(gunner.getRawButtonPressed(Xbox.BUTTON_X)){
+    //         controlPanel.spin3Revs();
+    //     }
+    //     if( gunner.getRawButtonPressed(Xbox.BUTTON_B)){
+    //         controlPanel.spinToAColor();
+    //     }
+    //     controlPanel.periodic();
+    //     }   
         }
-        if(gunner.getRawButtonPressed(Xbox.BUTTON_X)){
-            controlPanel.spin3Revs();
-        }
-        if( gunner.getRawButtonPressed(Xbox.BUTTON_B)){
-            controlPanel.spinToAColor();
-        }
-        controlPanel.periodic();
-        }   
-        
-    }

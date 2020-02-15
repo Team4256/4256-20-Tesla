@@ -32,7 +32,7 @@ public final class D_Swerve implements Drivetrain {
 		moduleC = new SwerveModule(Parameters.ROTATION_MOTOR_C_ID,2, true, Parameters.TRACTION_MOTOR_C_ID, false, 0);
 		moduleD = new SwerveModule(Parameters.ROTATION_MOTOR_D_ID,3, true, Parameters.TRACTION_MOTOR_D_ID, false, 0);
 		
-	this.modules = new SwerveModule[] {moduleA /** , moduleB, moduleC, moduleD*/};
+	this.modules = new SwerveModule[] {moduleA, moduleB, moduleC, moduleD};
 	}	
 	
 	/**
@@ -86,13 +86,13 @@ public final class D_Swerve implements Drivetrain {
 		
 		//{CONTROL MOTORS, using above angles and computing traction outputs as needed}
 		if (!bad) {
-			for (int i = 0; i < 1; i++) modules[i].swivelTo(angles_final[i]);//control rotation if good
+			for (int i = 0; i < 4; i++) modules[i].swivelTo(angles_final[i]);//control rotation if good
 			moduleD_previousAngle = angles_final[3];
 		}
 		
 		if (!bad && isThere(6.0)) {
 			final double[] speeds_final = computeSpeeds(comps_desired);
-			for (int i = 0; i < 1; i++) modules[i].set(speeds_final[i]);//control traction if good and there
+			for (int i = 0; i < 4; i++) modules[i].set(speeds_final[i]);//control traction if good and there
 		}else stop();//otherwise, stop traction
 		
 		if (spin < 0.07) moduleD.checkTractionEncoder();
@@ -128,13 +128,13 @@ public final class D_Swerve implements Drivetrain {
 		if (!bad) {
 			final double[] angles_final = computeAngles(comps_desired);
 			SmartDashboard.putNumber("anglesFinal", angles_final[0]);
-			for (int i = 0; i < 1; i++) modules[i].swivelTo(angles_final[i]);//control rotation if driver input
+			for (int i = 0; i < 4; i++) modules[i].swivelTo(angles_final[i]);//control rotation if driver input
 		}
 
 		if (!bad && isThere(10.0)) {
 			final double[] speeds_final = computeSpeeds(comps_desired);
 			SmartDashboard.putNumberArray("speeedsFinal", speeds_final);
-			for (int i = 0; i < 1; i++) modules[i].set(speeds_final[i]);//control traction if good and there
+			for (int i = 0; i < 4; i++) modules[i].set(speeds_final[i]);//control traction if good and there
 		}else stop();//otherwise, stop traction
 		
 		if (spin < 0.07) moduleD.checkTractionEncoder();
