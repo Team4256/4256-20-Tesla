@@ -5,12 +5,12 @@ import com.revrobotics.ColorMatch;
 public class Parameters{
 
     // Swerve Motors
-    public static final int ROTATION_MOTOR_A_ID = 46; //Front Left
+    public static final int ROTATION_MOTOR_A_ID = 11; //Front Left
     public static final int ROTATION_MOTOR_B_ID = 12; //Front Right
     public static final int ROTATION_MOTOR_C_ID = 13; // AFT Left
     public static final int ROTATION_MOTOR_D_ID = 14; // AFT Right
 
-    public static final int TRACTION_MOTOR_A_ID = 45; //Front Left
+    public static final int TRACTION_MOTOR_A_ID = 21; //Front Left
     public static final int TRACTION_MOTOR_B_ID = 22; //Front Right
     public static final int TRACTION_MOTOR_C_ID = 23; // AFT Left
     public static final int TRACTION_MOTOR_D_ID = 24; // AFT Right
@@ -40,7 +40,8 @@ public class Parameters{
     //need actual encoder values, from engineering team
     public static double MED_HEIGHT_COUNT = 2000;
     public static double MAX_HEIGHT_COUNT = 4200;//NICE
-    public static final double CLIMBER_MOTOR_SPEED = 0.5; //need the actual speed
+    public static final double CLIMBER_MOTOR_SPEED_DPAD = 0.5; //need the actual speed. This is for the Dpad when both poles retract at the same time
+    public static final double CLIMBER_MOTOR_SPEED_INDIVIDUAL = 0.5;//This is for when the joysticks are controlling individual motors
 
 
     //intake and shooter motors IDs

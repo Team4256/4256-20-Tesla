@@ -49,7 +49,8 @@ public class JoystickControl {
             //moduleAB.getTractionMotor().set(driver.getCurrentRadius(Xbox.STICK_LEFT, true));
             
             swerve.modules[0].getRotationMotor().SetAngle(driver.getCurrentAngle(Xbox.STICK_RIGHT, true));
-            swerve.modules[0].getTractionMotor().set(driver.getCurrentRadius(Xbox.STICK_LEFT, true));
+            swerve.modules[0].getTractionMotor().set(driver.getCurrentRadius(Xbox.STICK_LEFT, true));}
+        }
 
             // spin *= spin * Math.signum(spin);
             // swerve.setSpeed(speed);
@@ -59,7 +60,7 @@ public class JoystickControl {
             // SmartDashboard.putNumber("Swervespin", spin);
             // SmartDashboard.putNumber("SwervesDirection", direction);
             // SmartDashboard.putNumber("Swervespeed", speed);
-            }
+            
         
 
 
@@ -120,22 +121,24 @@ public class JoystickControl {
    
     public void ClimbingPeriodic(){
         if (gunner.getRawButtonPressed(Xbox.DPAD_NORTH)){
-            climber.rotateArmUp();
+            climber.climberArmUp();
         }
-        if (driver.getRawButtonPressed(driver.BUTTON_B)){
-            climber.retractPole();
-        }   
         if (gunner.getRawButtonPressed(Xbox.DPAD_WEST)){
-        //normal height
+            climber.extendClimberPolesMedium();
         }
         if (gunner.getRawButtonPressed(Xbox.DPAD_EAST)){
-         //max height
+            climber.extendClimberPolesHigh();
         }
-        if(gunner.getAxisActivity(Xbox.AXIS_LEFT_Y)){
-        }
-        if (gunner.getAxisActivity(Xbox.AXIS_RIGHT_Y)){
+        if (gunner.getRawButtonPressed(Xbox.DPAD_SOUTH)){
+            climber.retractClimberPoles(); //both poles at the same time
             
         }
+        else{
+            climber.retractIndividualClimberPole(gunner.getCurrentRadius(Xbox.STICK_LEFT, true), gunner.getCurrentRadius(Xbox.STICK_RIGHT, true));
+            
+        }
+        
+        climber.periodic();
     }
 
 
