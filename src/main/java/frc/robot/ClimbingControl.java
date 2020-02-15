@@ -93,15 +93,12 @@ public class ClimbingControl {
         climbMotorLeft = new WPI_TalonFX(LMotorID);
         climbMotorLeft.setNeutralMode(NeutralMode.Brake);
         climbMotorRight.setNeutralMode(NeutralMode.Brake);
-        armRotationSolenoid = new DoubleSolenoid(Parameters.ClimberForwardChannel, Parameters.ClimberReverseChannel);
+        armRotationSolenoid = new DoubleSolenoid(Parameters.CLIMBER_FORWARD_CHANNEL, Parameters.CLIMBER_REVERSE_CHANNEL);
         climbMotorRight.getSensorCollection().setIntegratedSensorPosition(0,0);
 
 
 
     }
-
-
-
     public void rotateArmUp(){
         armRotationSolenoid.set(DoubleSolenoid.Value.kReverse);
     } 
