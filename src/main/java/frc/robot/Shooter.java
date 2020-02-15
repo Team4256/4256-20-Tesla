@@ -28,7 +28,7 @@ public class Shooter {
   private final TalonSRX feederMotor;
   private DoubleSolenoid shroudSolenoid;
 
-  // private final WPI_TalonFX shooterMotor3;
+  
   // private CANEncoder shooterMotorEncoder1;
   // private CANEncoder shooterMotorEncoder2;
 
@@ -59,7 +59,7 @@ public void spinShooterMotors(){
 }
 
 
-  public void shoot() {
+ public void shoot() {
    /* if (target is found && motorSpeed >= a certain number){
       addjust the speed of the shooterwheel according to the data we receive from limelight
       move to the correct position 
@@ -89,7 +89,7 @@ public void spinShooterMotors(){
       shooterMotor1.getSensorCollection().getIntegratedSensorVelocity() / 2048 * 600);
       // shooterMotor2.set(TalonFXControlMode.Follower, shooterMotor1.getDeviceID());
       
-    }
+   }
 
     
 

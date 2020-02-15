@@ -128,6 +128,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         lastSetpoint = speed;
         updated = true;
         logger.log(Level.FINE, Double.toString(speed));
+        
     }
 
     // Set Angle
@@ -181,6 +182,9 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         super.set(percentSpeed);
         SmartDashboard.putNumber("Percent Output Us", percentSpeed);
         SmartDashboard.putNumber("offeset", angleEncoder.getPositionOffset());
+
+        updated = true;
+        lastSetpoint = percentSpeed; 
         
     }
 
