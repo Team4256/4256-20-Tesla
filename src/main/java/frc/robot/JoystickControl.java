@@ -15,11 +15,12 @@ public class JoystickControl {
     private D_Swerve swerve = new D_Swerve();
     private SwerveModule moduleAB = new SwerveModule(Parameters.ROTATION_MOTOR_A_ID,0, true, Parameters.TRACTION_MOTOR_A_ID, false, 0);
     
-    //private ClimbingPrep climbPrep = new ClimbingPrep(Parameters.SOLENOID_Up_CHANNEL,Parameters.SOLENOID_Down_CHANNEL);
-    //private ClimbingControl climbCont = new ClimbingControl(0, 0);
+    private ClimbingControl climber = new ClimbingControl(0, 0);
 
     private Intake succer = new Intake();
-    private Shooter cellShooter = new Shooter(Parameters.ShooterMotor_1_ID, Parameters.ShooterMoror_2_ID, Parameters.HopperMotor_ID, Parameters.FeederMotor_ID, Parameters.ShroudForwardChannel, Parameters.ShroudReverseChannel);
+    private Aligner aligner = new Aligner();
+    private Shooter cellShooter = new Shooter(aligner, Parameters.SHOOTERMOTOR_L_ID, Parameters.SHOOTERMOTOR_R_ID, Parameters.STIRRERMOTOR_ID, Parameters.FEEDERMOTOR_ID, Parameters.SHROUD_UP_CHANNEL, Parameters.SHROUD_DOWN_CHANNEL);
+    private ControlPanelSystem controlPanel = new ControlPanelSystem(Parameters.WHEEL_ARM_UP_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_DOWN_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_MOTOR_ID);
     private boolean rotationMode = false;
     private double angle = 0;
     double spin;
@@ -89,67 +90,84 @@ public class JoystickControl {
    // create a button that tells the shooter wheel to spin, when the shoot mode started, the shooter wheel continue to spin. 
     public void shooterPeriodic() {
 
-        if (gunner.getRawButtonPressed(gunner.BUTTON_RB)) {
+        if (driver.getRawButtonPressed(Xbox.AXIS_RT)) {
+        
+             cellShooter.ShootAlign();
 
-            cellShooter.shoot();
-
+         }
+         if (driver.getRawButtonReleased(Xbox.BUTTON_RB)) {
+             cellShooter.ShootNoAlign();
+         }
+        if (gunner.getRawButtonPressed(Xbox.AXIS_LT)){
+            cellShooter.SpinShooterPrep();
         }
-        if (gunner.getRawButtonReleased(gunner.BUTTON_RB)) {
-            cellShooter.stop();
+        if (gunner.getRawButtonPressed(Xbox.AXIS_RT)){
+            cellShooter.ShooterRange();
         }
      }
-    // //Intake Periodic
-     public void intakePeriodic() {
-        if (gunner.getRawButtonPressed(gunner.BUTTON_LB)) {
+    //Intake Periodic
+    public void intakePeriodic() {
+         if (gunner.getRawButtonPressed(Xbox.BUTTON_LB)) {
 
-            succer.succ();
+             succer.succ();
             
+         }
+         if (gunner.getRawButtonReleased(Xbox.BUTTON_LB)) {
+             succer.stop();
         }
-        if (gunner.getRawButtonReleased(gunner.BUTTON_LB)) {
-            succer.stop();
-        }
-/*
-        if (gunner.getRawButtonPressed(gunner.BUTTON_RB)) {
+        if (gunner.getRawButtonPressed(Xbox.BUTTON_RB)) {
 
             succer.spew();
             
         }
-        if (gunner.getRawButtonReleased(gunner.BUTTON_RB)) {
-            succer.stop(); 
-        }
-*/
-    //}
-    }
+        if (gunner.getRawButtonReleased(Xbox.BUTTON_RB)) {
+            succer.stop();
 
-    
+        }
+    }
     //probably different buttons for both Control and Prep
 
    
     public void ClimbingPeriodic(){
-        // if (gunner.getRawButtonPressed(Xbox.DPAD_NORTH)){
-        //     climbPrep.rotateArmUp();
-        // }
-        // if (driver.getRawButtonPressed(driver.BUTTON_B)){
-        //     climbCont.retractPole();
+        if (gunner.getRawButtonPressed(Xbox.DPAD_NORTH)){
+            climber.climberArmUp();
+        }
+        if (gunner.getRawButtonPressed(Xbox.DPAD_WEST)){
+            climber.extendClimberPolesMedium();
+        }
+        if (gunner.getRawButtonPressed(Xbox.DPAD_EAST)){
+            climber.extendClimberPolesHigh();
+        }
+        if (gunner.getRawButtonPressed(Xbox.DPAD_SOUTH)){
+            climber.retractClimberPoles(); //both poles at the same time
             
-        // }
-        // if (gunner.getRawButtonPressed(Xbox.DPAD_WEST)){
-        //    while (climbCont.extendPoles(ClimbingControl.MED_HEIGHT_COUNT));
-        // }
-        // if (gunner.getRawButtonPressed(Xbox.DPAD_EAST)){
-        //   while (climbCont.extendPoles(ClimbingControl.MAX_HEIGHT_COUNT));
-        // }
-
+        }
+        else{
+            climber.retractIndividualClimberPole(gunner.getCurrentRadius(Xbox.STICK_LEFT, true), gunner.getCurrentRadius(Xbox.STICK_RIGHT, true));
+            
+        }
+        
+        climber.periodic();
     }
+
+
+
+
     public void colorPeriodic(){
-//         if (gunner.getRawButtonPressed(Xbox.BUTTON_A)){
-//             cwPrep.wheelDownCW();
+        if (gunner.getRawButtonPressed(Xbox.BUTTON_Y)){
+            controlPanel.ArmDown();
+        }
 
-//         }
-//         if (gunner.getRawButtonPressed(Xbox.BUTTON_Y)){
-//             cwPrep.wheelUpCW();
-
-//         }
-//     }
-    } 
-}
+        if (gunner.getRawButtonPressed(Xbox.BUTTON_A)){
+            controlPanel.ArmUp();
+        }
+        if(gunner.getRawButtonPressed(Xbox.BUTTON_X)){
+            controlPanel.spin3Revs();
+        }
+        if( gunner.getRawButtonPressed(Xbox.BUTTON_B)){
+            controlPanel.spinToAColor();
+        }
+        controlPanel.periodic();
+        }   
+        
+    }
