@@ -59,4 +59,15 @@ public class Parameters{
     public static double DISTANCE_HIGH_MIN = 14.5;
     public static double DISTANCE_HIGH_MAX = 15.5;
 
+    // Minimum and Maximum Voltage
+
+    public static final double angleEncoderMinVoltage[] = {
+        0.012207, 0.142822, 0.017090, 0.025635
+    };
+    public static final double angleEncoderMaxVoltage[] = {
+        4.930419, 4.880371, 4.932861, 4.906005
+    };
+
+    
+
 }
