@@ -1,3 +1,4 @@
+
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -19,7 +20,7 @@ public class JoystickControl {
     private Intake succer = new Intake();
     private Aligner aligner = new Aligner();
     private Shooter cellShooter = new Shooter(aligner, Parameters.SHOOTERMOTOR_L_ID, Parameters.SHOOTERMOTOR_R_ID, Parameters.STIRRERMOTOR_ID, Parameters.FEEDERMOTOR_ID, Parameters.SHROUD_UP_CHANNEL, Parameters.SHROUD_DOWN_CHANNEL);
-    private ControlPanelSystem controlPanel = new ControlPanelSystem(Parameters.WHEEL_ARM_UP_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_DOWN_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_MOTOR_ID);
+   // private ControlPanelSystem controlPanel = new ControlPanelSystem(Parameters.WHEEL_ARM_UP_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_DOWN_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_MOTOR_ID);
     private boolean rotationMode = false;
     private double angle = 0;
     double spin;
@@ -33,12 +34,13 @@ public class JoystickControl {
         direction = driver.getCurrentAngle(Xbox.STICK_LEFT, true);
         spin = 0.5 * driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);// normal mode
         
-            //if (driver.getRawButtonPressed(driver.BUTTON_A)) {
-            //moduleAB.getTractionMotor().set(.3);
-            //moduleAB.getRotationMotor().SetAngle(90);
-        //}
+        //     if (driver.getRawButtonPressed(driver.BUTTON_A)) {
+        //     moduleAB.getTractionMotor().set(.3);
+        //     moduleAB.getRotationMotor().SetAngle(90);
+        // }
         // if (driver.getRawButtonPressed(driver.BUTTON_X)) {
         //     rotationMode = true;
+
         //     angle = 360;
         // }
         if (true) {
@@ -46,22 +48,22 @@ public class JoystickControl {
             
         }
         if (rotationMode == true) {
-            //moduleAB.getRotationMotor().SetAngle(driver.getCurrentAngle(Xbox.STICK_RIGHT, true));
-            //moduleAB.getTractionMotor().set(driver.getCurrentRadius(Xbox.STICK_LEFT, true));
-            
-            swerve.modules[0].getRotationMotor().SetAngle(driver.getCurrentAngle(Xbox.STICK_RIGHT, true));
-            swerve.modules[0].getTractionMotor().set(driver.getCurrentRadius(Xbox.STICK_LEFT, true));
-        }
+            // moduleAB.getRotationMotor().SetAngle(driver.getCurrentAngle(Xbox.STICK_RIGHT, true));
+            // moduleAB.getTractionMotor().set(driver.getCurrentRadius(Xbox.STICK_LEFT, true));
 
-            // spin *= spin * Math.signum(spin);
-            // swerve.setSpeed(speed);
-            // swerve.setSpin(spin);
-            // swerve.travelTowards(direction);
-            // swerve.completeLoopUpdate();
-            // SmartDashboard.putNumber("Swervespin", spin);
-            // SmartDashboard.putNumber("SwervesDirection", direction);
-            // SmartDashboard.putNumber("Swervespeed", speed);
+            // swerve.modules[0].getRotationMotor().SetAngle(driver.getCurrentAngle(Xbox.STICK_RIGHT, true));
+            // swerve.modules[0].getTractionMotor().set(driver.getCurrentRadius(Xbox.STICK_LEFT, true));
+            
+            spin *= spin * Math.signum(spin);
+            swerve.setSpeed(speed);
+            swerve.setSpin(spin);
+            swerve.travelTowards(direction);
+            swerve.completeLoopUpdate();
+            SmartDashboard.putNumber("Swervespin", spin);
+            SmartDashboard.putNumber("SwervesDirection", direction);
+            SmartDashboard.putNumber("Swervespeed", speed);
             }
+        
         
 
 
@@ -71,21 +73,21 @@ public class JoystickControl {
 
 
 
-        // if (driver.getRawButtonPressed(driver.BUTTON_START)) {
+        if (driver.getRawButtonPressed(driver.BUTTON_START)) {
 
-        //     swerve.setAllModulesToZero();
+            swerve.setAllModulesToZero();
 
-        // } else {
+        } else {
              
 
-        //     swerve.completeLoopUpdate();
-        //     swerve.setSpin(spin);
-        //     swerve.setSpeed(speed);
-        //     swerve.travelTowards(direction);
-        // }
-    //}
-    //Shooter Periodic
-    //create a button that tells the shooter wheel to spin, when the shoot mode started, the shooter wheel continue to spin. 
+            swerve.completeLoopUpdate();
+            swerve.setSpin(spin);
+            swerve.setSpeed(speed);
+            swerve.travelTowards(direction);
+        }
+    }
+    Shooter Periodic;
+   // create a button that tells the shooter wheel to spin, when the shoot mode started, the shooter wheel continue to spin. 
     public void shooterPeriodic() {
 
         if (driver.getRawButtonPressed(Xbox.AXIS_RT)) {
@@ -128,42 +130,43 @@ public class JoystickControl {
    
     public void ClimbingPeriodic(){
         if (gunner.getRawButtonPressed(Xbox.DPAD_NORTH)){
-            climber.rotateArmUp();
+            climber.climberArmUp();
         }
-        if (driver.getRawButtonPressed(Xbox.BUTTON_B)){
-            climber.retractPole();
-        }   
         if (gunner.getRawButtonPressed(Xbox.DPAD_WEST)){
-        //normal height
+            climber.extendClimberPolesMedium();
         }
         if (gunner.getRawButtonPressed(Xbox.DPAD_EAST)){
-         //max height
+            climber.extendClimberPolesHigh();
         }
-        if(gunner.getAxisActivity(Xbox.AXIS_LEFT_Y)){
-        }
-        if (gunner.getAxisActivity(Xbox.AXIS_RIGHT_Y)){
+        if (gunner.getRawButtonPressed(Xbox.DPAD_SOUTH)){
+            climber.retractClimberPoles(); //both poles at the same time
             
         }
-    }
-
-
-
-
-    public void colorPeriodic(){
-        if (gunner.getRawButtonPressed(Xbox.BUTTON_Y)){
-            controlPanel.ArmDown();
+        else{
+            climber.retractIndividualClimberPole(gunner.getCurrentRadius(Xbox.STICK_LEFT, true), gunner.getCurrentRadius(Xbox.STICK_RIGHT, true));
+            
         }
-
-        if (gunner.getRawButtonPressed(Xbox.BUTTON_A)){
-            controlPanel.ArmUp();
-        }
-        if(gunner.getRawButtonPressed(Xbox.BUTTON_X)){
-            controlPanel.spin3Revs();
-        }
-        if( gunner.getRawButtonPressed(Xbox.BUTTON_B)){
-            controlPanel.spinToAColor();
-        }
-        controlPanel.periodic();
-        }   
         
+        climber.periodic();
     }
+
+
+
+
+    // public void colorPeriodic(){
+    //     if (gunner.getRawButtonPressed(Xbox.BUTTON_Y)){
+    //         controlPanel.ArmDown();
+    //     }
+
+    //     if (gunner.getRawButtonPressed(Xbox.BUTTON_A)){
+    //         controlPanel.ArmUp();
+    //     }
+    //     if(gunner.getRawButtonPressed(Xbox.BUTTON_X)){
+    //         controlPanel.spin3Revs();
+    //     }
+    //     if( gunner.getRawButtonPressed(Xbox.BUTTON_B)){
+    //         controlPanel.spinToAColor();
+    //     }
+    //     controlPanel.periodic();
+    //     }   
+        }

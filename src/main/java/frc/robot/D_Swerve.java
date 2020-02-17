@@ -16,7 +16,7 @@ public final class D_Swerve implements Drivetrain {
 								PIVOT_TO_AFT = Math.hypot(PIVOT_TO_AFT_X, PIVOT_TO_AFT_Y);
 
 	private final SwerveModule moduleA, moduleB, moduleC, moduleD;
-	public final SwerveModule[] modules;
+	private final SwerveModule[] modules;
 
 	private double moduleD_maxSpeed = 70.0;//always put max slightly higher than max observed
 	private double moduleD_previousAngle = 0.0;
@@ -32,7 +32,7 @@ public final class D_Swerve implements Drivetrain {
 		moduleC = new SwerveModule(Parameters.ROTATION_MOTOR_C_ID,2, true, Parameters.TRACTION_MOTOR_C_ID, false, 0);
 		moduleD = new SwerveModule(Parameters.ROTATION_MOTOR_D_ID,3, true, Parameters.TRACTION_MOTOR_D_ID, false, 0);
 		
-	this.modules = new SwerveModule[] {moduleA /** , moduleB, moduleC, moduleD*/};
+	this.modules = new SwerveModule[] {moduleA, moduleB, moduleC, moduleD};
 	}	
 	
 	/**
@@ -46,64 +46,10 @@ public final class D_Swerve implements Drivetrain {
 		moduleD.init();
 	}
 
-	/**
-	 * @deprecated
-	 * This function is now deprecated.
-	 *{@link #holonomic_encoderIgnorant(double, double, double)} is the new version of this.
-	 * Use this instead.
-	 * @param direction
-	 * @param speed
-	 * @param spin
-	 */
-	@Deprecated
-	public void holonomic(final double direction, double speed, final double spin) {
-		//{PREPARE VARIABLES}
-		speed = Math.abs(speed);
-		final double chassis_fieldAngle = Robot.gyroHeading;
-		final double forward = speed*Math.cos(Math.toRadians(SwerveModule.convertToRobot(direction, chassis_fieldAngle))),
-					 strafe  = speed*Math.sin(Math.toRadians(SwerveModule.convertToRobot(direction, chassis_fieldAngle)));
-		final double[] comps_desired = computeComponents(strafe, forward, spin);
-		final boolean bad = speed == 0.0 && spin == 0.0;
-		
-		//{GET ENCODER SPEED}
-		final double[] speeds_actual = speedsFromModuleD();
-		double speed_actual = Math.hypot(speeds_actual[0], speeds_actual[1]);
-		speed_actual = Math.floor(speed_actual*10.0)/10.0;
-		
-		//{COMPUTE ANGLES}
-		final double[] angles_final;
-		if ((speed < speed_actual) && (speed_actual > .1)) {
-			final double[] angles_desired = computeAngles(comps_desired);
-			final double stdd_desired = Compass.stdd(angles_desired);
-			
-			final double[] angles_actual = computeAngles(computeComponents(speeds_actual[0], speeds_actual[1], spin));
-			final double stdd_actual = Compass.stdd(angles_actual);
-			
-			angles_final = stdd_desired > stdd_actual ? angles_actual : angles_desired;
-		}else {
-			angles_final = computeAngles(comps_desired);
-		}
-		
-		//{CONTROL MOTORS, using above angles and computing traction outputs as needed}
-		if (!bad) {
-			for (int i = 0; i < 1; i++) modules[i].swivelTo(angles_final[i]);//control rotation if good
-			moduleD_previousAngle = angles_final[3];
-		}
-		
-		if (!bad && isThere(6.0)) {
-			final double[] speeds_final = computeSpeeds(comps_desired);
-			for (int i = 0; i < 1; i++) modules[i].set(speeds_final[i]);//control traction if good and there
-		}else stop();//otherwise, stop traction
-		
-		if (spin < 0.07) moduleD.checkTractionEncoder();
-		
-		//{UPDATE RECORDS}
-		previousSpin = spin;
-	}
-	
-	
+
 	private void holonomic_encoderIgnorant(final double direction, double speed, final double spin) {
 		//{PREPARE VARIABLES}
+		
 		speed = Math.abs(speed);
 		final double chassis_fieldAngle = Robot.gyroHeading;
 		double forward;
@@ -122,21 +68,24 @@ public final class D_Swerve implements Drivetrain {
 
 		SmartDashboard.putNumber("compsDesired1", comps_desired[1]);
 		final boolean bad = speed == 0.0 && spin == 0.0;
-		
+		SmartDashboard.putBoolean("isBad", bad);
 		//{CONTROL MOTORS, computing outputs as needed}
 		if (!bad) {
 			final double[] angles_final = computeAngles(comps_desired);
-			SmartDashboard.putNumber("anglesFinal", angles_final[0]);
-			for (int i = 0; i < 1; i++) modules[i].swivelTo(angles_final[i]);//control rotation if driver input
+			SmartDashboard.putNumberArray("anglesFinal", angles_final);
+		for (int i = 0; i < 4; i++) modules[i].swivelTo(angles_final[i]);//control rotation if driver input
+			//for (int i = 0; i < 4; i++) modules[i].swivelTo(45);//control rotation if driver input
 		}
+		
 
 		if (!bad && isThere(10.0)) {
 			final double[] speeds_final = computeSpeeds(comps_desired);
-			for (int i = 0; i < 1; i++) modules[i].set(speeds_final[i]);//control traction if good and there
+			SmartDashboard.putNumberArray("speeedsFinal", speeds_final);
+			for (int i = 0; i < 4; i++) modules[i].set(speeds_final[i]);//control traction if good and there
 		}else stop();//otherwise, stop traction
 		
 		if (spin < 0.07) moduleD.checkTractionEncoder();
-	}
+	}	
 
 
 	
@@ -156,7 +105,8 @@ public final class D_Swerve implements Drivetrain {
 	public void formX() {moduleA.swivelTo(-45.0); moduleB.swivelTo(45.0); moduleC.swivelTo(45.0); moduleD.swivelTo(-45.0);}
 
 	public boolean isThere(final double threshold) {
-		return moduleA.isThere(threshold) && moduleB.isThere(threshold) && moduleC.isThere(threshold) && moduleD.isThere(threshold);
+		return true;
+		//return moduleA.isThere(threshold) /**&& moduleB.isThere(threshold) && moduleC.isThere(threshold) && moduleD.isThere(threshold)*/; //TODO add back the modules
 	}
 
 	private void stop() {for (SwerveModule module : modules) module.set(0.0);}
@@ -164,6 +114,8 @@ public final class D_Swerve implements Drivetrain {
 	public void completeLoopUpdate() {
 		holonomic_encoderIgnorant(direction, speed, spin);
 		for (SwerveModule module : modules) module.completeLoopUpdate();
+		//for (SwerveModule module : modules) module.swivelTo(0.0);
+
 	}
 	
 	

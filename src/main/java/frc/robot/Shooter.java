@@ -28,7 +28,7 @@ public class Shooter {
   private boolean ShroudUP = false;
   private boolean ShroudJustMoved = false;
 
-  // private final WPI_TalonFX shooterMotor3;
+  
   // private CANEncoder shooterMotorEncoder1;
   // private CANEncoder shooterMotorEncoder2;
   public enum ShootingStates{
@@ -149,7 +149,7 @@ public void spinShooterMotors(double speed){
       SmartDashboard.putNumber("shooterSpeed(RPM)", shooterMotor1.getSensorCollection().getIntegratedSensorVelocity() / 2048 * 600);
       // shooterMotor2.set(TalonFXControlMode.Follower, shooterMotor1.getDeviceID());
       
-    }
+   }
 
     
 
