@@ -41,6 +41,10 @@ public class Parameters{
     public static final double CLIMBER_MOTOR_SPEED_DPAD = 0.5; //need the actual speed. This is for the Dpad when both poles retract at the same time
     public static final double CLIMBER_MOTOR_SPEED_INDIVIDUAL = 0.5;//This is for when the joysticks are controlling individual motors
 
+    public static final double intakeSpeed = 0.5;
+    public static final double stopSpeed = 0.0;
+    public static final int intakeForwardChannel = 6;
+    public static final int intakeReverseChannel = 7;
 
     public static final int SUCCMOTOR_ID = 16; //Intake Motor
     public static final int SHOOTERMOTOR_L_ID = 26;
