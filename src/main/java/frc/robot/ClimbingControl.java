@@ -11,8 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.fasterxml.jackson.databind.deser.impl.CreatorCandidate.Param;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.XboxController;				
+import edu.wpi.first.wpilibj.DoubleSolenoid;				
 
 public class ClimbingControl {
     
