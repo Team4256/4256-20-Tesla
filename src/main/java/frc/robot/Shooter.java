@@ -165,6 +165,7 @@ public void spinShooterMotors(double speed){
         ShroudUP = false;
         ShroudJustMoved = true ;
       }
+      STOP();
     }
 
 
