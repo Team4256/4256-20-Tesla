@@ -47,8 +47,8 @@ public class Parameters{
     public static final int SHOOTERMOTOR_R_ID = 27;
     public static final int STIRRERMOTOR_ID = 18;
     public static final int FEEDERMOTOR_ID = 17;
-    public static final int SHROUD_DOWN_CHANNEL = 0;//TODO get the real ID
-    public static final int SHROUD_UP_CHANNEL = 1;//TODO get the real ID
+    public static final int SHROUD_UP_CHANNEL = 0;// get the real ID
+    public static final int SHROUD_DOWN_CHANNEL = 1;// the real ID
     public static double MOTORSPEEDLOW = 0.1;
     public static double MOTORSPEEDMEDIUM = .5; 
     public static double MOTORSPEEDHIGH = 1.0;// we don't know yet what the engineers are going to do

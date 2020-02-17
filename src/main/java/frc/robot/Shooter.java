@@ -25,8 +25,6 @@ public class Shooter {
   private final TalonSRX stirrerMotor;
   private final TalonSRX feederMotor;
   private DoubleSolenoid shroudSolenoid;
-  private boolean ShroudUP = false;
-  private boolean ShroudJustMoved = false;
 
   
   // private CANEncoder shooterMotorEncoder1;
@@ -67,9 +65,6 @@ public class Shooter {
     feederMotor = new TalonSRX(feederMotorID);
     shroudSolenoid = new DoubleSolenoid(shroudForwardChannel, shroudReverseChannel);
     shooterAligner = aligner;
-
-    
-
   }
   public void periodic(){
     switch(currentShootingState){
@@ -88,8 +83,11 @@ public class Shooter {
       case OFF:
         stop();
         break;
+        
     }
+      
   }
+
 
 
   //Hopper and Feeder Motors
@@ -150,24 +148,32 @@ public void spinShooterMotors(double speed){
       // shooterMotor2.set(TalonFXControlMode.Follower, shooterMotor1.getDeviceID());
       
    }
+  
+  // public void range(){
+  //     shroudJustMoved = false;
+  //   if (shroudUP == false) {
+  //     shroudSolenoid.set(Value.kReverse);
+  //     shroudUP = true;
+  //     shroudJustMoved = true;
+  //   }
+  //   if (shroudJustMoved == false) {
+  //     shroudUP = false;
+  //     shroudSolenoid.set(Value.kForward);
+  //     shroudJustMoved = true;
+  //     }
+  //     STOP();
+  //   }
 
-    
-
-    public void range(){
-      ShroudJustMoved = false;
-      if(ShroudUP = false){
-        shroudSolenoid.set(Value.kForward);
-        ShroudUP = true;
-        ShroudJustMoved = true ;
-      }
-      if(ShroudJustMoved = false) {
+  public void range(){
+      if(shroudSolenoid.get()==Value.kForward){
         shroudSolenoid.set(Value.kReverse);
-        ShroudUP = false;
-        ShroudJustMoved = true ;
+      }
+      else{
+        shroudSolenoid.set(Value.kForward);
       }
       STOP();
-    }
-
+  }
+  
 
 
     public double distanceSpeed(){

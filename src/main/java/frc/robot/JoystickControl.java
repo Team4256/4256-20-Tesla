@@ -26,6 +26,7 @@ public class JoystickControl {
     double spin;
     private double direction;
     private double speed;
+    private boolean hasPressedLastTime = false;
 
     // Swerve Periodic
 
@@ -101,8 +102,14 @@ public class JoystickControl {
         if (gunner.getRawButtonPressed(Xbox.AXIS_LT)){
             cellShooter.SpinShooterPrep();
         }
-        if (gunner.getRawButtonPressed(Xbox.AXIS_RT)){
-            cellShooter.ShooterRange();
+        if (gunner.getAxisPress(Xbox.AXIS_RT, 0.65)){
+            if(!hasPressedLastTime){
+                cellShooter.ShooterRange();
+                hasPressedLastTime = true;
+            } 
+        }
+        else{
+            hasPressedLastTime = false;
         }
         cellShooter.periodic();
      }
