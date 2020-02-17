@@ -93,7 +93,7 @@ public class JoystickControl {
              cellShooter.ShootAlign();
 
          }
-         if (driver.getRawButtonReleased(Xbox.BUTTON_RB)) {
+         if (driver.getRawButtonPressed(Xbox.BUTTON_RB)) {
              cellShooter.ShootNoAlign();
          }
         if (gunner.getRawButtonPressed(Xbox.AXIS_LT)){
