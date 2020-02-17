@@ -29,7 +29,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     private boolean updated = false;
     private double lastSetpoint = 0.0;
     private Logger logger;
-    private PIDController anglePIDController = new PIDController(.025, 0.0, 0.05);
+    private PIDController anglePIDController = new PIDController(.005, 0.0, 0.0);
     public final Compass compass = new Compass();
     private double lastLegalDirection = 1.0;
     private AnalogInput encoderPort;
@@ -136,11 +136,16 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
         //double encoderPosition = (getSensorCollection().getIntegratedSensorPosition() / 4096) * 360 / 19.77466;
         //double encoderPosition = 360 - encoderPort.getVoltage() / 5 * 360;
-        double encoderPosition = 360 - (encoderPort.getVoltage() - 0.015869)/(4.788818 - 0.015869) * 360;
-        if (encoderPort.getVoltage() > maxAngle) maxAngle = encoderPort.getVoltage();
+        int channelID = encoderPort.getChannel();
+        double encoderPosition = 360 - (encoderPort.getVoltage() - Parameters.angleEncoderMinVoltage[channelID])/(Parameters.angleEncoderMaxVoltage[channelID] - Parameters.angleEncoderMinVoltage[channelID]) * 360;
+        if( encoderPort.getChannel() == 3){
+            if (encoderPort.getVoltage() > maxAngle) maxAngle = encoderPort.getVoltage();
         if (encoderPort.getVoltage() < minAngle) minAngle = encoderPort.getVoltage();
         SmartDashboard.putNumber("minAngle", minAngle);
         SmartDashboard.putNumber("maxAngle", maxAngle);
+
+        }
+        
         while (targetAngle <= -180) {
             targetAngle += 360;
         } 
@@ -149,13 +154,12 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         }
 
 
-        
-        SmartDashboard.putNumber("target Angle", targetAngle);
-        SmartDashboard.putNumber("encoder position", encoderPosition);
-        SmartDashboard.putNumber("Encoder Voltage", encoderPort.getVoltage());
+        //SmartDashboard.putNumber("target Angle", targetAngle);
+        //SmartDashboard.putNumber("encoder position", encoderPosition);
+        //SmartDashboard.putNumber("Encoder Voltage", encoderPort.getVoltage());
 
         double error = targetAngle - encoderPosition;
-        SmartDashboard.putNumber("PID error", anglePIDController.getPositionError());
+        //SmartDashboard.putNumber("PID error", anglePIDController.getPositionError());
         
         if (Math.abs(error) > 180) {
             encoderPosition -= 360;
@@ -171,18 +175,15 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         //     return;
         // }
         
-        SmartDashboard.putNumber("Error", error);
+        //SmartDashboard.putNumber("Error", error);
         
         
         double percentSpeed = anglePIDController.calculate(encoderPosition, targetAngle);
-        percentSpeed = anglePIDController.getP() * error;
         if (Math.abs(percentSpeed) > .5) {
             percentSpeed = Math.signum(percentSpeed) * .5;
         }
         super.set(percentSpeed);
-        SmartDashboard.putNumber("Percent Output Us", percentSpeed);
-        SmartDashboard.putNumber("offeset", angleEncoder.getPositionOffset());
-
+        //SmartDashboard.putNumber("Percent Output Us", percentSpeed);
         updated = true;
         lastSetpoint = percentSpeed; 
         
@@ -207,7 +208,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     public void completeLoopUpdate() {
         if (!updated) {
-            super.set(lastSetpoint);
+            super.set(0);
         }
         updated = false;
     }
