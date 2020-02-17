@@ -104,6 +104,7 @@ public class JoystickControl {
         if (gunner.getRawButtonPressed(Xbox.AXIS_RT)){
             cellShooter.ShooterRange();
         }
+        cellShooter.periodic();
      }
     //Intake Periodic
     public void intakePeriodic() {
