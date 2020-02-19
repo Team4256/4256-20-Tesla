@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTypeResolverBuilder;
 
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class JoystickControl {
@@ -15,7 +16,7 @@ public class JoystickControl {
     private D_Swerve swerve = new D_Swerve();
     //private SwerveModule moduleAB = new SwerveModule(Parameters.ROTATION_MOTOR_A_ID,0, true, Parameters.TRACTION_MOTOR_A_ID, false, 0);
     
-    private ClimbingControl climber = new ClimbingControl(0, 0);
+    private ClimbingControl climber = new ClimbingControl(Parameters.L_CLIMBER_MOTOR_ID);
 
     private Intake succer = new Intake(Parameters.SUCCMOTOR_ID,Parameters.intakeForwardChannel,Parameters.intakeReverseChannel);
     private Aligner aligner = new Aligner();
@@ -143,6 +144,7 @@ public class JoystickControl {
 
    
     public void ClimbingPeriodic(){
+        
         if (gunner.getRawButtonPressed(Xbox.DPAD_NORTH)){
             climber.climberArmUp();
         }
@@ -152,12 +154,13 @@ public class JoystickControl {
         if (gunner.getRawButtonPressed(Xbox.DPAD_EAST)){
             climber.extendClimberPolesHigh();
         }
-        if (gunner.getRawButtonPressed(Xbox.DPAD_SOUTH)){
-            climber.retractClimberPoles(); //both poles at the same time
+        if (gunner.getPOV() == Xbox.DPAD_SOUTH){
+            climber.retractClimberPoles();
+            //both poles at the same time
             
         }
         else{
-            climber.retractIndividualClimberPole(gunner.getCurrentRadius(Xbox.STICK_LEFT, true), gunner.getCurrentRadius(Xbox.STICK_RIGHT, true));
+            climber.retractIndividualClimberPole(gunner.getDeadbandedAxis(Xbox.AXIS_LEFT_Y), gunner.getDeadbandedAxis(Xbox.AXIS_RIGHT_Y));
             
         }
         
