@@ -7,14 +7,47 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.controller.PIDController;
+
 /**
  * Add your docs here.
  */
 public class Aligner {
-    public boolean AquireTarget(){
-        return true;
+    private PIDController orientationPID = new PIDController(0, 0, 0);
+    private PIDController positionPID = new PIDController(0, 0, 0);
+    private D_Swerve swerveSystem;
+    Limelight camera = Limelight.getInstance();
+    Gyro gyro = new Gyro(Parameters.GYRO_UPDATE_HZ);
+    public Aligner (D_Swerve swerve) {
+        orientationPID.setTolerance(Parameters.POSITION_TOLERANCE, Parameters.VELOCITY_TOLERANCE);
+        swerveSystem = swerve;
     }
-    public double DistanceToTarget(){
-        return 13.0;//feet 
+
+    public boolean getIsAtTarget() {
+        return orientationPID.atSetpoint();
     }
-}
+    public double getDistanceToTarget(){
+        return camera.getTargetOffsetDegrees();
+    }
+
+    public double getDirectionCommand() {
+        return positionPID.calculate(camera.getTargetOffsetDegrees(), 0);
+
+    }
+
+    public double getOrientationCommand() {
+        return orientationPID.calculate(camera.getTargetOffsetDegrees(), 0);
+    }
+
+    public void alignRobotToTarget(){
+        camera.turnLEDOn();
+        swerveSystem.setSpin(getOrientationCommand());
+        
+    }
+
+    public void turnLEDOff() {
+        camera.turnLEDOff();
+    }
+    
+}   
+    
