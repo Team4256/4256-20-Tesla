@@ -1,9 +1,7 @@
 package frc.robot;//COMPLETE 2016
 
 public class Compass {
-
-	
-	
+		
 	/**
 	 * Wraps values around a circle
 	 * 

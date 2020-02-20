@@ -25,7 +25,6 @@ public class Shooter {
   private final TalonSRX stirrerMotor;
   private final TalonSRX feederMotor;
   private DoubleSolenoid shroudSolenoid;
-  boolean SpinUp = false;
 
   
   // private CANEncoder shooterMotorEncoder1;
@@ -66,10 +65,6 @@ public class Shooter {
     feederMotor = new TalonSRX(feederMotorID);
     shroudSolenoid = new DoubleSolenoid(shroudForwardChannel, shroudReverseChannel);
     shooterAligner = aligner;
-
-    // shooterMotorEncoder1 = new CANEncoder(shooterMotor1);
-    // shooterMotorEncoder2 = new CANEncoder(shooterMotor2);
-
   }
   public void periodic(){
     switch(currentShootingState){
@@ -88,8 +83,11 @@ public class Shooter {
       case OFF:
         stop();
         break;
+        
     }
+      
   }
+
 
 
   //Hopper and Feeder Motors
@@ -103,7 +101,6 @@ public class Shooter {
 public void spinShooterMotors(double speed){
   shooterMotor1.set(TalonFXControlMode.PercentOutput, speed);
     shooterMotor2.set(TalonFXControlMode.PercentOutput, speed);
-    SpinUp = true;
   }
 
 
@@ -115,8 +112,7 @@ public void spinShooterMotors(double speed){
         stirrerMotor.set(ControlMode.PercentOutput, Parameters.MOTORSPEEDMEDIUM);
         feederMotor.set(ControlMode.PercentOutput, 0.5);
         SmartDashboard.putString("Alive", "Is alive");
-        SmartDashboard.putNumber("shooterSpeed(RPM)",
-        shooterMotor1.getSensorCollection().getIntegratedSensorVelocity() / 2048 * 600);
+        SmartDashboard.putNumber("shooterSpeed(RPM)", shooterMotor1.getSensorCollection().getIntegratedSensorVelocity() / 2048 * 600);
       }
     }
     /*
@@ -148,17 +144,38 @@ public void spinShooterMotors(double speed){
     stirrerMotor.set(ControlMode.PercentOutput, Parameters.MOTORSPEEDMEDIUM);
     feederMotor.set(ControlMode.PercentOutput, Parameters.MOTORSPEEDMEDIUM);
       SmartDashboard.putString("Alive", "Is alive");
-      SmartDashboard.putNumber("shooterSpeed(RPM)",
-      shooterMotor1.getSensorCollection().getIntegratedSensorVelocity() / 2048 * 600);
+      SmartDashboard.putNumber("shooterSpeed(RPM)", shooterMotor1.getSensorCollection().getIntegratedSensorVelocity() / 2048 * 600);
       // shooterMotor2.set(TalonFXControlMode.Follower, shooterMotor1.getDeviceID());
       
    }
+  
+  // public void range(){
+  //     shroudJustMoved = false;
+  //   if (shroudUP == false) {
+  //     shroudSolenoid.set(Value.kReverse);
+  //     shroudUP = true;
+  //     shroudJustMoved = true;
+  //   }
+  //   if (shroudJustMoved == false) {
+  //     shroudUP = false;
+  //     shroudSolenoid.set(Value.kForward);
+  //     shroudJustMoved = true;
+  //     }
+  //     STOP();
+  //   }
 
-    
+  public void range(){
+      if(shroudSolenoid.get()==Value.kForward){
+        shroudSolenoid.set(Value.kReverse);
+      }
+      else{
+        shroudSolenoid.set(Value.kForward);
+      }
+      STOP();
+  }
+  
 
-    public void range(){
-      shroudSolenoid.set(Value.kForward);
-    }
+
     public double distanceSpeed(){
       double distance = shooterAligner.DistanceToTarget();
       if (distance >= Parameters.DISTANCE_LOW_MIN && distance <= Parameters.DISTANCE_LOW_MAX) {
@@ -174,6 +191,10 @@ public void spinShooterMotors(double speed){
         return 0;
       }
     }
+
+
+
+
   public void stop() {
     shooterMotor1.set(0.0);
     shooterMotor2.set(0.0);

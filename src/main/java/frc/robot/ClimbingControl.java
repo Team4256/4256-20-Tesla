@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.deser.impl.CreatorCandidate.Param;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.XboxController;				
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;				
 
 public class ClimbingControl {
     
@@ -77,6 +77,7 @@ public class ClimbingControl {
             break;
             case CLIMB:
               climb();
+              SmartDashboard.putNumber("test3", 12123213);
             break;
             case STOP:
             break;
@@ -88,9 +89,9 @@ public class ClimbingControl {
 
     
     //need to add device numbers based on excel sheet
-    public ClimbingControl( int RMotorID, int LMotorID){
-        climbMotorRight = new WPI_TalonFX(RMotorID); 
-        climbMotorLeft = new WPI_TalonFX(LMotorID);
+    public ClimbingControl( int LMotorID){
+        climbMotorRight = new WPI_TalonFX(Parameters.R_CLIMBER_MOTOR_ID); 
+        climbMotorLeft = new WPI_TalonFX(Parameters.L_CLIMBER_MOTOR_ID);
         climbMotorLeft.setNeutralMode(NeutralMode.Brake);
         climbMotorRight.setNeutralMode(NeutralMode.Brake);
         armRotationSolenoid = new DoubleSolenoid(Parameters.CLIMBER_FORWARD_CHANNEL, Parameters.CLIMBER_REVERSE_CHANNEL);
@@ -113,17 +114,17 @@ public class ClimbingControl {
     
     public void extendPoles()
     {
-        if  (climbMotorRight.getSensorCollection().getIntegratedSensorPosition() < targetHeight)
-        { 
-            climbMotorRight.set(Parameters.CLIMBER_MOTOR_SPEED_DPAD);
-            climbMotorLeft.set(Parameters.CLIMBER_MOTOR_SPEED_DPAD);
-        } 
-        else 
-        {
-          climbMotorRight.set(0.0);
-          climbMotorLeft.set(0.0);
+        // if  (climbMotorRight.getSensorCollection().getIntegratedSensorPosition() < targetHeight)
+        // { 
+        //     //climbMotorRight.set(Parameters.CLIMBER_MOTOR_SPEED_DPAD);
+        //     climbMotorLeft.set(Parameters.CLIMBER_MOTOR_SPEED_DPAD);
+        // } 
+        // else 
+        // {
+        //   //climbMotorRight.set(0.0);
+        //   climbMotorLeft.set(0.0);
          
-        }
+        // }
     }  
     
     
@@ -131,7 +132,7 @@ public class ClimbingControl {
 
     public void climb(){ 
         climbMotorLeft.set(-retractingSpeedMotorLeft);
-        climbMotorRight.set(-retractingSpeedMotorRight);
+       climbMotorRight.set(-retractingSpeedMotorRight);
         
     }
 }
