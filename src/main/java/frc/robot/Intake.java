@@ -9,18 +9,18 @@ public class Intake {
     private final TalonSRX succMotor;
     private DoubleSolenoid SuccerSolenoid;
 
-    public Intake(int succMotorID, int IntakeUpChannel, int IntakeDownChannel) {
-        succMotor = new TalonSRX(succMotorID);
-        SuccerSolenoid = new DoubleSolenoid(IntakeUpChannel, IntakeDownChannel);
+    public Intake() {
+        succMotor = new TalonSRX(Parameters.SUCCMOTOR_ID);
+        SuccerSolenoid = new DoubleSolenoid(Parameters.INTAKE_FORWARD_CHANNEL, Parameters.INTAKE_REVERSE_CHANNEL);
     }
     public void succ() {
-        succMotor.set(ControlMode.PercentOutput, Parameters.intakeSpeed);
+        succMotor.set(ControlMode.PercentOutput, Parameters.INTAKE_REVERSE_CHANNEL);
     }
     public void spew(){
-        succMotor.set(ControlMode.PercentOutput, -Parameters.intakeSpeed);
+        succMotor.set(ControlMode.PercentOutput, -Parameters.INTAKE_MOTOR_SPEED);
     }
     public void stop() {
-        succMotor.set(ControlMode.PercentOutput, Parameters.stopSpeed);
+        succMotor.set(ControlMode.PercentOutput, 0.0);
     }
     public void succerUp(){
         SuccerSolenoid.set(Value.kReverse);

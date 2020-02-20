@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTypeResolverBuilder;
 
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class JoystickControl {
@@ -16,10 +15,10 @@ public class JoystickControl {
     private D_Swerve swerve = new D_Swerve();
     //private SwerveModule moduleAB = new SwerveModule(Parameters.ROTATION_MOTOR_A_ID,0, true, Parameters.TRACTION_MOTOR_A_ID, false, 0);
     
-    private ClimbingControl climber = new ClimbingControl(Parameters.L_CLIMBER_MOTOR_ID);
+    private ClimbingControl climber = new ClimbingControl();
 
-    private Intake succer = new Intake(Parameters.SUCCMOTOR_ID,Parameters.intakeForwardChannel,Parameters.intakeReverseChannel);
-    private Aligner aligner = new Aligner();
+    private Intake succer = new Intake();
+    private Aligner aligner = new Aligner(swerve);
     private Shooter cellShooter = new Shooter(aligner, Parameters.SHOOTERMOTOR_L_ID, Parameters.SHOOTERMOTOR_R_ID, Parameters.STIRRERMOTOR_ID, Parameters.FEEDERMOTOR_ID, Parameters.SHROUD_UP_CHANNEL, Parameters.SHROUD_DOWN_CHANNEL);
    // private ControlPanelSystem controlPanel = new ControlPanelSystem(Parameters.WHEEL_ARM_UP_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_DOWN_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_MOTOR_ID);
     private boolean rotationMode = false;
@@ -27,7 +26,7 @@ public class JoystickControl {
     double spin;
     private double direction;
     private double speed;
-    private boolean hasPressedLastTime = false;
+    private Limelight blindei = Limelight.getInstance();
 
     // Swerve Periodic
 
@@ -75,7 +74,7 @@ public class JoystickControl {
 
 
 
-        if (driver.getRawButtonPressed(Xbox.BUTTON_START)) {
+        if (driver.getRawButtonPressed(driver.BUTTON_START)) {
 
             swerve.setAllModulesToZero();
 
@@ -86,6 +85,8 @@ public class JoystickControl {
             swerve.setSpin(spin);
             swerve.setSpeed(speed);
             swerve.travelTowards(direction);
+            SmartDashboard.putNumber("tx", blindei.getCommandedDirection());
+
         }
     }
     Shooter Periodic;
@@ -97,45 +98,33 @@ public class JoystickControl {
              cellShooter.ShootAlign();
 
          }
-         if (driver.getRawButtonPressed(Xbox.BUTTON_RB)) {
+         if (driver.getRawButtonReleased(Xbox.BUTTON_RB)) {
              cellShooter.ShootNoAlign();
          }
         if (gunner.getRawButtonPressed(Xbox.AXIS_LT)){
             cellShooter.SpinShooterPrep();
         }
-        if (gunner.getAxisPress(Xbox.AXIS_RT, 0.65)){
-            if(!hasPressedLastTime){
-                cellShooter.ShooterRange();
-                hasPressedLastTime = true;
-            } 
+        if (gunner.getRawButtonPressed(Xbox.AXIS_RT)){
+            cellShooter.ShooterRange();
         }
-        else{
-            hasPressedLastTime = false;
-        }
-        cellShooter.periodic();
+        
      }
     //Intake Periodic
     public void intakePeriodic() {
-        if (driver.getRawButtonPressed(Xbox.BUTTON_A)){
+         if (gunner.getRawButtonPressed(Xbox.BUTTON_LB)) {
 
-        }
-        if (driver.getRawButtonPressed(Xbox.BUTTON_Y)){
-
-        }
-        if (gunner.getRawButtonPressed(Xbox.AXIS_LT)) {
-
-            succer.succ();
+             succer.succ();
             
-        }
-        if (gunner.getRawButtonReleased(Xbox.AXIS_LT)) {
+         }
+         if (gunner.getRawButtonReleased(Xbox.BUTTON_LB)) {
              succer.stop();
         }
-        if (gunner.getRawButtonPressed(Xbox.BUTTON_LB)) {
+        if (gunner.getRawButtonPressed(Xbox.BUTTON_RB)) {
 
             succer.spew();
             
         }
-        if (gunner.getRawButtonReleased(Xbox.BUTTON_LB)) {
+        if (gunner.getRawButtonReleased(Xbox.BUTTON_RB)) {
             succer.stop();
 
         }
@@ -144,7 +133,6 @@ public class JoystickControl {
 
    
     public void ClimbingPeriodic(){
-        
         if (gunner.getRawButtonPressed(Xbox.DPAD_NORTH)){
             climber.climberArmUp();
         }
@@ -154,13 +142,12 @@ public class JoystickControl {
         if (gunner.getRawButtonPressed(Xbox.DPAD_EAST)){
             climber.extendClimberPolesHigh();
         }
-        if (gunner.getPOV() == Xbox.DPAD_SOUTH){
-            climber.retractClimberPoles();
-            //both poles at the same time
+        if (gunner.getRawButtonPressed(Xbox.DPAD_SOUTH)){
+            climber.retractClimberPoles(); //both poles at the same time
             
         }
         else{
-            climber.retractIndividualClimberPole(gunner.getDeadbandedAxis(Xbox.AXIS_LEFT_Y), gunner.getDeadbandedAxis(Xbox.AXIS_RIGHT_Y));
+            climber.retractIndividualClimberPole(gunner.getCurrentRadius(Xbox.STICK_LEFT, true), gunner.getCurrentRadius(Xbox.STICK_RIGHT, true));
             
         }
         

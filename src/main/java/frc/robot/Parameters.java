@@ -3,6 +3,10 @@ import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.ColorMatch;
 
 public class Parameters{
+    // Gyro
+
+    public static final byte GYRO_UPDATE_HZ = 50;
+
 
     // Swerve Motors
     public static final int ROTATION_MOTOR_A_ID = 11; //Front Left
@@ -32,7 +36,7 @@ public class Parameters{
     public static final int CLIMBER_REVERSE_CHANNEL = 3; //solenoid port Retract
     public static final double CLIMBING_SPEED_LOW = 0.3;
     //public static final int A = 69420; Nice ;)
-// add motors for arm going up and down
+    // add motors for arm going up and down
     public static final int R_CLIMBER_MOTOR_ID = 32; //Climber Motor right
     public static final int L_CLIMBER_MOTOR_ID = 28; //Climber Motor RIGHT
     //need actual encoder values, from engineering team
@@ -41,18 +45,19 @@ public class Parameters{
     public static final double CLIMBER_MOTOR_SPEED_DPAD = 0.5; //need the actual speed. This is for the Dpad when both poles retract at the same time
     public static final double CLIMBER_MOTOR_SPEED_INDIVIDUAL = 0.5;//This is for when the joysticks are controlling individual motors
 
-    public static final double intakeSpeed = 0.5;
-    public static final double stopSpeed = 0.0;
-    public static final int intakeForwardChannel = 6;
-    public static final int intakeReverseChannel = 7;
-
+    //INTAKE
     public static final int SUCCMOTOR_ID = 16; //Intake Motor
+    public static final int INTAKE_FORWARD_CHANNEL = 4;//TODO need to get the real channel ID
+    public static final int INTAKE_REVERSE_CHANNEL = 5;//TODO need to get the actual channel ID
+    public static final double INTAKE_MOTOR_SPEED = 0.5; //TODO get the actual intake motor speed 
+
+
     public static final int SHOOTERMOTOR_L_ID = 26;
     public static final int SHOOTERMOTOR_R_ID = 27;
     public static final int STIRRERMOTOR_ID = 18;
     public static final int FEEDERMOTOR_ID = 17;
-    public static final int SHROUD_UP_CHANNEL = 0;// get the real ID
-    public static final int SHROUD_DOWN_CHANNEL = 1;// the real ID
+    public static final int SHROUD_DOWN_CHANNEL = 0;//TODO get the real ID
+    public static final int SHROUD_UP_CHANNEL = 1;//TODO get the real ID
     public static double MOTORSPEEDLOW = 0.1;
     public static double MOTORSPEEDMEDIUM = .5; 
     public static double MOTORSPEEDHIGH = 1.0;// we don't know yet what the engineers are going to do
@@ -72,6 +77,11 @@ public class Parameters{
         4.930419, 4.880371, 4.932861, 4.906005
     };
 
-    
+    // Aligner tolerances
+
+    public static final double POSITION_TOLERANCE = 5.00;
+    public static final double VELOCITY_TOLERANCE = 5.00;
+
+
 
 }

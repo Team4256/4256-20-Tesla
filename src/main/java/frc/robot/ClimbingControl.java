@@ -89,7 +89,7 @@ public class ClimbingControl {
 
     
     //need to add device numbers based on excel sheet
-    public ClimbingControl( int LMotorID){
+    public ClimbingControl(){
         climbMotorRight = new WPI_TalonFX(Parameters.R_CLIMBER_MOTOR_ID); 
         climbMotorLeft = new WPI_TalonFX(Parameters.L_CLIMBER_MOTOR_ID);
         climbMotorLeft.setNeutralMode(NeutralMode.Brake);
