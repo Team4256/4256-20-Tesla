@@ -12,8 +12,6 @@ public class Limelight {
 
     private static final double ANGLE_THRESHOLD = 10.0;
     private static Limelight instance = null;
-    private static JoystickControl joyStick= new JoystickControl();
-
     private double commandedDirection = 0.0;
     private double commandedSpeed = 0.0;
     private double commandedSpin = 0.0;

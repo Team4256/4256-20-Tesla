@@ -13,7 +13,6 @@ public class JoystickControl {
     private Xbox driver = new Xbox(0);
     private Xbox gunner = new Xbox(1);
     private D_Swerve swerve = new D_Swerve();
-    //private SwerveModule moduleAB = new SwerveModule(Parameters.ROTATION_MOTOR_A_ID,0, true, Parameters.TRACTION_MOTOR_A_ID, false, 0);
     
     private ClimbingControl climber = new ClimbingControl();
 

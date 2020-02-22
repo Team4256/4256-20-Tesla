@@ -58,8 +58,13 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         this.deviceID = deviceID;
         this.isInverted = isInverted;
         logger = Logger.getLogger("SparkMax " + Integer.toString(deviceID));
-
+        SmartDashboard.putNumber("devID", deviceID);
         if (analogEncoderID >= 0 && analogEncoderID <= 3) {
+
+                if (deviceID > 11) {
+                    SmartDashboard.putNumber("isBadit", deviceID);
+                }
+
                 encoderPort = new AnalogInput(analogEncoderID);
                 angleEncoder = new AnalogEncoder(encoderPort);
                 angleEncoder.setDistancePerRotation(360);

@@ -91,10 +91,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    // subsystems.swervePeriodic();
-    // subsystems.intakePeriodic();
-    // subsystems.shooterPeriodic();
+    subsystems.swervePeriodic();
+    subsystems.intakePeriodic();
+    subsystems.shooterPeriodic();
     subsystems.ClimbingPeriodic();
+    
     
   }
   
