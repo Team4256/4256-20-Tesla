@@ -47,8 +47,8 @@ public class Parameters{
 
     //INTAKE
     public static final int SUCCMOTOR_ID = 16; //Intake Motor
-    public static final int INTAKE_FORWARD_CHANNEL = 4;//TODO need to get the real channel ID
-    public static final int INTAKE_REVERSE_CHANNEL = 5;//TODO need to get the actual channel ID
+    public static final int INTAKE_FORWARD_CHANNEL = 0;//TODO need to get the real channel ID
+    public static final int INTAKE_REVERSE_CHANNEL = 1;//TODO need to get the actual channel ID
     public static final double INTAKE_MOTOR_SPEED = 0.5; //TODO get the actual intake motor speed 
 
 
@@ -56,8 +56,8 @@ public class Parameters{
     public static final int SHOOTERMOTOR_R_ID = 27;
     public static final int STIRRERMOTOR_ID = 18;
     public static final int FEEDERMOTOR_ID = 17;
-    public static final int SHROUD_DOWN_CHANNEL = 0;//TODO get the real ID
-    public static final int SHROUD_UP_CHANNEL = 1;//TODO get the real ID
+    public static final int SHROUD_DOWN_CHANNEL = 3;//TODO get the real ID
+    public static final int SHROUD_UP_CHANNEL = 2;//TODO get the real ID
     public static double MOTORSPEEDLOW = 0.1;
     public static double MOTORSPEEDMEDIUM = .5; 
     public static double MOTORSPEEDHIGH = 1.0;// we don't know yet what the engineers are going to do
