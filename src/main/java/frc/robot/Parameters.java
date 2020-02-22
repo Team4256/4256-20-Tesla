@@ -46,7 +46,7 @@ public class Parameters{
     public static final double CLIMBER_MOTOR_SPEED_INDIVIDUAL = 0.5;//This is for when the joysticks are controlling individual motors
 
     //INTAKE
-    public static final int SUCCMOTOR_ID = 16; //Intake Motor
+    public static final int INTAKE_MOTOR_ID = 16; //Intake Motor
     public static final int INTAKE_FORWARD_CHANNEL = 4;//TODO need to get the real channel ID
     public static final int INTAKE_REVERSE_CHANNEL = 5;//TODO need to get the actual channel ID
     public static final double INTAKE_MOTOR_SPEED = 0.5; //TODO get the actual intake motor speed 

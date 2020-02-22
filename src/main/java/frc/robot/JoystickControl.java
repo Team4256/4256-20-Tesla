@@ -16,7 +16,7 @@ public class JoystickControl {
     
     private ClimbingControl climber = new ClimbingControl();
 
-    private Intake succer = new Intake();
+    private Intake intake = new Intake();
     private Aligner aligner = new Aligner(swerve);
     private Shooter cellShooter = new Shooter(aligner, Parameters.SHOOTERMOTOR_L_ID, Parameters.SHOOTERMOTOR_R_ID, Parameters.STIRRERMOTOR_ID, Parameters.FEEDERMOTOR_ID, Parameters.SHROUD_UP_CHANNEL, Parameters.SHROUD_DOWN_CHANNEL);
    // private ControlPanelSystem controlPanel = new ControlPanelSystem(Parameters.WHEEL_ARM_UP_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_DOWN_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_MOTOR_ID);
@@ -33,7 +33,7 @@ public class JoystickControl {
         speed  = driver.getCurrentRadius(Xbox.STICK_LEFT, true);
         direction = driver.getCurrentAngle(Xbox.STICK_LEFT, true);
         spin = 0.5 * driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);// normal mode
-        
+
         //     if (driver.getRawButtonPressed(driver.BUTTON_A)) {
         //     moduleAB.getTractionMotor().set(.3);
         //     moduleAB.getRotationMotor().SetAngle(90);
@@ -87,9 +87,9 @@ public class JoystickControl {
             SmartDashboard.putNumber("tx", blindei.getCommandedDirection());
 
         }
-    }
-    Shooter Periodic;
-   // create a button that tells the shooter wheel to spin, when the shoot mode started, the shooter wheel continue to spin. 
+    }   
+    //Shooter Periodic
+    Shooter Periodic; 
     public void shooterPeriodic() {
 
         if (driver.getRawButtonPressed(Xbox.AXIS_RT)) {
@@ -112,19 +112,29 @@ public class JoystickControl {
     public void intakePeriodic() {
          if (gunner.getRawButtonPressed(Xbox.BUTTON_LB)) {
 
-             succer.succ();
+             intake.succ();
             
          }
          if (gunner.getRawButtonReleased(Xbox.BUTTON_LB)) {
-             succer.stop();
+             intake.stop();
         }
         if (gunner.getRawButtonPressed(Xbox.BUTTON_RB)) {
 
-            succer.spew();
+            intake.spew();
             
         }
         if (gunner.getRawButtonReleased(Xbox.BUTTON_RB)) {
-            succer.stop();
+            intake.stop();
+
+        } 
+        if (driver.getRawButtonPressed(Xbox.BUTTON_A)) {
+
+            intake.intakeDown();
+
+        }
+        if (driver.getRawButtonReleased(Xbox.BUTTON_Y)) {
+
+            intake.intakeUp();
 
         }
     }

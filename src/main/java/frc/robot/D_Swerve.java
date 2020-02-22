@@ -105,8 +105,7 @@ public final class D_Swerve implements Drivetrain {
 	public void formX() {moduleA.swivelTo(-45.0); moduleB.swivelTo(45.0); moduleC.swivelTo(45.0); moduleD.swivelTo(-45.0);}
 
 	public boolean isThere(final double threshold) {
-		return true;
-		//return moduleA.isThere(threshold) /**&& moduleB.isThere(threshold) && moduleC.isThere(threshold) && moduleD.isThere(threshold)*/; //TODO add back the modules
+		return moduleA.isThere(threshold) && moduleB.isThere(threshold) && moduleC.isThere(threshold) && moduleD.isThere(threshold);
 	}
 
 	private void stop() {for (SwerveModule module : modules) module.set(0.0);}

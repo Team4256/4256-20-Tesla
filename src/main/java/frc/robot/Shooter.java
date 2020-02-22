@@ -156,8 +156,6 @@ public void spinShooterMotors(double speed){
       
    }
 
-    
-
     public void range(){
       shroudSolenoid.set(Value.kForward);
     }

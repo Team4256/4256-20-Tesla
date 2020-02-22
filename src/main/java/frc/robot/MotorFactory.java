@@ -27,7 +27,7 @@ public class MotorFactory {
         return null;
         
  }
-    public static Motor createRotationMotor(int deviceID, int analogEncoderID) {//TODO add an analog encoder
+    public static Motor createRotationMotor(int deviceID, int analogEncoderID) {
         if (rotationMotorType == MotorType.TALON) {
             boolean isDevIDLegal = deviceID > 14;
             

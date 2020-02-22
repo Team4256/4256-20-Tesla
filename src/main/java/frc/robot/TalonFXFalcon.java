@@ -146,8 +146,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         if( encoderPort.getChannel() == 3){
             if (encoderPort.getVoltage() > maxAngle) maxAngle = encoderPort.getVoltage();
         if (encoderPort.getVoltage() < minAngle) minAngle = encoderPort.getVoltage();
-        SmartDashboard.putNumber("minAngle", minAngle);
-        SmartDashboard.putNumber("maxAngle", maxAngle);
+        SmartDashboard.putNumber("vlougk,vhl", encoderPosition);
 
         }
         
@@ -191,6 +190,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         //SmartDashboard.putNumber("Percent Output Us", percentSpeed);
         updated = true;
         lastSetpoint = percentSpeed; 
+        SmartDashboard.putNumber("errrereer", error);
         
     }
 
