@@ -103,9 +103,9 @@ public class Shooter {
 
 public void spinShooterMotors(double speed){
   shooterMotor1.set(TalonFXControlMode.PercentOutput, speed);
-    shooterMotor2.set(TalonFXControlMode.PercentOutput, speed);
-    SpinUp = true;
-  }
+  shooterMotor2.set(TalonFXControlMode.PercentOutput, speed);
+  SpinUp = true;
+}
 
 
   public void shootAlign() {
@@ -156,9 +156,21 @@ public void spinShooterMotors(double speed){
       
    }
 
-    public void range(){
+    
+
+   public void range(){
+    if(shroudSolenoid.get()==Value.kForward){
+      shroudSolenoid.set(Value.kReverse);
+    }
+    else{
       shroudSolenoid.set(Value.kForward);
     }
+    STOP();
+}
+
+
+
+
     // public double distanceSpeed(){
     //   double distance = shooterAligner.DistanceToTarget();
     //   if (distance >= Parameters.DISTANCE_LOW_MIN && distance <= Parameters.DISTANCE_LOW_MAX) {

@@ -92,20 +92,21 @@ public class JoystickControl {
     Shooter Periodic; 
     public void shooterPeriodic() {
 
-        if (driver.getRawButtonPressed(Xbox.AXIS_RT)) {
+        if (driver.getAxisPress(Xbox.AXIS_RT, 0.5)) {
         
              cellShooter.ShootAlign();
 
          }
-         if (driver.getRawButtonReleased(Xbox.BUTTON_RB)) {
+         if (driver.getRawButtonPressed(Xbox.BUTTON_RB)) {
              cellShooter.ShootNoAlign();
          }
-        if (gunner.getRawButtonPressed(Xbox.AXIS_LT)){
+        if (gunner.getAxisPress(Xbox.AXIS_LT, 0.5)){
             cellShooter.SpinShooterPrep();
         }
-        if (gunner.getRawButtonPressed(Xbox.AXIS_RT)){
+        if (gunner.getAxisPress(Xbox.AXIS_RT, 0.5)){
             cellShooter.ShooterRange();
         }
+        cellShooter.periodic();
         
      }
     //Intake Periodic
@@ -142,21 +143,21 @@ public class JoystickControl {
 
    
     public void ClimbingPeriodic(){
-        if (gunner.getRawButtonPressed(Xbox.DPAD_NORTH)){
+        if (gunner.getPOV() ==(Xbox.DPAD_NORTH)){
             climber.climberArmUp();
         }
-        if (gunner.getRawButtonPressed(Xbox.DPAD_WEST)){
+        if (gunner.getPOV() == (Xbox.DPAD_WEST)){
             climber.extendClimberPolesMedium();
         }
-        if (gunner.getRawButtonPressed(Xbox.DPAD_EAST)){
+        if (gunner.getPOV() ==(Xbox.DPAD_EAST)){
             climber.extendClimberPolesHigh();
         }
-        if (gunner.getRawButtonPressed(Xbox.DPAD_SOUTH)){
+        if (gunner.getPOV() == (Xbox.DPAD_SOUTH)){
             climber.retractClimberPoles(); //both poles at the same time
             
         }
         else{
-            climber.retractIndividualClimberPole(gunner.getCurrentRadius(Xbox.STICK_LEFT, true), gunner.getCurrentRadius(Xbox.STICK_RIGHT, true));
+            climber.retractIndividualClimberPole(gunner.getDeadbandedAxis(Xbox.AXIS_LEFT_Y), gunner.getDeadbandedAxis(Xbox.AXIS_RIGHT_Y));
             
         }
         
