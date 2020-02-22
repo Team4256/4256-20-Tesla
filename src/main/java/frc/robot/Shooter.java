@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 //import com.cyborgcats.reusable.phoenix.Talon;
@@ -22,7 +23,7 @@ public class Shooter {
   private final WPI_TalonFX shooterMotor1;
   private final WPI_TalonFX shooterMotor2;
   //hopper motor and feeder motor
-  private final TalonSRX stirrerMotor;
+  private final Victor stirrerMotor;
   private final TalonSRX feederMotor;
   private DoubleSolenoid shroudSolenoid;
   private Aligner aligner;
@@ -60,12 +61,12 @@ public class Shooter {
   public void STOP(){
     currentShootingState = ShootingStates.OFF;
   }
-  public Shooter(Aligner aligner, int shootermotorID1, int shooterMotorID2, int hopperMotorID, int feederMotorID, int shroudForwardChannel, int shroudReverseChannel) {
+  public Shooter( Aligner aligner, int shootermotorID1, int shooterMotorID2, int hopperMotorID, int feederMotorID, int shroudReverseChannel, int shroudForwardChannel) {
     shooterMotor1 = new WPI_TalonFX(shootermotorID1);
     shooterMotor2 = new WPI_TalonFX(shooterMotorID2);
-    stirrerMotor = new TalonSRX(hopperMotorID);
+    stirrerMotor = new Victor(hopperMotorID, ControlMode.PercentOutput);
     feederMotor = new TalonSRX(feederMotorID);
-    shroudSolenoid = new DoubleSolenoid(shroudForwardChannel, shroudReverseChannel);
+    shroudSolenoid = new DoubleSolenoid(shroudReverseChannel, shroudForwardChannel);
     shooterAligner = aligner;
 
     // shooterMotorEncoder1 = new CANEncoder(shooterMotor1);
@@ -75,7 +76,7 @@ public class Shooter {
   public void periodic(){
     switch(currentShootingState){
       case SPINUP:
-        spinShooterMotors(Parameters.MOTORSPEEDMEDIUM);
+        spinShooterMotors(-Parameters.SHOOTER_MOTOR_SPEED);
         break;
       case SHOOTNOALIGN:
         shootUnAligned();
@@ -107,6 +108,14 @@ public void spinShooterMotors(double speed){
   SpinUp = true;
 }
 
+public void spinStirrerMotors() {
+  stirrerMotor.quickSet(Parameters.STIRRER_MOTOR_SPEED);
+  SmartDashboard.putNumber("stirrrer direction", Parameters.STIRRER_MOTOR_SPEED);
+}
+
+public void stopStirrerMotors() {
+  stirrerMotor.quickSet(0.0);
+}
 
   public void shootAlign() {
     if (shooterAligner.getIsAtTarget()) {
@@ -146,9 +155,9 @@ public void spinShooterMotors(double speed){
   }
 
   public void shootUnAligned() {
-    spinShooterMotors(Parameters.MOTORSPEEDMEDIUM);
-    stirrerMotor.set(ControlMode.PercentOutput, Parameters.MOTORSPEEDMEDIUM);
-    feederMotor.set(ControlMode.PercentOutput, Parameters.MOTORSPEEDMEDIUM);
+    spinShooterMotors(-Parameters.SHOOTER_MOTOR_SPEED);
+    stirrerMotor.set(ControlMode.PercentOutput, -Parameters.FEEDER_STIRRER_MOTOR_SPEED);
+    feederMotor.set(ControlMode.PercentOutput, Parameters.FEEDER_STIRRER_MOTOR_SPEED);
       SmartDashboard.putString("Alive", "Is alive");
       SmartDashboard.putNumber("shooterSpeed(RPM)",
       shooterMotor1.getSensorCollection().getIntegratedSensorVelocity() / 2048 * 600);
@@ -191,7 +200,7 @@ public void spinShooterMotors(double speed){
     shooterMotor2.set(0.0);
     stirrerMotor.set(ControlMode.PercentOutput,0.0);
     feederMotor.set(ControlMode.PercentOutput,0.0);
-    aligner.turnLEDOff();
+    //aligner.turnLEDOff();
   }
 
   }

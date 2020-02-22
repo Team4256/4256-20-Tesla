@@ -22,10 +22,11 @@ public class JoystickControl {
    // private ControlPanelSystem controlPanel = new ControlPanelSystem(Parameters.WHEEL_ARM_UP_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_DOWN_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_MOTOR_ID);
     private boolean rotationMode = false;
     private double angle = 0;
-    double spin;
+    private double spin;
     private double direction;
     private double speed;
     private Limelight blindei = Limelight.getInstance();
+    private boolean isShooting;
 
     // Swerve Periodic
 
@@ -63,21 +64,7 @@ public class JoystickControl {
             SmartDashboard.putNumber("SwervesDirection", direction);
             SmartDashboard.putNumber("Swervespeed", speed);
             }
-        
-        
-
-
-
-
-
-
-
-
-        if (driver.getRawButtonPressed(driver.BUTTON_START)) {
-
-            swerve.setAllModulesToZero();
-
-        } else {
+             else {
              
 
             swerve.completeLoopUpdate();
@@ -93,27 +80,35 @@ public class JoystickControl {
     public void shooterPeriodic() {
 
         if (driver.getAxisPress(Xbox.AXIS_RT, 0.5)) {
-        
              cellShooter.ShootAlign();
-
          }
          if (driver.getRawButtonPressed(Xbox.BUTTON_RB)) {
-             cellShooter.ShootNoAlign();
+             isShooting = true;
+            cellShooter.ShootNoAlign();
          }
-        if (gunner.getAxisPress(Xbox.AXIS_LT, 0.5)){
+         if (driver.getRawButtonReleased(Xbox.BUTTON_RB)) {
+             cellShooter.STOP();
+         }
+        if (gunner.getRawButtonPressed(Xbox.AXIS_LT)){
             cellShooter.SpinShooterPrep();
         }
         if (gunner.getAxisPress(Xbox.AXIS_RT, 0.5)){
             cellShooter.ShooterRange();
         }
+        if (driver.getRawButtonPressed(Xbox.BUTTON_B)) {
+            cellShooter.spinStirrerMotors();
+        }
+        
+        
+        
         cellShooter.periodic();
         
      }
     //Intake Periodic
     public void intakePeriodic() {
          if (gunner.getRawButtonPressed(Xbox.BUTTON_LB)) {
-
-             intake.succ();
+            
+            intake.spew();
             
          }
          if (gunner.getRawButtonReleased(Xbox.BUTTON_LB)) {
@@ -121,7 +116,7 @@ public class JoystickControl {
         }
         if (gunner.getRawButtonPressed(Xbox.BUTTON_RB)) {
 
-            intake.spew();
+            intake.succ();
             
         }
         if (gunner.getRawButtonReleased(Xbox.BUTTON_RB)) {

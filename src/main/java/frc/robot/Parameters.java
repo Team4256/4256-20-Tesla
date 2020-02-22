@@ -32,8 +32,8 @@ public class Parameters{
     public static final Color myYellow = ColorMatch.makeColor(0.320557, 0.556641, 0.122803);
 
     //soloniod motor stuff in competition up will be 2 down will be 3
-    public static final int CLIMBER_FORWARD_CHANNEL = 2; //solenoid port Extend 
-    public static final int CLIMBER_REVERSE_CHANNEL = 3; //solenoid port Retract
+    public static final int CLIMBER_FORWARD_CHANNEL = 6; //solenoid port Extend 
+    public static final int CLIMBER_REVERSE_CHANNEL = 7; //solenoid port Retract
     public static final double CLIMBING_SPEED_LOW = 0.3;
     //public static final int A = 69420; Nice ;)
     // add motors for arm going up and down
@@ -56,11 +56,12 @@ public class Parameters{
     public static final int SHOOTERMOTOR_R_ID = 27;
     public static final int STIRRERMOTOR_ID = 18;
     public static final int FEEDERMOTOR_ID = 17;
-    public static final int SHROUD_DOWN_CHANNEL = 3;//TODO get the real ID
-    public static final int SHROUD_UP_CHANNEL = 2;//TODO get the real ID
-    public static double MOTORSPEEDLOW = 0.1;
-    public static double MOTORSPEEDMEDIUM = .5; 
-    public static double MOTORSPEEDHIGH = 1.0;// we don't know yet what the engineers are going to do
+    public static final int SHROUD_DOWN_CHANNEL = 3;
+    public static final int SHROUD_UP_CHANNEL = 2;
+    public static double SHOOTER_MOTOR_SPEED = -0.8;
+    public static double FEEDER_STIRRER_MOTOR_SPEED = -0.5; 
+    public static double STIRRER_MOTOR_SPEED = 0.3;
+    //public static double MOTORSPEEDHIGH = 0.3;// we don't know yet what the engineers are going to do
     public static double DISTANCE_LOW_MIN = 4.5;
     public static double DISTANCE_LOW_MAX = 5.5;
     public static double DISTANCE_MED_MIN = 9.5;

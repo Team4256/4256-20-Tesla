@@ -9,14 +9,14 @@ public class Intake {
     private DoubleSolenoid intakeSolenoid;
 
     public Intake() {
-        intakeMotor = new VictorSPX(Parameters.INTAKE_MOTOR_ID);
+        intakeMotor = new VictorSPX(Parameters.SUCCMOTOR_ID);
         intakeSolenoid = new DoubleSolenoid(Parameters.INTAKE_FORWARD_CHANNEL, Parameters.INTAKE_REVERSE_CHANNEL);
     }
     public void succ() {
-        intakeMotor.set(ControlMode.PercentOutput, Parameters.INTAKE_REVERSE_CHANNEL);
+        intakeMotor.set(ControlMode.PercentOutput, -Parameters.INTAKE_REVERSE_CHANNEL);
     }
     public void spew(){
-        intakeMotor.set(ControlMode.PercentOutput, -Parameters.INTAKE_MOTOR_SPEED);
+        intakeMotor.set(ControlMode.PercentOutput, Parameters.INTAKE_MOTOR_SPEED);
     }
     public void stop() {
         intakeMotor.set(ControlMode.PercentOutput, 0.0);
