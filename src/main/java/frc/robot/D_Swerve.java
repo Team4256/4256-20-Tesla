@@ -73,7 +73,7 @@ public final class D_Swerve implements Drivetrain {
 		if (!bad) {
 			final double[] angles_final = computeAngles(comps_desired);
 			SmartDashboard.putNumberArray("anglesFinal", angles_final);
-		for (int i = 0; i < 4; i++) modules[i].swivelTo(angles_final[i]);//control rotation if driver input
+		for (int i = 0; i < 4; i++) modules[i].swivelTo(-angles_final[i]);//negative sign because when spining, the angles were flipped
 			//for (int i = 0; i < 4; i++) modules[i].swivelTo(45);//control rotation if driver input
 		}
 		
@@ -102,7 +102,7 @@ public final class D_Swerve implements Drivetrain {
 		return new double[] {drivetrainX, drivetrainY};
 	}
 	
-	public void formX() {moduleA.swivelTo(-45.0); moduleB.swivelTo(45.0); moduleC.swivelTo(45.0); moduleD.swivelTo(-45.0);}
+	public void formX() {moduleA.swivelTo(45.0); moduleB.swivelTo(-45.0); moduleC.swivelTo(-45.0); moduleD.swivelTo(45.0);}
 
 	public boolean isThere(final double threshold) {
 		return true;

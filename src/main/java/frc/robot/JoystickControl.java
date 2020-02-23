@@ -98,11 +98,11 @@ public class JoystickControl {
         //     moduleAB.getTractionMotor().set(.3);
         //     moduleAB.getRotationMotor().SetAngle(90);
         // }
-        // if (driver.getRawButtonPressed(driver.BUTTON_X)) {
-        //     rotationMode = true;
+         if (driver.getRawButtonPressed(driver.BUTTON_X)) {
+             swerve.formX();
 
         //     angle = 360;
-        // }
+         }
         if (true) {
             rotationMode = true;
             
@@ -117,7 +117,7 @@ public class JoystickControl {
             spin *= spin * Math.signum(spin);
             swerve.setSpeed(speed);
             swerve.setSpin(spin);
-            swerve.travelTowards(-direction);
+            swerve.travelTowards(direction);
             swerve.completeLoopUpdate();
             SmartDashboard.putNumber("Swervespin", spin);
             SmartDashboard.putNumber("SwervesDirection", direction);

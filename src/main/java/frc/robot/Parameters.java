@@ -75,7 +75,7 @@ public class Parameters{
 
     public static final double angleEncoderMinVoltage[] = {0.00366, 0.01099, 0.009766, 0.01343};
     public static final double angleEncoderMaxVoltage[] = {4.9133, 4.9255, 4.9219, 4.9243};
-    public static final double angleEncoderTareVoltage[] = {4.155 + 180.0,1.762 + 180 ,1.298 + 180.0,4.1138 + 180.0};
+    public static final double angleEncoderTareVoltage[] = {4.155,1.762,1.298,4.1138};
 
     // Aligner tolerances
 

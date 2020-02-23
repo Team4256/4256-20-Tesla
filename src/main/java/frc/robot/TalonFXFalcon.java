@@ -160,13 +160,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
             targetAngle -= 360;
         }
 
-
-        //SmartDashboard.putNumber("target Angle", targetAngle);
-        //SmartDashboard.putNumber("encoder position", encoderPosition);
-        //SmartDashboard.putNumber("Encoder Voltage", encoderPort.getVoltage());
-
         double error = targetAngle - encoderPosition;
-        //SmartDashboard.putNumber("PID error", anglePIDController.getPositionError());
         
         while (targetAngle - encoderPosition > 180) {
             encoderPosition += 360;
@@ -175,16 +169,6 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         while (targetAngle - encoderPosition < -180) {
             encoderPosition -= 360;
         }
-        
-        
-        // if (Math.abs(error) < 2) {
-        //     super.set(0.0);
-        //     SmartDashboard.putNumber("Percent Output", 0.0);
-        //     return;
-        // }
-        
-        //SmartDashboard.putNumber("Error", error);
-        
         
         double percentSpeed = anglePIDController.calculate(encoderPosition, targetAngle);
         if (Math.abs(percentSpeed) > .5) {
