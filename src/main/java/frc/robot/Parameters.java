@@ -4,8 +4,9 @@ import com.revrobotics.ColorMatch;
 
 public class Parameters{
     // Gyro
-
     public static final byte GYRO_UPDATE_HZ = 50;
+
+    
 
 
     // Swerve Motors
@@ -48,8 +49,9 @@ public class Parameters{
     //INTAKE
     public static final int SUCCMOTOR_ID = 16; //Intake Motor
     public static final int INTAKE_FORWARD_CHANNEL = 0;//TODO need to get the real channel ID
-    public static final int INTAKE_REVERSE_CHANNEL = 1;//TODO need to get the actual channel ID
-    public static final double INTAKE_MOTOR_SPEED = 0.5; //TODO get the actual intake motor speed 
+    public static final double INTAKE_SUCC_MOTOR = 0.5;//TODO need to get the actual channel ID
+    public static final double INTAKE_MOTOR_SPEED = 0.3;
+    public static final int INTAKE_REVERSE_CHANNEL = 1; //TODO get the actual intake motor speed 
 
 
     public static final int SHOOTERMOTOR_L_ID = 26;
@@ -71,12 +73,9 @@ public class Parameters{
 
     // Minimum and Maximum Voltage
 
-    public static final double angleEncoderMinVoltage[] = {
-        0.012207, 0.142822, 0.017090, 0.025635
-    };
-    public static final double angleEncoderMaxVoltage[] = {
-        4.930419, 4.880371, 4.932861, 4.906005
-    };
+    public static final double angleEncoderMinVoltage[] = {0.00366, 0.01099, 0.009766, 0.01343};
+    public static final double angleEncoderMaxVoltage[] = {4.9133, 4.9255, 4.9219, 4.9243};
+    public static final double angleEncoderTareVoltage[] = {4.155 + 180.0,1.762 + 180 ,1.298 + 180.0,4.1138 + 180.0};
 
     // Aligner tolerances
 

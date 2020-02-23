@@ -21,7 +21,7 @@ public class MotorFactory {
             return new TalonFXFalcon(deviceID, false);
 
         } else if (tractionMotorType == MotorType.NEO) { 
-                return new SparkMaxNeo(deviceID, IdleMode.kCoast, false);
+                return new SparkMaxNeo(deviceID, IdleMode.kBrake, false);
 
         }
         return null;

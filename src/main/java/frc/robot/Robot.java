@@ -7,10 +7,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.Compressor;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -25,6 +26,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static double gyroHeading = 0.0;
   private JoystickControl subsystems = new JoystickControl();
+
   //private Compressor compress = new Compressor();
   /**
    * This function is run when the robot is first started up and should be used
@@ -35,6 +37,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+    
    // compress.start();
   }
 
@@ -49,6 +52,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+      subsystems.displaySwerveAngles();
+        // apollo.getEntry("Selected Starting Position").setString(autoModeChooser.getRawSelections()[0]);
+        // apollo.getEntry("Desired Auto Mode").setString(autoModeChooser.getRawSelections()[1]);
+        // apollo.getEntry("Has Ball Test").setBoolean(ballIntake.hasBall());
+        // apollo.getEntry("Is Autonomous").setBoolean(autoModeExecutor != null);
   }
 
   /**

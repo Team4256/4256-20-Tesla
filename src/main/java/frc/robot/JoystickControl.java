@@ -4,6 +4,8 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTypeResolverBuilder;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -12,7 +14,7 @@ public class JoystickControl {
     
     private Xbox driver = new Xbox(0);
     private Xbox gunner = new Xbox(1);
-    private D_Swerve swerve = new D_Swerve();
+    public D_Swerve swerve = new D_Swerve();
     
     private ClimbingControl climber = new ClimbingControl();
 
@@ -25,15 +27,72 @@ public class JoystickControl {
     private double spin;
     private double direction;
     private double speed;
-    private Limelight blindei = Limelight.getInstance();
     private boolean isShooting;
+    private static NetworkTableInstance nt;
+    private static NetworkTable zeus;
+    private double modAMax = 0;
+    private double modBMax = 0;
+    private double modCMax = 0;
+    private double modDMax = 0;
+    private double modAMin = 10;
+    private double modBMin = 10;
+    private double modCMin = 10;
+    private double modDMin = 10;
 
+
+
+    public JoystickControl() {
+        nt = NetworkTableInstance.getDefault();
+        zeus = nt.getTable("Zeus");
+    }
+
+    public void displaySwerveAngles () {
+    double modA = swerve.getSwerveModules()[0].getRotationMotor().getEncoderVoltage();
+    double modB = swerve.getSwerveModules()[1].getRotationMotor().getEncoderVoltage();
+    double modC = swerve.getSwerveModules()[2].getRotationMotor().getEncoderVoltage();
+    double modD = swerve.getSwerveModules()[3].getRotationMotor().getEncoderVoltage();
+    
+    modAMax = Math.max(modAMax, modA);
+    modBMax = Math.max(modBMax, modB);
+    modCMax = Math.max(modCMax, modC);
+    modDMax = Math.max(modDMax, modD);
+    modAMin = Math.min(modAMin, modA);
+    modBMin = Math.min(modBMin, modB);
+    modCMin = Math.min(modCMin, modC);
+    modDMin = Math.min(modDMin, modD);
+    
+    
+
+
+    zeus.getEntry("ModuleA Angle").setNumber(swerve.getSwerveModules()[0].getRotationMotor().getCurrentAngle());
+    zeus.getEntry("ModuleB Angle").setNumber(swerve.getSwerveModules()[1].getRotationMotor().getCurrentAngle());
+    zeus.getEntry("ModuleC Angle").setNumber(swerve.getSwerveModules()[2].getRotationMotor().getCurrentAngle());
+    zeus.getEntry("ModuleD Angle").setNumber(swerve.getSwerveModules()[3].getRotationMotor().getCurrentAngle());
+    
+    zeus.getEntry("ModuleA Tare").setNumber(modA);
+    zeus.getEntry("ModuleB Tare").setNumber(modB);
+    zeus.getEntry("ModuleC Tare").setNumber(modC);
+    zeus.getEntry("ModuleD Tare").setNumber(modD);
+    
+    zeus.getEntry("ModuleA Max").setNumber(modAMax);
+    zeus.getEntry("ModuleB Max").setNumber(modBMax);
+    zeus.getEntry("ModuleC Max").setNumber(modCMax);
+    zeus.getEntry("ModuleD Max").setNumber(modDMax);
+    
+    zeus.getEntry("ModuleA Min").setNumber(modAMin);
+    zeus.getEntry("ModuleB Min").setNumber(modBMin);
+    zeus.getEntry("ModuleC Min").setNumber(modCMin);
+    zeus.getEntry("ModuleD Min").setNumber(modDMin);
+    }
+    
+    
     // Swerve Periodic
 
     public void swervePeriodic() {
         speed  = driver.getCurrentRadius(Xbox.STICK_LEFT, true);
-        direction = driver.getCurrentAngle(Xbox.STICK_LEFT, true);
+        direction = driver.getCurrentAngle((Xbox.STICK_LEFT), true);
         spin = 0.5 * driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);// normal mode
+        final boolean turbo = driver.getRawButton(Xbox.BUTTON_STICK_LEFT);
 
         //     if (driver.getRawButtonPressed(driver.BUTTON_A)) {
         //     moduleAB.getTractionMotor().set(.3);
@@ -58,21 +117,23 @@ public class JoystickControl {
             spin *= spin * Math.signum(spin);
             swerve.setSpeed(speed);
             swerve.setSpin(spin);
-            swerve.travelTowards(direction);
+            swerve.travelTowards(-direction);
             swerve.completeLoopUpdate();
             SmartDashboard.putNumber("Swervespin", spin);
             SmartDashboard.putNumber("SwervesDirection", direction);
             SmartDashboard.putNumber("Swervespeed", speed);
+
+            speed *= speed;
+        if (!turbo) {
+            speed *= 0.6;
+        }
             }
              else {
-             
-
             swerve.completeLoopUpdate();
             swerve.setSpin(spin);
             swerve.setSpeed(speed);
             swerve.travelTowards(direction);
-            SmartDashboard.putNumber("tx", blindei.getCommandedDirection());
-
+           
         }
     }   
     //Shooter Periodic

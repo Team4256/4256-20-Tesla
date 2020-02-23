@@ -13,7 +13,7 @@ public class Intake {
         intakeSolenoid = new DoubleSolenoid(Parameters.INTAKE_FORWARD_CHANNEL, Parameters.INTAKE_REVERSE_CHANNEL);
     }
     public void succ() {
-        intakeMotor.set(ControlMode.PercentOutput, -Parameters.INTAKE_REVERSE_CHANNEL);
+        intakeMotor.set(ControlMode.PercentOutput, -Parameters.INTAKE_SUCC_MOTOR );
     }
     public void spew(){
         intakeMotor.set(ControlMode.PercentOutput, Parameters.INTAKE_MOTOR_SPEED);

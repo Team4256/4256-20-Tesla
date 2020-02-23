@@ -89,7 +89,7 @@ public final class SwerveModule {
 	/**
 	 * Threshold should be specified in degrees. If the rotator is within that many degrees of its target, this function returns true.
 	**/
-	public boolean isThere(final double threshold) {return Math.abs(rotationControl.GetCurrentAngle()) <= threshold;}
+	public boolean isThere(final double threshold) {return Math.abs(rotationControl.getRotationMotor().getPIDError()) <= threshold;}
 	
 	
 	/**
@@ -114,8 +114,8 @@ public final class SwerveModule {
 	
 	
 	public double deltaDistance() {return tractionDeltaPathLength;}
-	public double deltaXDistance() {return tractionDeltaPathLength*Math.sin(convertToField(rotationControl.GetCurrentAngle(), Robot.gyroHeading)*Math.PI/180.0);}
-	public double deltaYDistance() {return tractionDeltaPathLength*Math.cos(convertToField(rotationControl.GetCurrentAngle(), Robot.gyroHeading)*Math.PI/180.0);}
+	public double deltaXDistance() {return tractionDeltaPathLength*Math.sin(convertToField(rotationControl.getCurrentAngle(), Robot.gyroHeading)*Math.PI/180.0);}
+	public double deltaYDistance() {return tractionDeltaPathLength*Math.cos(convertToField(rotationControl.getCurrentAngle(), Robot.gyroHeading)*Math.PI/180.0);}
 	
 	public RotationControl getRotationMotor() {return rotationControl;}
 	public TractionControl getTractionMotor() {return tractionControl;}
