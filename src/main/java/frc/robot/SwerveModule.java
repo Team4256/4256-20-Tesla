@@ -120,7 +120,7 @@ public final class SwerveModule {
 	public RotationControl getRotationMotor() {return rotationControl;}
 	public TractionControl getTractionMotor() {return tractionControl;}
 	public double getDecapitated() {return decapitated;}
-	
+
 
 	public void setParentLogger(final Logger logger) {
 		//rotationControl.setParentLogger(logger);
