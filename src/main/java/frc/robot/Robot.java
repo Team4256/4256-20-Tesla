@@ -26,7 +26,11 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static double gyroHeading = 0.0;
   private JoystickControl subsystems = new JoystickControl();
+  private static Gyro gyro = Gyro.getInstance();
 
+  public synchronized static void updateGyroHeading() {
+    gyroHeading = gyro.getCurrentAngle();
+}
   //private Compressor compress = new Compressor();
   /**
    * This function is run when the robot is first started up and should be used
@@ -37,6 +41,11 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+    gyro.setAngleAdjustment(Parameters.GYRO_OFFSET);
+    gyro.reset();
+    subsystems.setSwerveToZero();
+    
+    
     
    // compress.start();
   }
@@ -53,6 +62,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
       subsystems.displaySwerveAngles();
+      updateGyroHeading();
         // apollo.getEntry("Selected Starting Position").setString(autoModeChooser.getRawSelections()[0]);
         // apollo.getEntry("Desired Auto Mode").setString(autoModeChooser.getRawSelections()[1]);
         // apollo.getEntry("Has Ball Test").setBoolean(ballIntake.hasBall());

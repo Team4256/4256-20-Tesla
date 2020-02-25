@@ -19,6 +19,7 @@ public class JoystickControl {
     private Shooter cellShooter = new Shooter(aligner, Parameters.SHOOTERMOTOR_L_ID, Parameters.SHOOTERMOTOR_R_ID,
             Parameters.STIRRERMOTOR_ID, Parameters.FEEDERMOTOR_ID, Parameters.SHROUD_UP_CHANNEL,
             Parameters.SHROUD_DOWN_CHANNEL);
+    private Gyro gyro = Gyro.getInstance();
     private double spin;
     private double direction;
     private double speed;
@@ -33,10 +34,16 @@ public class JoystickControl {
     private double modBMin = 10;
     private double modCMin = 10;
     private double modDMin = 10;
+    private boolean leftTriggerTurnsMotorOn = true;
+    private boolean leftTriggerPrevPressed = false;
 
     public JoystickControl() {
         nt = NetworkTableInstance.getDefault();
         zeus = nt.getTable("Zeus");
+    }
+
+    public void setSwerveToZero() {
+        swerve.setAllModulesToZero();
     }
 
     public void displaySwerveAngles() {
@@ -85,6 +92,10 @@ public class JoystickControl {
 
         if (true) {
 
+            if (driver.getRawButtonPressed(driver.BUTTON_B) ) {
+                    gyro.reset();
+            }
+
             if (driver.getRawButtonPressed(driver.BUTTON_X)) {
                 swerve.formX();
             } else {
@@ -111,7 +122,7 @@ public class JoystickControl {
 
     public void shooterPeriodic() {
 
-        if (driver.getAxisPress(Xbox.AXIS_RT, 0.5)) {
+        if (driver.getAxisPress(Xbox.AXIS_RT, 0.1)) {
             cellShooter.ShootAlign();
         }
         if (driver.getRawButtonPressed(Xbox.BUTTON_RB)) {
@@ -124,12 +135,25 @@ public class JoystickControl {
         if (gunner.getAxisPress(Xbox.AXIS_LT, 0.5)) {
             cellShooter.SpinShooterPrep();
         }
-        if (gunner.getAxisPress(Xbox.AXIS_LT, 0.1)) {                               
-            cellShooter.SpinShooterPrep();
-        }
-        if (!gunner.getAxisPress(Xbox.AXIS_LT, 0.1)) {
-            cellShooter.STOP();
-        }
+        // if (gunner.getAxisPress(Xbox.AXIS_LT, 0.1)) {
+        // if (!leftTriggerPrevPressed) {
+        // if (leftTriggerTurnsMotorOn) {
+        // cellShooter.SpinShooterPrep();
+        // } else {
+        // cellShooter.STOP();
+        // }
+        // }
+        // leftTriggerPrevPressed = true;
+        // } else {
+        // if (leftTriggerPrevPressed) {
+        // leftTriggerPrevPressed = false;
+        // leftTriggerPrevPressed = !leftTriggerPrevPressed;
+        // }
+        // }
+
+        // if (!gunner.getAxisPress(Xbox.AXIS_LT, 0.1)) {
+        // cellShooter.STOP();
+        // }
         if (gunner.getAxisPress(Xbox.AXIS_RT, 0.5)) {
             cellShooter.ShooterRange();
         }

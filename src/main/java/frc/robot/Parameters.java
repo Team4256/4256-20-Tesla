@@ -5,6 +5,7 @@ import com.revrobotics.ColorMatch;
 public class Parameters{
     // Gyro
     public static final byte GYRO_UPDATE_HZ = 50;
+    public static final double GYRO_OFFSET = 0;
 
     
 
@@ -36,7 +37,6 @@ public class Parameters{
     public static final int CLIMBER_FORWARD_CHANNEL = 6; //solenoid port Extend 
     public static final int CLIMBER_REVERSE_CHANNEL = 7; //solenoid port Retract
     public static final double CLIMBING_SPEED_LOW = 0.3;
-    //public static final int A = 69420; Nice ;)
     // add motors for arm going up and down
     public static final int R_CLIMBER_MOTOR_ID = 32; //Climber Motor right
     public static final int L_CLIMBER_MOTOR_ID = 28; //Climber Motor RIGHT
@@ -53,16 +53,17 @@ public class Parameters{
     public static final double INTAKE_MOTOR_SPEED = 0.3;
     public static final int INTAKE_REVERSE_CHANNEL = 1; //TODO get the actual intake motor speed 
 
-
+    //shooter
     public static final int SHOOTERMOTOR_L_ID = 26;
     public static final int SHOOTERMOTOR_R_ID = 27;
     public static final int STIRRERMOTOR_ID = 18;
     public static final int FEEDERMOTOR_ID = 17;
     public static final int SHROUD_DOWN_CHANNEL = 3;
     public static final int SHROUD_UP_CHANNEL = 2;
-    public static double SHOOTER_MOTOR_SPEED = -0.8;
+    public static double SHOOTER_MOTOR_SPEED = -1.0;
     public static double FEEDER_STIRRER_MOTOR_SPEED = -0.5; 
     public static double STIRRER_MOTOR_SPEED = 0.3;
+    public static double STIRRER_MOTOR_DELAY = 0.75;
     //public static double MOTORSPEEDHIGH = 0.3;// we don't know yet what the engineers are going to do
     public static double DISTANCE_LOW_MIN = 4.5;
     public static double DISTANCE_LOW_MAX = 5.5;

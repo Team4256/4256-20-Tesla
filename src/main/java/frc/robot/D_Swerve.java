@@ -40,7 +40,7 @@ public final class D_Swerve implements Drivetrain {
 	**/
 	@Override
 	public void init() {
-		moduleA.init();	
+		moduleA.init();
 		moduleB.init();
 		moduleC.init();	
 		moduleD.init();

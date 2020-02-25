@@ -17,7 +17,7 @@ public class Aligner {
     private PIDController positionPID = new PIDController(0, 0, 0);
     private D_Swerve swerveSystem;
     Limelight camera = Limelight.getInstance();
-    Gyro gyro = new Gyro(Parameters.GYRO_UPDATE_HZ);
+    Gyro gyro = Gyro.getInstance();
     public Aligner (D_Swerve swerve) {
         orientationPID.setTolerance(Parameters.POSITION_TOLERANCE, Parameters.VELOCITY_TOLERANCE);
         swerveSystem = swerve;
