@@ -9,10 +9,10 @@ public final class D_Swerve implements Drivetrain {
 	}
 	private static D_Swerve instance = null;
 
-	private static final double PIVOT_TO_FRONT_X = 8.25,//inches, pivot point to front wheel tip, x
-								PIVOT_TO_FRONT_Y = 5.25,//inches, pivot point to front wheel tip, y
-								PIVOT_TO_AFT_X   = 8.25,//inches, pivot point to aft wheel tip, x
-								PIVOT_TO_AFT_Y   = 5.25;//inches, pivot point to aft wheel tip, y
+	private static final double PIVOT_TO_FRONT_X = 11.425,//inches, pivot point to front wheel tip, x
+								PIVOT_TO_FRONT_Y = 12.75,//inches, pivot point to front wheel tip, y
+								PIVOT_TO_AFT_X   = 11.425,//inches, pivot point to aft wheel tip, x
+								PIVOT_TO_AFT_Y   = 12.75;//inches, pivot point to aft wheel tip, y
 	private static final double PIVOT_TO_FRONT = Math.hypot(PIVOT_TO_FRONT_X, PIVOT_TO_FRONT_Y),
 								PIVOT_TO_AFT = Math.hypot(PIVOT_TO_AFT_X, PIVOT_TO_AFT_Y);
 
@@ -82,7 +82,7 @@ public final class D_Swerve implements Drivetrain {
 		if (!bad) {
 			final double[] angles_final = computeAngles(comps_desired);
 			SmartDashboard.putNumberArray("anglesFinal", angles_final);
-		for (int i = 0; i < 4; i++) modules[i].swivelTo(angles_final[i]);//control rotation if driver input
+		for (int i = 0; i < 4; i++) modules[i].swivelTo(-angles_final[i]);//negative sign because when spining, the angles were flipped
 			//for (int i = 0; i < 4; i++) modules[i].swivelTo(45);//control rotation if driver input
 		}
 		
@@ -111,17 +111,18 @@ public final class D_Swerve implements Drivetrain {
 		return new double[] {drivetrainX, drivetrainY};
 	}
 	
-	public void formX() {moduleA.swivelTo(-45.0); moduleB.swivelTo(45.0); moduleC.swivelTo(45.0); moduleD.swivelTo(-45.0);}
+	public void formX() {moduleA.swivelTo(45.0); moduleB.swivelTo(-45.0); moduleC.swivelTo(-45.0); moduleD.swivelTo(45.0);}
 
 	public boolean isThere(final double threshold) {
 		return true;
-		//return moduleA.isThere(threshold) /**&& moduleB.isThere(threshold) && moduleC.isThere(threshold) && moduleD.isThere(threshold)*/; //TODO add back the modules
+		//return moduleA.isThere(threshold) && moduleB.isThere(threshold) && moduleC.isThere(threshold) && moduleD.isThere(threshold);
 	}
 
 	private void stop() {for (SwerveModule module : modules) module.set(0.0);}
 	@Override
 	public void completeLoopUpdate() {
 		holonomic_encoderIgnorant(direction, speed, spin);
+		SmartDashboard.putNumber("key", speed);
 		for (SwerveModule module : modules) module.completeLoopUpdate();
 		//for (SwerveModule module : modules) module.swivelTo(0.0);
 
@@ -170,6 +171,9 @@ public final class D_Swerve implements Drivetrain {
 	}
 	public SwerveMode getSwerveMode() {
 		return currentSwerveMode;
+	}
+	public synchronized SwerveModule[] getSwerveModules() {
+		return modules;
 	}
 
 	/**

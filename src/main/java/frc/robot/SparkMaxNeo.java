@@ -125,6 +125,13 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
         return encoder.getPosition();
     }
 
+    public double getPIDError() {
+        return 0.0;
+    }
+
+    public double getEncoderVoltage() {
+        return 0.0;
+    }
     /**
      * @return Revolutions per minute of the motor
      */

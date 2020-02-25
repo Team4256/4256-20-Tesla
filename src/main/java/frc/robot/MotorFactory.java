@@ -21,18 +21,18 @@ public class MotorFactory {
             return new TalonFXFalcon(deviceID, false);
 
         } else if (tractionMotorType == MotorType.NEO) { 
-                return new SparkMaxNeo(deviceID, IdleMode.kCoast, false);
+                return new SparkMaxNeo(deviceID, IdleMode.kBrake, false);
 
         }
         return null;
         
  }
-    public static Motor createRotationMotor(int deviceID, int analogEncoderID) {//TODO add an analog encoder
+    public static Motor createRotationMotor(int deviceID, int analogEncoderID) {
         if (rotationMotorType == MotorType.TALON) {
             boolean isDevIDLegal = deviceID > 14;
             
             SmartDashboard.putBoolean("isDevIDLegal", isDevIDLegal);
-            return new TalonFXFalcon(deviceID, NeutralMode.Brake, false, analogEncoderID);
+            return new TalonFXFalcon(deviceID, NeutralMode.Brake, true, analogEncoderID);
 
         } else if (tractionMotorType == MotorType.NEO) {
             return new SparkMaxNeo(deviceID, IdleMode.kCoast, false);

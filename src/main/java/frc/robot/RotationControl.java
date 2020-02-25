@@ -34,9 +34,17 @@ public class RotationControl{
     rotationMotor.completeLoopUpdate();
    }
 
-   public double GetCurrentAngle(){
+   public double getCurrentAngle(){
 
        return rotationMotor.getCurrentAngle();
+   }
+   
+   public double getEncoderVoltage() {
+        return rotationMotor.getEncoderVoltage();
+   }
+   
+   public Motor getRotationMotor() {
+       return rotationMotor;
    }
 
    public void resetEncoder() {
@@ -44,7 +52,7 @@ public class RotationControl{
    }
 
    public double pathTo(double target) {//ANGLE
-    final double current = GetCurrentAngle();
+    final double current = getCurrentAngle();
     double path = Compass.legalPath(current, target);
     if (current == Compass.legalize(current)) lastLegalDirection = Math.signum(path);
     else if (Math.signum(path) != -lastLegalDirection) path -= Math.copySign(360, path);

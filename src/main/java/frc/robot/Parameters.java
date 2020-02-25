@@ -4,8 +4,9 @@ import com.revrobotics.ColorMatch;
 
 public class Parameters{
     // Gyro
-
     public static final byte GYRO_UPDATE_HZ = 50;
+
+    
 
 
     // Swerve Motors
@@ -32,8 +33,8 @@ public class Parameters{
     public static final Color myYellow = ColorMatch.makeColor(0.320557, 0.556641, 0.122803);
 
     //soloniod motor stuff in competition up will be 2 down will be 3
-    public static final int CLIMBER_FORWARD_CHANNEL = 2; //solenoid port Extend 
-    public static final int CLIMBER_REVERSE_CHANNEL = 3; //solenoid port Retract
+    public static final int CLIMBER_FORWARD_CHANNEL = 6; //solenoid port Extend 
+    public static final int CLIMBER_REVERSE_CHANNEL = 7; //solenoid port Retract
     public static final double CLIMBING_SPEED_LOW = 0.3;
     //public static final int A = 69420; Nice ;)
     // add motors for arm going up and down
@@ -48,19 +49,21 @@ public class Parameters{
     //INTAKE
     public static final int SUCCMOTOR_ID = 16; //Intake Motor
     public static final int INTAKE_FORWARD_CHANNEL = 0;//TODO need to get the real channel ID
-    public static final int INTAKE_REVERSE_CHANNEL = 1;//TODO need to get the actual channel ID
-    public static final double INTAKE_MOTOR_SPEED = 0.5; //TODO get the actual intake motor speed 
+    public static final double INTAKE_SUCC_MOTOR = 0.5;//TODO need to get the actual channel ID
+    public static final double INTAKE_MOTOR_SPEED = 0.3;
+    public static final int INTAKE_REVERSE_CHANNEL = 1; //TODO get the actual intake motor speed 
 
 
     public static final int SHOOTERMOTOR_L_ID = 26;
     public static final int SHOOTERMOTOR_R_ID = 27;
     public static final int STIRRERMOTOR_ID = 18;
     public static final int FEEDERMOTOR_ID = 17;
-    public static final int SHROUD_DOWN_CHANNEL = 3;//TODO get the real ID
-    public static final int SHROUD_UP_CHANNEL = 2;//TODO get the real ID
-    public static double MOTORSPEEDLOW = 0.1;
-    public static double MOTORSPEEDMEDIUM = .5; 
-    public static double MOTORSPEEDHIGH = 1.0;// we don't know yet what the engineers are going to do
+    public static final int SHROUD_DOWN_CHANNEL = 3;
+    public static final int SHROUD_UP_CHANNEL = 2;
+    public static double SHOOTER_MOTOR_SPEED = -0.8;
+    public static double FEEDER_STIRRER_MOTOR_SPEED = -0.5; 
+    public static double STIRRER_MOTOR_SPEED = 0.3;
+    //public static double MOTORSPEEDHIGH = 0.3;// we don't know yet what the engineers are going to do
     public static double DISTANCE_LOW_MIN = 4.5;
     public static double DISTANCE_LOW_MAX = 5.5;
     public static double DISTANCE_MED_MIN = 9.5;
@@ -70,12 +73,9 @@ public class Parameters{
 
     // Minimum and Maximum Voltage
 
-    public static final double angleEncoderMinVoltage[] = {
-        0.012207, 0.142822, 0.017090, 0.025635
-    };
-    public static final double angleEncoderMaxVoltage[] = {
-        4.930419, 4.880371, 4.932861, 4.906005
-    };
+    public static final double angleEncoderMinVoltage[] = {0.00366, 0.01099, 0.009766, 0.01343};
+    public static final double angleEncoderMaxVoltage[] = {4.9133, 4.9255, 4.9219, 4.9243};
+    public static final double angleEncoderTareVoltage[] = {4.155,1.762,1.298,4.1138};
 
     // Aligner tolerances
 
