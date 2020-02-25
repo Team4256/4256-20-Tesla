@@ -6,12 +6,20 @@ import edu.wpi.first.wpilibj.SPI;
 
 public class Gyro extends AHRS {
 	public final Compass compass;
+	private static Gyro instance = null;
 	
-	public Gyro(final byte updateHz) {
+	private Gyro() {
 //		super(I2C.Port.kOnboard, updateHz);
-		super(SPI.Port.kMXP, updateHz);
+		super(SPI.Port.kMXP, Parameters.GYRO_UPDATE_HZ);
 		compass = new Compass();
 	}
+	
+	public synchronized static Gyro getInstance() {
+		if (instance == null) {
+		  instance = new Gyro();
+		}
+		return instance;
+	  }
 	
 	/**
 	 * Tares the gyro's compass

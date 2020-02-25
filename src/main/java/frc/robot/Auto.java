@@ -11,14 +11,22 @@ package frc.robot;
  * Add your docs here.
  */
 public class Auto {
-    private D_Swerve swerve;
-    private Shooter shooter;
+    private D_Swerve swerve = D_Swerve.getInstance();
+    private Shooter shooter = Shooter.getInstance();
+    private Gyro gyro = Gyro.getInstance();
+    private double Xposition = gyro.getDisplacementX();
+    private double YPosition = gyro.getDisplacementY();
+
+    public Auto(){
+
+    }
     
 
-
-
     public void crossWhiteLine(){
-
+        if(YPosition > Parameters.CROSS_WHITE_LINE_DISTANCE_IN_METERS) {
+          swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
+          swerve.setSpin(0.0);
+        }
     }
 
 

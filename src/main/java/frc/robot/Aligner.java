@@ -17,11 +17,24 @@ public class Aligner {
     private PIDController positionPID = new PIDController(0, 0, 0);
     private D_Swerve swerveSystem;
     Limelight camera = Limelight.getInstance();
-    Gyro gyro = new Gyro(Parameters.GYRO_UPDATE_HZ);
-    public Aligner (D_Swerve swerve) {
+    private static Aligner instance = null;
+    private Gyro gyro = Gyro.getInstance();
+
+    private Aligner () {
         orientationPID.setTolerance(Parameters.POSITION_TOLERANCE, Parameters.VELOCITY_TOLERANCE);
-        swerveSystem = swerve;
+        swerveSystem = D_Swerve.getInstance();
     }
+
+
+
+    public synchronized static Aligner getInstance() {
+        if (instance == null) {
+          instance = new Aligner();
+        }
+        return instance;
+    }
+
+    
 
     public boolean getIsAtTarget() {
         return orientationPID.atSetpoint();

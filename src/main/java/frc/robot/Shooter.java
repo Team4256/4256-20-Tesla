@@ -20,6 +20,7 @@ public class Shooter {
   // private static final double UPPER_PORT_SPEED = 0.0; //same as above
 
   // INSTANCE
+  public static Shooter Instance = null;
   private final WPI_TalonFX shooterMotor1;
   private final WPI_TalonFX shooterMotor2;
   //hopper motor and feeder motor
@@ -29,6 +30,7 @@ public class Shooter {
   private D_Swerve swerve;
   private Aligner aligner;
   boolean SpinUp = false;
+  private static Shooter instance = null;
 
   
   // private CANEncoder shooterMotorEncoder1;
@@ -61,18 +63,27 @@ public class Shooter {
   public void STOP(){
     currentShootingState = ShootingStates.OFF;
   }
-  public Shooter() {
+  private Shooter() {
     shooterMotor1 = new WPI_TalonFX(Parameters.SHOOTERMOTOR_L_ID);
     shooterMotor2 = new WPI_TalonFX(Parameters.SHOOTERMOTOR_R_ID);
     stirrerMotor = new Victor(Parameters.STIRRERMOTOR_ID, ControlMode.PercentOutput);
     feederMotor = new TalonSRX(Parameters.FEEDERMOTOR_ID);
     shroudSolenoid = new DoubleSolenoid(Parameters.SHROUD_UP_CHANNEL, Parameters.SHROUD_DOWN_CHANNEL);
-    aligner = new Aligner(swerve);
+    aligner = Aligner.getInstance();
 
     // shooterMotorEncoder1 = new CANEncoder(shooterMotor1);
     // shooterMotorEncoder2 = new CANEncoder(shooterMotor2);
 
   }
+
+  public synchronized static Shooter getInstance() {
+    if (instance == null) {
+      instance = new Shooter();
+    }
+    return instance;
+  }
+
+
   public void periodic(){
     switch(currentShootingState){
       case SPINUP:

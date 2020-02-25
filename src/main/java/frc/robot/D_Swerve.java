@@ -35,6 +35,8 @@ public final class D_Swerve implements Drivetrain {
 		 
 	this.modules = new SwerveModule[] {moduleA, moduleB, moduleC, moduleD};
 	}	
+
+	
 	public synchronized static D_Swerve getInstance() {
 		if (instance == null) {
 			instance = new D_Swerve(); 

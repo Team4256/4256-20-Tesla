@@ -15,8 +15,8 @@ public class JoystickControl {
     private ClimbingControl climber = new ClimbingControl();
 
     private Intake intake = new Intake();
-    private Aligner aligner = new Aligner(swerve);
-    private Shooter cellShooter = new Shooter();
+    private Aligner aligner = Aligner.getInstance();
+    private Shooter cellShooter = Shooter.getInstance();
    // private ControlPanelSystem controlPanel = new ControlPanelSystem(Parameters.WHEEL_ARM_UP_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_DOWN_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_MOTOR_ID);
     private boolean rotationMode = false;
     private double angle = 0;
