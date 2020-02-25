@@ -7,6 +7,11 @@ public class Parameters{
     public static final byte GYRO_UPDATE_HZ = 50;
     public static final double GYRO_OFFSET = 0;
 
+    //Automomous
+    public static final double AUTO_SWERVE_TRACTION_SPEED = 0.5; //TODO get the actual speed
+    public static final double AUTO_SWERVE_ROTATION_SPEED = 0.5; //TODO get the actual speed
+    public static final double CROSS_WHITE_LINE_DISTANCE_IN_METERS = 1; //TODO get the actual DISTANCE
+
     
 
 

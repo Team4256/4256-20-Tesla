@@ -10,7 +10,7 @@ public class Gyro extends AHRS {
 	
 	private Gyro(final byte updateHz) {
 //		super(I2C.Port.kOnboard, updateHz);
-		super(SPI.Port.kMXP, updateHz);
+		super(SPI.Port.kMXP, Parameters.GYRO_UPDATE_HZ);
 		compass = new Compass();
 	}
 

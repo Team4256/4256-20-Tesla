@@ -10,8 +10,8 @@ public class JoystickControl {
 
     private Xbox driver = new Xbox(0);
     private Xbox gunner = new Xbox(1);
-    public D_Swerve swerve = new D_Swerve();
-
+    private D_Swerve swerve = D_Swerve.getInstance();
+    
     private ClimbingControl climber = new ClimbingControl();
 
     private Intake intake = new Intake();

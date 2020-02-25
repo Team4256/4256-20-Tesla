@@ -16,12 +16,24 @@ public class Aligner {
     private PIDController orientationPID = new PIDController(0, 0, 0);
     private PIDController positionPID = new PIDController(0, 0, 0);
     private D_Swerve swerveSystem;
+    public static Aligner instance = null;
     Limelight camera = Limelight.getInstance();
     Gyro gyro = Gyro.getInstance();
     public Aligner (D_Swerve swerve) {
         orientationPID.setTolerance(Parameters.POSITION_TOLERANCE, Parameters.VELOCITY_TOLERANCE);
-        swerveSystem = swerve;
+        swerveSystem = D_Swerve.getInstance();
     }
+
+
+
+    public synchronized static Aligner getInstance() {
+        if (instance == null) {
+          instance = new Aligner(swerveSystem);
+        }
+        return instance;
+    }
+
+    
 
     public boolean getIsAtTarget() {
         return orientationPID.atSetpoint();
@@ -29,7 +41,7 @@ public class Aligner {
     public double getDistanceToTarget(){
         return camera.getTargetOffsetDegrees();
     }
-
+//something wrong with this 
     public double getDirectionCommand() {
         return positionPID.calculate(camera.getTargetOffsetDegrees(), 0);
 

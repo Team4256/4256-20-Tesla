@@ -19,14 +19,17 @@ public class Shooter {
   // private static final double UPPER_PORT_SPEED = 0.0; //same as above
 
   // INSTANCE
+  public static Shooter Instance = null;
   private final WPI_TalonFX shooterMotor1;
   private final WPI_TalonFX shooterMotor2;
   // hopper motor and feeder motor
   private final Victor stirrerMotor;
   private final TalonSRX feederMotor;
   private DoubleSolenoid shroudSolenoid;
+  private D_Swerve swerve;
   private Aligner aligner;
   boolean SpinUp = false;
+  private static Shooter instance = null;
 
   // private CANEncoder shooterMotorEncoder1;
   // private CANEncoder shooterMotorEncoder2;
