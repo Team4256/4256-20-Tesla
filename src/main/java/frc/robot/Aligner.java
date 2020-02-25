@@ -29,7 +29,7 @@ public class Aligner {
     public double getDistanceToTarget(){
         return camera.getTargetOffsetDegrees();
     }
-
+//something wrong with this 
     public double getDirectionCommand() {
         return positionPID.calculate(camera.getTargetOffsetDegrees(), 0);
 

@@ -12,13 +12,13 @@ public class JoystickControl {
     
     private Xbox driver = new Xbox(0);
     private Xbox gunner = new Xbox(1);
-    private D_Swerve swerve = new D_Swerve();
+    private D_Swerve swerve = D_Swerve.getInstance();
     
     private ClimbingControl climber = new ClimbingControl();
 
     private Intake succer = new Intake();
     private Aligner aligner = new Aligner(swerve);
-    private Shooter cellShooter = new Shooter(aligner, Parameters.SHOOTERMOTOR_L_ID, Parameters.SHOOTERMOTOR_R_ID, Parameters.STIRRERMOTOR_ID, Parameters.FEEDERMOTOR_ID, Parameters.SHROUD_UP_CHANNEL, Parameters.SHROUD_DOWN_CHANNEL);
+    private Shooter cellShooter = new Shooter();
    // private ControlPanelSystem controlPanel = new ControlPanelSystem(Parameters.WHEEL_ARM_UP_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_DOWN_SOLENOID_CHANNEL, Parameters.WHEEL_ARM_MOTOR_ID);
     private boolean rotationMode = false;
     private double angle = 0;

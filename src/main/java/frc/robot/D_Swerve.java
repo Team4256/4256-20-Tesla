@@ -7,6 +7,7 @@ public final class D_Swerve implements Drivetrain {
 	public static enum SwerveMode {
 		FIELD_CENTRIC, ROBOT_CENTRIC
 	}
+	private static D_Swerve instance = null;
 
 	private static final double PIVOT_TO_FRONT_X = 8.25,//inches, pivot point to front wheel tip, x
 								PIVOT_TO_FRONT_Y = 5.25,//inches, pivot point to front wheel tip, y
@@ -26,14 +27,22 @@ public final class D_Swerve implements Drivetrain {
 
 	private SwerveMode currentSwerveMode = SwerveMode.FIELD_CENTRIC;
 
-	public D_Swerve() {
+	private D_Swerve() {
 		moduleA = new SwerveModule(Parameters.ROTATION_MOTOR_A_ID,0, true, Parameters.TRACTION_MOTOR_A_ID, false, 0);
 		moduleB = new SwerveModule(Parameters.ROTATION_MOTOR_B_ID,1, true, Parameters.TRACTION_MOTOR_B_ID, false, 0);
 		moduleC = new SwerveModule(Parameters.ROTATION_MOTOR_C_ID,2, true, Parameters.TRACTION_MOTOR_C_ID, false, 0);
 		moduleD = new SwerveModule(Parameters.ROTATION_MOTOR_D_ID,3, true, Parameters.TRACTION_MOTOR_D_ID, false, 0);
-		
+		 
 	this.modules = new SwerveModule[] {moduleA, moduleB, moduleC, moduleD};
 	}	
+	public synchronized static D_Swerve getInstance() {
+		if (instance == null) {
+			instance = new D_Swerve(); 
+		}
+			return instance;
+		
+	}
+
 	
 	/**
 	 * This function prepares each swerve module individually.

@@ -25,6 +25,7 @@ public class Shooter {
   private final TalonSRX stirrerMotor;
   private final TalonSRX feederMotor;
   private DoubleSolenoid shroudSolenoid;
+  private D_Swerve swerve;
   private Aligner aligner;
   boolean SpinUp = false;
 
@@ -43,7 +44,6 @@ public class Shooter {
   }
   private ShootingStates currentShootingState = ShootingStates.OFF;
   private ShootingStates currentFeederStates = ShootingStates.OFF;
-  private Aligner shooterAligner;
   //Constructor
   public void SpinShooterPrep(){
     currentShootingState = ShootingStates.SPINUP;
@@ -60,13 +60,13 @@ public class Shooter {
   public void STOP(){
     currentShootingState = ShootingStates.OFF;
   }
-  public Shooter(Aligner aligner, int shootermotorID1, int shooterMotorID2, int hopperMotorID, int feederMotorID, int shroudForwardChannel, int shroudReverseChannel) {
-    shooterMotor1 = new WPI_TalonFX(shootermotorID1);
-    shooterMotor2 = new WPI_TalonFX(shooterMotorID2);
-    stirrerMotor = new TalonSRX(hopperMotorID);
-    feederMotor = new TalonSRX(feederMotorID);
-    shroudSolenoid = new DoubleSolenoid(shroudForwardChannel, shroudReverseChannel);
-    shooterAligner = aligner;
+  public Shooter() {
+    shooterMotor1 = new WPI_TalonFX(Parameters.SHOOTERMOTOR_L_ID);
+    shooterMotor2 = new WPI_TalonFX(Parameters.SHOOTERMOTOR_R_ID);
+    stirrerMotor = new TalonSRX(Parameters.STIRRERMOTOR_ID);
+    feederMotor = new TalonSRX(Parameters.FEEDERMOTOR_ID);
+    shroudSolenoid = new DoubleSolenoid(Parameters.SHROUD_UP_CHANNEL, Parameters.SHROUD_DOWN_CHANNEL);
+    aligner = new Aligner(swerve);
 
     // shooterMotorEncoder1 = new CANEncoder(shooterMotor1);
     // shooterMotorEncoder2 = new CANEncoder(shooterMotor2);
@@ -109,9 +109,9 @@ public void spinShooterMotors(double speed){
 
 
   public void shootAlign() {
-    if (shooterAligner.getIsAtTarget()) {
+    if (aligner.getIsAtTarget()) {
       
-        shooterAligner.alignRobotToTarget();
+        aligner.alignRobotToTarget();
         
         // spinShooterMotors(speed);
         // stirrerMotor.set(ControlMode.PercentOutput, Parameters.MOTORSPEEDMEDIUM);
@@ -172,7 +172,7 @@ public void spinShooterMotors(double speed){
 
 
     // public double distanceSpeed(){
-    //   double distance = shooterAligner.DistanceToTarget();
+    //   double distance = aligner.DistanceToTarget();
     //   if (distance >= Parameters.DISTANCE_LOW_MIN && distance <= Parameters.DISTANCE_LOW_MAX) {
     //     return Parameters.MOTORSPEEDLOW;
     //   }
