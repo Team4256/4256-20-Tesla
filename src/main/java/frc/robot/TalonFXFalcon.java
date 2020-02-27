@@ -60,7 +60,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     public TalonFXFalcon(final int deviceID, final NeutralMode neutralMode, final boolean isInverted, int analogEncoderID) {
         super(deviceID);
-        idleMode = NeutralMode.Coast;
+        idleMode = NeutralMode.Brake;
         this.deviceID = deviceID;
         this.isInverted = isInverted;
         encoderMaxVoltage = Parameters.angleEncoderMaxVoltage[analogEncoderID];
@@ -142,16 +142,8 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     // Set Angle
     public void setAngle(double targetAngle) {
 
-        //double encoderPosition = (getSensorCollection().getIntegratedSensorPosition() / 4096) * 360 / 19.77466;
-        //double encoderPosition = 360 - encoderPort.getVoltage() / 5 * 360;
         int channelID = encoderPort.getChannel();
         double encoderPosition = getCurrentAngle();
-        if( encoderPort.getChannel() == 3){
-            if (encoderPort.getVoltage() > maxAngle) maxAngle = encoderPort.getVoltage();
-        if (encoderPort.getVoltage() < minAngle) minAngle = encoderPort.getVoltage();
-        SmartDashboard.putNumber("vlougk,vhl", encoderPosition);
-
-        }
         
         while (targetAngle <= -180) {
             targetAngle += 360;

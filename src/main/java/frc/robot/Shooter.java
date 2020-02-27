@@ -27,7 +27,6 @@ public class Shooter {
   private final TalonSRX feederMotor;
   private DoubleSolenoid shroudSolenoid;
   private D_Swerve swerve;
-  private Aligner aligner;
   boolean SpinUp = false;
   private static Shooter instance = null;
 
@@ -66,24 +65,33 @@ public class Shooter {
     currentShootingState = ShootingStates.OFF;
   }
 
-  public Shooter(Aligner aligner, int shootermotorID1, int shooterMotorID2, int hopperMotorID, int feederMotorID,
+  private Shooter(int shootermotorID1, int shooterMotorID2, int hopperMotorID, int feederMotorID,
       int shroudReverseChannel, int shroudForwardChannel) {
     shooterMotor1 = new WPI_TalonFX(shootermotorID1);
     shooterMotor2 = new WPI_TalonFX(shooterMotorID2);
     stirrerMotor = new Victor(hopperMotorID, ControlMode.PercentOutput);
     feederMotor = new TalonSRX(feederMotorID);
     shroudSolenoid = new DoubleSolenoid(shroudReverseChannel, shroudForwardChannel);
-    shooterAligner = aligner;
+    shooterAligner = Aligner.getInstance();
 
     // shooterMotorEncoder1 = new CANEncoder(shooterMotor1);
     // shooterMotorEncoder2 = new CANEncoder(shooterMotor2);
 
   }
 
+  public synchronized static Shooter getInstance() {
+    if (instance == null) {
+      instance = new Shooter(Parameters.SHOOTERMOTOR_L_ID, Parameters.SHOOTERMOTOR_R_ID, Parameters.STIRRERMOTOR_ID,
+          Parameters.FEEDERMOTOR_ID, Parameters.SHROUD_UP_CHANNEL, Parameters.SHROUD_DOWN_CHANNEL);
+    }
+    return instance;
+  }
+
   public void periodic() {
+    double shooterSpeedTest = SmartDashboard.getNumber("ShooterSpeed", 0.0);
     switch (currentShootingState) {
     case SPINUP:
-      spinShooterMotors(-Parameters.SHOOTER_MOTOR_SPEED);
+      spinShooterMotors(shooterSpeedTest);
       break;
     case SHOOTNOALIGN:
       shootUnAligned();
@@ -163,14 +171,13 @@ public class Shooter {
   }
 
   public void shootUnAligned() {
-    spinShooterMotors(-Parameters.SHOOTER_MOTOR_SPEED);
+    // spinShooterMotors(-Parameters.SHOOTER_MOTOR_SPEED);
     stirrerMotor.set(ControlMode.PercentOutput, -Parameters.FEEDER_STIRRER_MOTOR_SPEED);
     feederMotor.set(ControlMode.PercentOutput, Parameters.FEEDER_STIRRER_MOTOR_SPEED);
     SmartDashboard.putString("Alive", "Is alive");
     SmartDashboard.putNumber("shooterSpeed(RPM)",
         shooterMotor1.getSensorCollection().getIntegratedSensorVelocity() / 2048 * 600);
     shooterMotor2.set(TalonFXControlMode.Follower, shooterMotor1.getDeviceID());
-
   }
 
   public void range() {
@@ -205,7 +212,7 @@ public class Shooter {
     shooterMotor2.set(0.0);
     stirrerMotor.set(ControlMode.PercentOutput, 0.0);
     feederMotor.set(ControlMode.PercentOutput, 0.0);
-    // aligner.turnLEDOff();
+    shooterAligner.turnLEDOff();
   }
 
 }

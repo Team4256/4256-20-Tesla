@@ -19,7 +19,7 @@ public class Aligner {
     public static Aligner instance = null;
     Limelight camera = Limelight.getInstance();
     Gyro gyro = Gyro.getInstance();
-    public Aligner (D_Swerve swerve) {
+    private Aligner () {
         orientationPID.setTolerance(Parameters.POSITION_TOLERANCE, Parameters.VELOCITY_TOLERANCE);
         swerveSystem = D_Swerve.getInstance();
     }
@@ -28,7 +28,7 @@ public class Aligner {
 
     public synchronized static Aligner getInstance() {
         if (instance == null) {
-          instance = new Aligner(swerveSystem);
+          instance = new Aligner();
         }
         return instance;
     }
