@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 public class Aligner {
     private PIDController orientationPID = new PIDController(0, 0, 0);
     private PIDController positionPID = new PIDController(0, 0, 0);
-    private D_Swerve swerveSystem;
+    private static D_Swerve swerveSystem;
     public static Aligner instance = null;
     Limelight camera = Limelight.getInstance();
     Gyro gyro = Gyro.getInstance();
@@ -51,9 +51,10 @@ public class Aligner {
         return orientationPID.calculate(camera.getTargetOffsetDegrees(), 0);
     }
 
-    public void alignRobotToTarget(){
+    public boolean alignRobotToTarget(){
         camera.turnLEDOn();
         swerveSystem.setSpin(getOrientationCommand());
+        return getIsAtTarget();
         
     }
 

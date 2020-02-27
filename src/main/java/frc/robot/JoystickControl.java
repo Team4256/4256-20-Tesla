@@ -14,11 +14,11 @@ public class JoystickControl {
     
     private ClimbingControl climber = new ClimbingControl();
 
-    private Intake intake = new Intake();
+    private Intake intake = Intake.getInstance();
     private Aligner aligner = new Aligner(swerve);
-    private Shooter cellShooter = new Shooter(aligner, Parameters.SHOOTERMOTOR_L_ID, Parameters.SHOOTERMOTOR_R_ID,
-            Parameters.STIRRERMOTOR_ID, Parameters.FEEDERMOTOR_ID, Parameters.SHROUD_UP_CHANNEL,
-            Parameters.SHROUD_DOWN_CHANNEL);
+     private Shooter cellShooter = new Shooter(aligner, Parameters.SHOOTERMOTOR_L_ID, Parameters.SHOOTERMOTOR_R_ID,       
+     Parameters.STIRRERMOTOR_ID, Parameters.FEEDERMOTOR_ID, Parameters.SHROUD_UP_CHANNEL,
+     Parameters.SHROUD_DOWN_CHANNEL);
     private Gyro gyro = Gyro.getInstance();
     private double spin;
     private double direction;

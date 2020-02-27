@@ -5,8 +5,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.revrobotics.CANEncoder;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import edu.wpi.first.wpilibj.AnalogEncoder;
@@ -25,23 +23,18 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     private final int deviceID;
     public final NeutralMode idleMode;
     private final boolean isInverted;
-    private CANEncoder angleEcoder2;
+    
     private boolean updated = false;
     private double lastSetpoint = 0.0;
     private Logger logger;
-    private PIDController anglePIDController = new PIDController(.005, 0.0, 0.0);
+    private PIDController anglePIDController = new PIDController(.005, 0.0, 0.00);
     public final Compass compass = new Compass();
     private double lastLegalDirection = 1.0;
     private AnalogInput encoderPort;
     private AnalogEncoder angleEncoder;
-    private double encoderMinVoltage;
-    private double encoderMaxVoltage;
-    private double encoderTareVoltage;
-    double maxAngle = 0;
-    double minAngle = 360;
+    
     
 
-    
     /**
      * Offers a simple way of initializing and using NEO Brushless motors with a
      * SparkMax motor controller.
@@ -51,25 +44,23 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
      * @param isInverted  Indication of whether the SparkMax's motor is inverted
      */
     public TalonFXFalcon(final int deviceID, final boolean isInverted) {
-        super(deviceID);
-        idleMode = NeutralMode.Brake;
-        this.deviceID = deviceID;
-        this.isInverted = isInverted;
-        logger = Logger.getLogger("SparkMax " + Integer.toString(deviceID));
+        this(deviceID, NeutralMode.Coast, isInverted, -1);
     }
+
 
     public TalonFXFalcon(final int deviceID, final NeutralMode neutralMode, final boolean isInverted, int analogEncoderID) {
         super(deviceID);
         idleMode = NeutralMode.Coast;
-        this.deviceID = deviceID;
+        this.deviceID = deviceID;+-
         this.isInverted = isInverted;
-        encoderMaxVoltage = Parameters.angleEncoderMaxVoltage[analogEncoderID];
-        encoderMinVoltage = Parameters.angleEncoderMinVoltage[analogEncoderID];
-        encoderTareVoltage = Parameters.angleEncoderTareVoltage[analogEncoderID];
-        encoderPort = new AnalogInput(analogEncoderID);
-        angleEncoder = new AnalogEncoder(encoderPort);
-        angleEncoder.setDistancePerRotation(360);
-        
+        logger = Logger.getLogger("SparkMax " + Integer.toString(deviceID));
+
+        if (analogEncoderID >= 0 && analogEncoderID <= 3) {
+                encoderPort = new AnalogInput(analogEncoderID);
+                angleEncoder = new AnalogEncoder(encoderPort);
+                angleEncoder.setDistancePerRotation(360);
+                
+        }
     }
 
     /**
@@ -91,7 +82,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
         setInverted(isInverted);
         set(0.0);
-        //anglePIDController.enableContinuousInput(0, 360.0);
+        anglePIDController.enableContinuousInput(-180.0, 180.0);
     }
 
     /**
@@ -119,14 +110,38 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
      */
     public double getRPS() {
         return (getRPM() / 60.0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
     }
 
     // get angle
     public double getCurrentAngle() {
-        return 360 - (encoderPort.getVoltage() - encoderTareVoltage)/(encoderMaxVoltage - encoderMinVoltage) * 360;
-    }
-    public double getEncoderVoltage() {
-        return encoderPort.getVoltage();
+        if(angleEncoder != null) {
+        return Math.toDegrees(angleEncoder.get());
+        } else {
+            return 0.0;
+        } 
     }
 
     // Set Speed
@@ -136,58 +151,37 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         lastSetpoint = speed;
         updated = true;
         logger.log(Level.FINE, Double.toString(speed));
-        
     }
 
     // Set Angle
     public void setAngle(double targetAngle) {
 
-        //double encoderPosition = (getSensorCollection().getIntegratedSensorPosition() / 4096) * 360 / 19.77466;
-        //double encoderPosition = 360 - encoderPort.getVoltage() / 5 * 360;
-        int channelID = encoderPort.getChannel();
-        double encoderPosition = getCurrentAngle();
-        if( encoderPort.getChannel() == 3){
-            if (encoderPort.getVoltage() > maxAngle) maxAngle = encoderPort.getVoltage();
-        if (encoderPort.getVoltage() < minAngle) minAngle = encoderPort.getVoltage();
-        SmartDashboard.putNumber("vlougk,vhl", encoderPosition);
-
+        double encoderPosition = angleEncoder.getDistance();
+        SmartDashboard.putNumber("target Angle", targetAngle);
+        while (encoderPosition > 180) {
+            encoderPosition -= 360;
         }
-        
-        while (targetAngle <= -180) {
-            targetAngle += 360;
-        } 
-        while (targetAngle > 180) {
-            targetAngle -= 360;
-        }
-
-        double error = targetAngle - encoderPosition;
-        
-        while (targetAngle - encoderPosition > 180) {
+        while (encoderPosition < -180) {
             encoderPosition += 360;
         }
-        
-        while (targetAngle - encoderPosition < -180) {
-            encoderPosition -= 360;
+        SmartDashboard.putNumber("encoder position", encoderPosition);
+
+        if (Math.abs(targetAngle - encoderPosition) < 2) {
+            super.set(0.);
+            SmartDashboard.putNumber("Percent Output", 0.);
+            return;
         }
         
         double percentSpeed = anglePIDController.calculate(encoderPosition, targetAngle);
+
         if (Math.abs(percentSpeed) > .5) {
             percentSpeed = Math.signum(percentSpeed) * .5;
+        } else if (Math.abs(percentSpeed) < .01) {
+            percentSpeed = Math.signum(percentSpeed) * .01;
         }
+
         super.set(percentSpeed);
-        //SmartDashboard.putNumber("Percent Output Us", percentSpeed);
-        updated = true;
-        lastSetpoint = percentSpeed; 
-        SmartDashboard.putNumber("errrereer", error);
-        
-    }
-
-    public double getPIDError() {
-        return anglePIDController.getPositionError();
-    }
-
-    public void resetEncoder() {
-        getSensorCollection().setIntegratedSensorPosition(0.0, 10);
+        SmartDashboard.putNumber("Percent Output", percentSpeed);
     }
 
     public double pathTo(double target) {// ANGLE
@@ -200,11 +194,10 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
         return path;
     }
-    
 
     public void completeLoopUpdate() {
         if (!updated) {
-            super.set(0);
+            super.set(lastSetpoint);
         }
         updated = false;
     }

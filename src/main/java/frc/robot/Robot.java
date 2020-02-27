@@ -20,13 +20,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
+  private static final String port = "port";
+  private static final String leftTrench = "left trench";
+  private static final String rightTrench = "right trench";
+  private static final String crossLine = "cross white line";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static double gyroHeading = 0.0;
   private JoystickControl subsystems = new JoystickControl();
   private static Gyro gyro = Gyro.getInstance();
+  private static Auto auto = new Auto();
 
   public synchronized static void updateGyroHeading() {
     gyroHeading = gyro.getCurrentAngle();
@@ -38,8 +41,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
+    m_chooser.setDefaultOption("port", port);
+    m_chooser.addOption("left trench", leftTrench);
+    m_chooser.addOption("right trench", rightTrench);
+    m_chooser.addOption("cross white line", crossLine);
     SmartDashboard.putData("Auto choices", m_chooser);
     gyro.setAngleAdjustment(Parameters.GYRO_OFFSET);
     gyro.reset();
@@ -84,7 +89,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autoSelected = m_chooser.getSelected();
-    m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
+    m_autoSelected = SmartDashboard.getString("Auto Selector", port);
     System.out.println("Auto selected: " + m_autoSelected);
   }
 
@@ -94,12 +99,18 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     switch (m_autoSelected) {
-    case kCustomAuto:
-      // Put custom auto code here
+    case port:
+      auto.mode2();
       break;
-    case kDefaultAuto:
-    default:
-      // Put default auto code here
+    case leftTrench:
+   // default:
+      auto.mode3();
+      break;
+      case rightTrench:
+      auto.mode1();
+      break;
+      case crossLine:
+      auto.mode4();
       break;
     }
   }
