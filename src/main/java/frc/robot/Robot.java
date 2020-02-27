@@ -91,6 +91,7 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     m_autoSelected = SmartDashboard.getString("Auto Selector", port);
     System.out.println("Auto selected: " + m_autoSelected);
+    auto.autoInit();
   }
 
   /**
@@ -121,9 +122,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     subsystems.swervePeriodic();
-    subsystems.intakePeriodic();
-    subsystems.shooterPeriodic();
-    subsystems.ClimbingPeriodic();
+    // subsystems.intakePeriodic();
+    // subsystems.shooterPeriodic();
+    // subsystems.ClimbingPeriodic();
     
     
   }

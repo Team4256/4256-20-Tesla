@@ -10,7 +10,7 @@ public class Parameters{
     //Automomous
     public static final double AUTO_SWERVE_TRACTION_SPEED = 0.5; //TODO get the actual speed
     public static final double AUTO_SWERVE_ROTATION_SPEED = 0.5; //TODO get the actual speed
-    public static final double CROSS_WHITE_LINE_DISTANCE_IN_METERS = 1; //TODO get the actual DISTANCE
+    public static final double CROSS_WHITE_LINE_DISTANCE_IN_METERS = 3; //TODO get the actual DISTANCE
     public static final double DRIVE_TO_TRENCH_DISTANCE = 5; //TODO get the actual DISTANCE
     public static final double MOVE_BACK_DISTANCE = 3; //TODO get the actual DISTANCE mode 4 only after crossing the white line
     public static final double STARTING_DISTANCE_FROM_RIGHT = 8; //TODO get the actual DISTANCE

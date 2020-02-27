@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  
  */
@@ -15,21 +17,28 @@ public class Auto {
     private Shooter shooter;
     private Gyro gyro;
     private Intake intake;
-    private boolean isWhiteLineCrossed = false;
+    
    
 
     public Auto(){
-    swerve.getInstance();
-    shooter.getInstance();
-    gyro.getInstance();
-    intake.getInstance();
+    D_Swerve.getInstance();
+    Shooter.getInstance();
+    Gyro.getInstance();
+    Intake.getInstance();
 
     }
-    
+
+    public void autoInit(){
+      gyro.reset();
+    }
+
+
 
     private boolean crossWhiteLine(){
       
       double YPosition = gyro.getDisplacementY();
+      SmartDashboard.getNumber("Yposition", YPosition);
+      
       if(YPosition < Parameters.CROSS_WHITE_LINE_DISTANCE_IN_METERS) {
         swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
         swerve.setSpin(0.0);
@@ -40,7 +49,6 @@ public class Auto {
         else{
           swerve.setSpeed(0.0);
           swerve.setSpin(0.0);
-          isWhiteLineCrossed = true;
           return true;
       
           
@@ -51,7 +59,7 @@ public class Auto {
     //for mode4 only 
     private void moveBack(){
       double YPosition = gyro.getDisplacementY();
-      if(isWhiteLineCrossed && YPosition < Parameters.MOVE_BACK_DISTANCE){
+      if(YPosition < Parameters.MOVE_BACK_DISTANCE){
         swerve.setSpeed(Parameters.AUTO_SWERVE_ROTATION_SPEED);
         swerve.setSpin(0.0);
         swerve.travelTowards(180);
@@ -67,6 +75,7 @@ public class Auto {
 
     private boolean drivingToPorts(double distance){
       double Xposition = gyro.getDisplacementX();
+      SmartDashboard.getNumber("Xposition", Xposition);
       if(Xposition < distance){
       swerve.setSpin(90.0);
       swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
@@ -141,14 +150,9 @@ public class Auto {
     // mode4: start 
     public void mode4(){
       if(crossWhiteLine()){
-        moveBack();
+        //moveBack();
+        swerve.setSpeed(0.0);
       } 
     }
-
-
-
-
-
-
 
 }

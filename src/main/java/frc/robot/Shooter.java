@@ -27,7 +27,7 @@ public class Shooter {
   private final TalonSRX feederMotor;
   private DoubleSolenoid shroudSolenoid;
   private D_Swerve swerve;
-  private Aligner aligner;
+  private static Aligner aligner;
   boolean SpinUp = false;
   private static Shooter instance = null;
 
@@ -73,12 +73,18 @@ public class Shooter {
     stirrerMotor = new Victor(hopperMotorID, ControlMode.PercentOutput);
     feederMotor = new TalonSRX(feederMotorID);
     shroudSolenoid = new DoubleSolenoid(shroudReverseChannel, shroudForwardChannel);
-    shooterAligner = aligner;
-
-    // shooterMotorEncoder1 = new CANEncoder(shooterMotor1);
-    // shooterMotorEncoder2 = new CANEncoder(shooterMotor2);
-
   }
+
+  // shooterMotorEncoder1 = new CANEncoder(shooterMotor1);
+  // shooterMotorEncoder2 = new CANEncoder(shooterMotor2);
+
+  public synchronized static Shooter getInstance() {
+    if (instance == null) {
+      instance = new Shooter(aligner, 0, 0, 0, 0, 0, 0);
+      }
+        return instance;
+      
+    }
 
   public void periodic() {
     switch (currentShootingState) {

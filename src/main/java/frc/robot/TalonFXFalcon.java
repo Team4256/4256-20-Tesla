@@ -51,7 +51,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     public TalonFXFalcon(final int deviceID, final NeutralMode neutralMode, final boolean isInverted, int analogEncoderID) {
         super(deviceID);
         idleMode = NeutralMode.Coast;
-        this.deviceID = deviceID;+-
+        this.deviceID = deviceID;
         this.isInverted = isInverted;
         logger = Logger.getLogger("SparkMax " + Integer.toString(deviceID));
 
@@ -207,6 +207,24 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     }
 
     public void getCurrentAngle(double angle) {
+
+    }
+
+    @Override
+    public double getEncoderVoltage() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public double getPIDError() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public void resetEncoder() {
+        // TODO Auto-generated method stub
 
     }
 
