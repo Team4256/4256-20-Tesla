@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -27,7 +28,8 @@ public class Robot extends TimedRobot {
   public static double gyroHeading = 0.0;
   private JoystickControl subsystems = new JoystickControl();
   private static Gyro gyro = Gyro.getInstance();
-
+  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+ 
   public synchronized static void updateGyroHeading() {
     gyroHeading = gyro.getCurrentAngle();
 }
@@ -45,7 +47,6 @@ public class Robot extends TimedRobot {
     gyro.reset();
     subsystems.setSwerveToZero();
     
-    // SmartDashboard.putNumber("ShooterSpeed", 0.0);
     
     
     
@@ -111,6 +112,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    
+    table.getEntry("pipeline").setNumber(1);
+    NetworkTableEntry tx = table.getEntry("tx");
+    NetworkTableEntry ty = table.getEntry("ty");
+    NetworkTableEntry ta = table.getEntry("ta");
+    
+    double x = tx.getDouble(0.0);
+    double y = ty.getDouble(0.0);
+    double area = ta.getDouble(0.0);
     subsystems.swervePeriodic();
     subsystems.intakePeriodic();
     subsystems.shooterPeriodic();

@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Add your docs here.
@@ -41,11 +42,6 @@ public class Aligner {
     public double getDistanceToTarget(){
         return camera.getTargetOffsetDegrees();
     }
-//something wrong with this 
-    public double getDirectionCommand() {
-        return positionPID.calculate(camera.getTargetOffsetDegrees(), 0);
-
-    }
 
     public double getOrientationCommand() {
         return orientationPID.calculate(camera.getTargetOffsetDegrees(), 0);
@@ -54,6 +50,7 @@ public class Aligner {
     public void alignRobotToTarget(){
         camera.turnLEDOn();
         swerveSystem.setSpin(getOrientationCommand());
+        SmartDashboard.putNumber("Offset", camera.putTxToDashboard());
         
     }
 

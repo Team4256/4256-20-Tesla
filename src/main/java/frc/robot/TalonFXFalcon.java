@@ -167,10 +167,8 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
             percentSpeed = Math.signum(percentSpeed) * .5;
         }
         super.set(percentSpeed);
-        //SmartDashboard.putNumber("Percent Output Us", percentSpeed);
         updated = true;
         lastSetpoint = percentSpeed; 
-        SmartDashboard.putNumber("errrereer", error);
         
     }
 

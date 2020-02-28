@@ -109,12 +109,13 @@ public class JoystickControl {
                 swerve.setSpin(spin);
                 swerve.travelTowards(direction);
                 swerve.completeLoopUpdate();
-                SmartDashboard.putNumber("Swervespin", spin);
-                SmartDashboard.putNumber("SwervesDirection", direction);
-                SmartDashboard.putNumber("Swervespeed", speed);
                 speed *= speed;
             }
         }
+        SmartDashboard.putNumber("XPosition", gyro.getDisplacementX());
+        SmartDashboard.putNumber("YPosition", gyro.getDisplacementY());
+        SmartDashboard.putNumber("ZPosition", gyro.getDisplacementZ());
+
 
     }
 
