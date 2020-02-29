@@ -34,8 +34,10 @@ public class Robot extends TimedRobot {
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   Limelight camera = Limelight.getInstance();
   D_Swerve swerve = D_Swerve.getInstance();
+  private static Auto auto = new Auto();
   public synchronized static void updateGyroHeading() {
     gyroHeading = gyro.getCurrentAngle();
+   
 }
   //private Compressor compress = new Compressor();
   /**
@@ -51,7 +53,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
     gyro.setAngleAdjustment(Parameters.GYRO_OFFSET);
     gyro.reset();
-    subsystems.setSwerveToZero();
+    //subsystems.setSwerveToZero();
     
     
     
