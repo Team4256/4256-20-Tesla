@@ -32,6 +32,11 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     private double lastLegalDirection = 1.0;
     private AnalogInput encoderPort;
     private AnalogEncoder angleEncoder;
+    private double encoderMinVoltage;
+    private double encoderMaxVoltage;
+    private double encoderTareVoltage;
+    double maxAngle = 0;
+    double minAngle = 360;
     public static final int kTimeoutMS = 10;
     
     
@@ -45,23 +50,45 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
      * @param isInverted  Indication of whether the SparkMax's motor is inverted
      */
     public TalonFXFalcon(final int deviceID, final boolean isInverted) {
-        this(deviceID, NeutralMode.Coast, isInverted, -1);
+
+        super(deviceID);
+
+        idleMode = NeutralMode.Brake;
+
+        this.deviceID = deviceID;
+
+        this.isInverted = isInverted;
+
+        logger = Logger.getLogger("SparkMax " + Integer.toString(deviceID));
+
     }
 
 
-    public TalonFXFalcon(final int deviceID, final NeutralMode neutralMode, final boolean isInverted, int analogEncoderID) {
-        super(deviceID);
-        idleMode = NeutralMode.Brake;
-        this.deviceID = deviceID;
-        this.isInverted = isInverted;
-        logger = Logger.getLogger("SparkMax " + Integer.toString(deviceID));
 
-        if (analogEncoderID >= 0 && analogEncoderID <= 3) {
-                encoderPort = new AnalogInput(analogEncoderID);
-                angleEncoder = new AnalogEncoder(encoderPort);
-                angleEncoder.setDistancePerRotation(360);
-                
-        }
+    public TalonFXFalcon(final int deviceID, final NeutralMode neutralMode, final boolean isInverted, int analogEncoderID) {
+
+        super(deviceID);
+
+        idleMode = NeutralMode.Brake;
+
+        this.deviceID = deviceID;
+
+        this.isInverted = isInverted;
+
+        encoderMaxVoltage = Parameters.angleEncoderMaxVoltage[analogEncoderID];
+
+        encoderMinVoltage = Parameters.angleEncoderMinVoltage[analogEncoderID];
+
+        encoderTareVoltage = Parameters.angleEncoderTareVoltage[analogEncoderID];
+
+        encoderPort = new AnalogInput(analogEncoderID);
+
+        angleEncoder = new AnalogEncoder(encoderPort);
+
+        angleEncoder.setDistancePerRotation(360);
+
+        
+
     }
 
     /**
@@ -83,7 +110,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
         setInverted(isInverted);
         set(0.0);
-        anglePIDController.enableContinuousInput(-180.0, 180.0);
+        //anglePIDController.enableContinuousInput(-180.0, 180.0);
     }
 
     /**
@@ -128,12 +155,18 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     // get angle
     public double getCurrentAngle() {
-        if(angleEncoder != null) {
-        return Math.toDegrees(angleEncoder.get());
-        } else {
-            return 0.0;
-        } 
+
+        return 360 - (encoderPort.getVoltage() - encoderTareVoltage)/(encoderMaxVoltage - encoderMinVoltage) * 360;
+
     }
+
+    public double getEncoderVoltage() {
+
+        return encoderPort.getVoltage();
+
+    }
+
+
 
     // Set Speed
     @Override
@@ -147,38 +180,67 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     // Set Angle
     public void setAngle(double targetAngle) {
 
-        int channelID = encoderPort.getChannel();
-        double encoderPosition = getCurrentAngle();
-        
-        while (targetAngle <= -180) {
-            targetAngle += 360;
-        } 
-        while (targetAngle > 180) {
-            targetAngle -= 360;
-        }
-        while (encoderPosition < -180) {
-            encoderPosition += 360;
-        }
-        SmartDashboard.putNumber("encoder position", encoderPosition);
 
-        if (Math.abs(targetAngle - encoderPosition) < 2) {
-            super.set(0.);
-            SmartDashboard.putNumber("Percent Output", 0.);
-            return;
-        }
+
+        int channelID = encoderPort.getChannel();
+
+        double encoderPosition = getCurrentAngle();
+
         
+
+        while (targetAngle <= -180) {
+
+            targetAngle += 360;
+
+        } 
+
+        while (targetAngle > 180) {
+
+            targetAngle -= 360;
+
+        }
+
+
+
+        double error = targetAngle - encoderPosition;
+
+        
+
+        while (targetAngle - encoderPosition > 180) {
+
+            encoderPosition += 360;
+
+        }
+
+        
+
+        while (targetAngle - encoderPosition < -180) {
+
+            encoderPosition -= 360;
+
+        }
+
+        
+
         double percentSpeed = anglePIDController.calculate(encoderPosition, targetAngle);
 
         if (Math.abs(percentSpeed) > .5) {
+
             percentSpeed = Math.signum(percentSpeed) * .5;
-        } else if (Math.abs(percentSpeed) < .01) {
-            percentSpeed = Math.signum(percentSpeed) * .01;
+
         }
+
         super.set(percentSpeed);
+
         updated = true;
+
         lastSetpoint = percentSpeed; 
+
         
+
     }
+
+
 
     public double getPIDError() {
         return anglePIDController.getPositionError();
@@ -199,7 +261,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     public void completeLoopUpdate() {
         if (!updated) {
-            super.set(lastSetpoint);
+            super.set(0);
         }
         updated = false;
     }
@@ -210,12 +272,6 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     public void getCurrentAngle(double angle) {
 
-    }
-
-    @Override
-    public double getEncoderVoltage() {
-        // TODO Auto-generated method stub
-        return 0;
     }
 
     
