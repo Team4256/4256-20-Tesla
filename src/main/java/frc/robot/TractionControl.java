@@ -15,13 +15,21 @@ public class TractionControl{
    }
 
    public void completeLoopUpdate(){
-    
        tractionMotor.completeLoopUpdate();
    }
+   
 
    public double getRPS(){
-       
     return tractionMotor.getRPS();
+   }
+
+
+   public void resetEncoder() {
+    tractionMotor.resetEncoder();
+   }
+
+   public double getPositionFromIntegratedSensor(){
+   return tractionMotor.getPositionFromIntegratedSensor();
    }
 
 }

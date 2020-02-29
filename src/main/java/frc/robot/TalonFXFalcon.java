@@ -32,6 +32,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     private double lastLegalDirection = 1.0;
     private AnalogInput encoderPort;
     private AnalogEncoder angleEncoder;
+    public static final int kTimeoutMS = 10;
     
     
 
@@ -50,7 +51,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     public TalonFXFalcon(final int deviceID, final NeutralMode neutralMode, final boolean isInverted, int analogEncoderID) {
         super(deviceID);
-        idleMode = NeutralMode.Coast;
+        idleMode = NeutralMode.Brake;
         this.deviceID = deviceID;
         this.isInverted = isInverted;
         logger = Logger.getLogger("SparkMax " + Integer.toString(deviceID));
@@ -89,6 +90,18 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
      * @return Counts of the motor
      */
 
+    @Override
+    public void resetEncoder() {
+       getSensorCollection().setIntegratedSensorPosition(0.0, kTimeoutMS);
+
+    }
+
+    /*
+    returns the rotations of the motor from the integrated sensor
+    */
+    public double getPositionFromIntegratedSensor(){
+       return getSensorCollection().getIntegratedSensorPosition();
+    }
 
 
     /**
@@ -110,28 +123,6 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
      */
     public double getRPS() {
         return (getRPM() / 60.0);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         
     }
 
@@ -156,10 +147,14 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     // Set Angle
     public void setAngle(double targetAngle) {
 
-        double encoderPosition = angleEncoder.getDistance();
-        SmartDashboard.putNumber("target Angle", targetAngle);
-        while (encoderPosition > 180) {
-            encoderPosition -= 360;
+        int channelID = encoderPort.getChannel();
+        double encoderPosition = getCurrentAngle();
+        
+        while (targetAngle <= -180) {
+            targetAngle += 360;
+        } 
+        while (targetAngle > 180) {
+            targetAngle -= 360;
         }
         while (encoderPosition < -180) {
             encoderPosition += 360;
@@ -222,12 +217,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         return 0;
     }
 
-    @Override
-    public void resetEncoder() {
-        // TODO Auto-generated method stub
-
-    }
-
+    
     
 
     

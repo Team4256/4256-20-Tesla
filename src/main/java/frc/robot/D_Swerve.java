@@ -57,6 +57,29 @@ public final class D_Swerve implements Drivetrain {
 		moduleD.init();
 	}
 
+	public void resetEncoderPosition(){
+		moduleA.resetEncoderValue();
+		moduleB.resetEncoderValue();
+		moduleC.resetEncoderValue();
+		moduleD.resetEncoderValue();
+
+	}
+
+
+
+	public double getAverageIntegratedSensorPosition(){
+		double encoderCountsA = moduleA.getIntegratedSensorENcoderCounts();
+		double encoderCountsB = moduleB.getIntegratedSensorENcoderCounts();
+		double encoderCountsC = moduleC.getIntegratedSensorENcoderCounts();
+		double encoderCountsD = moduleD.getIntegratedSensorENcoderCounts();
+
+		double averageEncoderCounts = (encoderCountsA + encoderCountsB + encoderCountsC + encoderCountsD)/4;
+		double averageDistanceTraveled = ((averageEncoderCounts/2048)/8.3121)*12.56637;
+
+		return averageDistanceTraveled;
+	}
+
+
 
 	private void holonomic_encoderIgnorant(final double direction, double speed, final double spin) {
 		//{PREPARE VARIABLES}

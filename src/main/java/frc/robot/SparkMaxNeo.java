@@ -208,4 +208,9 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
     public void resetEncoder() {
         angleEncoder.reset();
     }
+
+    public double getPositionFromIntegratedSensor(){
+        return 0.0;
+       
+     }
 }

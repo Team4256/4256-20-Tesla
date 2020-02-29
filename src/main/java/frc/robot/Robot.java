@@ -30,6 +30,7 @@ public class Robot extends TimedRobot {
   private JoystickControl subsystems = new JoystickControl();
   private static Gyro gyro = Gyro.getInstance();
   private static Auto auto = new Auto();
+  private static D_Swerve swerve = D_Swerve.getInstance();
 
   public synchronized static void updateGyroHeading() {
     gyroHeading = gyro.getCurrentAngle();
@@ -41,14 +42,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("port", port);
+    m_chooser.setDefaultOption("cross white line", crossLine);
     m_chooser.addOption("left trench", leftTrench);
     m_chooser.addOption("right trench", rightTrench);
-    m_chooser.addOption("cross white line", crossLine);
+    m_chooser.addOption("port", port);
     SmartDashboard.putData("Auto choices", m_chooser);
     gyro.setAngleAdjustment(Parameters.GYRO_OFFSET);
     gyro.reset();
     subsystems.setSwerveToZero();
+    
+    // SmartDashboard.putNumber("ShooterSpeed", 0.0);
     
     
     
@@ -88,6 +91,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    
     m_autoSelected = m_chooser.getSelected();
     m_autoSelected = SmartDashboard.getString("Auto Selector", port);
     System.out.println("Auto selected: " + m_autoSelected);
@@ -99,6 +103,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+    
     switch (m_autoSelected) {
     case port:
       auto.mode2();
@@ -113,7 +118,8 @@ public class Robot extends TimedRobot {
       case crossLine:
       auto.mode4();
       break;
-    }
+  }  
+  swerve.completeLoopUpdate();
   }
 
   /**
@@ -122,9 +128,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     subsystems.swervePeriodic();
-    // subsystems.intakePeriodic();
-    // subsystems.shooterPeriodic();
-    // subsystems.ClimbingPeriodic();
+    subsystems.intakePeriodic();
+    subsystems.shooterPeriodic();
+    subsystems.ClimbingPeriodic();
     
     
   }

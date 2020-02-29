@@ -24,6 +24,8 @@ public void completeLoopUpdate();
 
 public void resetEncoder();
 
+public double getPositionFromIntegratedSensor();
+
 
 
 

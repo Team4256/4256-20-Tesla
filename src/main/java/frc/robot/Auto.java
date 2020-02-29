@@ -21,35 +21,38 @@ public class Auto {
    
 
     public Auto(){
-    D_Swerve.getInstance();
-    Shooter.getInstance();
-    Gyro.getInstance();
-    Intake.getInstance();
+    swerve = D_Swerve.getInstance();
+    shooter = Shooter.getInstance();
+    gyro = Gyro.getInstance();
+    intake = Intake.getInstance();
 
     }
 
     public void autoInit(){
       gyro.reset();
+      swerve.resetEncoderPosition();
     }
 
 
 
     private boolean crossWhiteLine(){
+      double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
       
-      double YPosition = gyro.getDisplacementY();
-      SmartDashboard.getNumber("Yposition", YPosition);
+      SmartDashboard.putNumber("Rotation Counts", distanceTravelled);
       
-      if(YPosition < Parameters.CROSS_WHITE_LINE_DISTANCE_IN_METERS) {
+      if(distanceTravelled < Parameters.CROSS_WHITE_LINE_DISTANCE_IN_INCHES) {
         swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
         swerve.setSpin(0.0);
+        //swerve.setSpin(Parameters.AUTO_SWERVE_TRACTION_SPEED);
         swerve.travelTowards(180);
         return false;
         
         }
-        else{
-          swerve.setSpeed(0.0);
-          swerve.setSpin(0.0);
-          return true;
+      else{
+        swerve.resetEncoderPosition();
+        swerve.setSpeed(0.0);
+        swerve.setSpin(0.0);
+        return true;
       
           
         }
@@ -58,13 +61,15 @@ public class Auto {
 
     //for mode4 only 
     private void moveBack(){
-      double YPosition = gyro.getDisplacementY();
-      if(YPosition < Parameters.MOVE_BACK_DISTANCE){
-        swerve.setSpeed(Parameters.AUTO_SWERVE_ROTATION_SPEED);
+      double distanceTravelled = swerve.getAverageIntegratedSensorPosition();
+      
+      if(distanceTravelled < Parameters.MOVE_BACK_DISTANCE_IN_INCHES){
+        swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
         swerve.setSpin(0.0);
         swerve.travelTowards(180);
       }
       else{
+        swerve.resetEncoderPosition();
         swerve.setSpeed(0.0);
         swerve.setSpin(0.0);
       }
@@ -74,38 +79,41 @@ public class Auto {
 
 
     private boolean drivingToPorts(double distance){
-      double Xposition = gyro.getDisplacementX();
-      SmartDashboard.getNumber("Xposition", Xposition);
-      if(Xposition < distance){
+      double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
+      //SmartDashboard.putNumber("Xposition", Xposition);
+      if(distanceTravelled < distance){
       swerve.setSpin(90.0);
       swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
       swerve.travelTowards(270);// ask if the value is right 
       return false;
     }
       else{
+      swerve.resetEncoderPosition();
       swerve.setSpeed(0.0);
       swerve.setSpin(0.0);
       return true;
     }
-
-    }
+  }
 
 
     private void alignAndShoot(){
       shooter.shootAlign();
-
     }
 
+
+
+
     private boolean getBallsFromTrench(double distance){
-      double YPosition = gyro.getDisplacementY();
-      if(YPosition< distance){
+      double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
+      if(distanceTravelled < distance){
         swerve.setSpin(0.0);
-        swerve.setSpeed(Parameters.AUTO_SWERVE_ROTATION_SPEED);
+        swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
         swerve.travelTowards(180);
         intake.succ();
         return false;
       }
       else{
+        swerve.resetEncoderPosition();
         swerve.setSpeed(0.0);
         intake.stop();
         return true;
@@ -117,9 +125,10 @@ public class Auto {
 
 
     // mode1: start from the right 
+    //might take out the driving to ports function
     public void mode1(){
-      if(getBallsFromTrench(Parameters.DRIVE_TO_TRENCH_DISTANCE)){
-        if(drivingToPorts(Parameters.STARTING_DISTANCE_FROM_RIGHT)){
+      if(getBallsFromTrench(Parameters.DRIVE_TO_TRENCH_DISTANCE_IN_INCHES)){
+        if(drivingToPorts(Parameters.STARTING_DISTANCE_FROM_RIGHT_IN_INCHES)){
           alignAndShoot();
         }
       }
@@ -132,27 +141,28 @@ public class Auto {
     public void mode2(){
 
       if(crossWhiteLine()){
-        if(drivingToPorts(Parameters.STARTING_DISTANCE_FROM_MIDDLE)){
+        //if(drivingToPorts(Parameters.STARTING_DISTANCE_FROM_MIDDLE)){
           alignAndShoot();
-        }  
+        //}  
       }
     }
 
     // mode3: start from the left
     public void mode3(){
-      if(getBallsFromTrench(Parameters.DRIVE_TO_TRENCH_DISTANCE)){
-        if(drivingToPorts(Parameters.STARTING_DISTANCE_FROM_LEFT)){
+      if(getBallsFromTrench(Parameters.DRIVE_TO_TRENCH_DISTANCE_IN_INCHES)){
+        //if(drivingToPorts(Parameters.STARTING_DISTANCE_FROM_LEFT)){
           alignAndShoot();
-        }
+        //}
       }
     }
 
     // mode4: start 
     public void mode4(){
-      if(crossWhiteLine()){
-        //moveBack();
-        swerve.setSpeed(0.0);
-      } 
+      // if(crossWhiteLine()){
+      //   moveBack();
+       
+      // } 
+      crossWhiteLine();
     }
 
 }
