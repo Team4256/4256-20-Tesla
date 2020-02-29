@@ -133,7 +133,7 @@ public class Shooter {
   }
 
   public void shootAlign() {
-    if (shooterAligner.getIsAtTarget()) {
+  
 
       shooterAligner.alignRobotToTarget();
 
@@ -145,7 +145,7 @@ public class Shooter {
       // shooterMotor1.getSensorCollection().getIntegratedSensorVelocity() / 2048 *
       // 600);
 
-    }
+    
     /*
      * if (target is found && motorSpeed >= a certain number){ addjust the speed of
      * the shooterwheel according to the data we receive from limelight move to the
@@ -212,7 +212,7 @@ public class Shooter {
     shooterMotor2.set(0.0);
     stirrerMotor.set(ControlMode.PercentOutput, 0.0);
     feederMotor.set(ControlMode.PercentOutput, 0.0);
-    shooterAligner.turnLEDOff();
+    //shooterAligner.turnLEDOff();
   }
 
 }

@@ -10,10 +10,10 @@ public final class D_Swerve implements Drivetrain {
 
 	private static D_Swerve instance = null;
 
-	private static final double PIVOT_TO_FRONT_X = 11.425, // inches, pivot point to front wheel tip, x
-			PIVOT_TO_FRONT_Y = 12.75, // inches, pivot point to front wheel tip, y
-			PIVOT_TO_AFT_X = 11.425, // inches, pivot point to aft wheel tip, x
-			PIVOT_TO_AFT_Y = 12.75;// inches, pivot point to aft wheel tip, y
+	private static final double PIVOT_TO_FRONT_X = 12.75, // inches, pivot point to front wheel tip, x
+			PIVOT_TO_FRONT_Y = 11.425, // inches, pivot point to front wheel tip, y
+			PIVOT_TO_AFT_X = 12.75, // inches, pivot point to aft wheel tip, x
+			PIVOT_TO_AFT_Y = 11.425;// inches, pivot point to aft wheel tip, y
 	private static final double PIVOT_TO_FRONT = Math.hypot(PIVOT_TO_FRONT_X, PIVOT_TO_FRONT_Y),
 			PIVOT_TO_AFT = Math.hypot(PIVOT_TO_AFT_X, PIVOT_TO_AFT_Y);
 
@@ -131,7 +131,7 @@ public final class D_Swerve implements Drivetrain {
 	@Override
 	public void completeLoopUpdate() {
 		holonomic_encoderIgnorant(direction, speed, spin);
-		SmartDashboard.putNumber("key", speed);
+		SmartDashboard.putNumber("holoCommand", spin);
 		for (SwerveModule module : modules)
 			module.completeLoopUpdate();
 		// for (SwerveModule module : modules) module.swivelTo(0.0);
@@ -156,6 +156,7 @@ public final class D_Swerve implements Drivetrain {
 		double[] angles = new double[4];
 		for (int i = 0; i < 4; i++)
 			angles[i] = Math.toDegrees(Math.atan2(moduleComponents[i * 2], moduleComponents[i * 2 + 1]));
+			SmartDashboard.putNumber("AngleCommand", angles[1]);
 		return angles;
 	}
 
