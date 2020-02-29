@@ -8,12 +8,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Add your docs here.
  */
 public class Aligner {
-    private PIDController orientationPID = new PIDController(0, 0, 0);
+    private PIDController orientationPID = new PIDController(-.025, 0, 0);
     private PIDController positionPID = new PIDController(0, 0, 0);
     private static D_Swerve swerveSystem;
     public static Aligner instance = null;
@@ -41,20 +42,15 @@ public class Aligner {
     public double getDistanceToTarget(){
         return camera.getTargetOffsetDegrees();
     }
-//something wrong with this 
-    public double getDirectionCommand() {
-        return positionPID.calculate(camera.getTargetOffsetDegrees(), 0);
-
-    }
 
     public double getOrientationCommand() {
         return orientationPID.calculate(camera.getTargetOffsetDegrees(), 0);
     }
 
-    public boolean alignRobotToTarget(){
-        camera.turnLEDOn();
+    public void alignRobotToTarget(){
+        //camera.turnLEDOn();
         swerveSystem.setSpin(getOrientationCommand());
-        return getIsAtTarget(); 
+        SmartDashboard.putNumber("Offset", camera.putTxToDashboard());
         
     }
 

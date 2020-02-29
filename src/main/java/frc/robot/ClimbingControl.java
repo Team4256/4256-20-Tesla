@@ -77,7 +77,6 @@ public class ClimbingControl {
             break;
             case CLIMB:
               climb();
-              SmartDashboard.putNumber("test3", 12123213);
             break;
             case STOP:
             break;

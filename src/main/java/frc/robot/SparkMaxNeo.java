@@ -175,7 +175,6 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
 
         if (Math.abs(targetAngle - encoderPosition) < 2) {
             super.set(0.);
-            SmartDashboard.putNumber("Percent Output", 0.);
             return;
         }
 

@@ -92,14 +92,24 @@ public class JoystickControl {
         final boolean turbo = driver.getRawButton(Xbox.BUTTON_STICK_LEFT);
 
         if (true) {
-
+            aligner.camera.turnLEDOn();
+            if (driver.getRawButtonPressed(Xbox.BUTTON_X)) {
+                cellShooter.ShootAlign();
+            }
+            if (driver.getRawButtonReleased(Xbox.BUTTON_X)) {
+                cellShooter.STOP();
+            }
+            if (aligner.camera.hasTarget()) {
+               SmartDashboard.putNumber("TargitoOffsito", aligner.camera.getTargetOffsetDegrees());
+            }
+ 
             if (driver.getRawButtonPressed(driver.BUTTON_B) ) {
                     gyro.reset();
             }
 
-            if (driver.getRawButtonPressed(driver.BUTTON_X)) {
-                swerve.formX();
-            } else {
+            // if (driver.getRawButtonPressed(driver.BUTTON_X)) {
+            //     swerve.setAllModulesToZero();
+             else {
                 if (!turbo) {
                     speed *= 0.6;
                 }
@@ -109,9 +119,6 @@ public class JoystickControl {
                 swerve.setSpin(spin);
                 swerve.travelTowards(direction);
                 swerve.completeLoopUpdate();
-                SmartDashboard.putNumber("Swervespin", spin);
-                SmartDashboard.putNumber("SwervesDirection", direction);
-                SmartDashboard.putNumber("Swervespeed", speed);
                 speed *= speed;
             }
         }
@@ -127,9 +134,7 @@ public class JoystickControl {
 
     public void shooterPeriodic() {
 
-        if (driver.getAxisPress(Xbox.AXIS_RT, 0.1)) {
-            cellShooter.ShootAlign();
-        }
+        
         if (driver.getRawButtonPressed(Xbox.BUTTON_RB)) {
             isShooting = true;
             cellShooter.ShootNoAlign();
@@ -172,35 +177,25 @@ public class JoystickControl {
 
     // Intake Periodic
     public void intakePeriodic() {
-        if (gunner.getRawButtonPressed(Xbox.BUTTON_LB)) {
-
-            intake.spew();
-
-        }
-        if (gunner.getRawButtonReleased(Xbox.BUTTON_LB)) {
-            intake.stop();
-        }
-        if (gunner.getRawButtonPressed(Xbox.BUTTON_RB)) {
-
+        if (driver.getAxisActivity(Xbox.AXIS_LT)) {
             intake.succ();
-
         }
-        if (gunner.getRawButtonReleased(Xbox.BUTTON_RB)) {
+        if (driver.getRawButtonReleased(Xbox.AXIS_LT)) {
             intake.stop();
-
+        }
+        if (driver.getRawButtonPressed(Xbox.BUTTON_LB)) {
+            intake.spew();
+        }
+        if (driver.getRawButtonReleased(Xbox.BUTTON_LB)) {
+            intake.stop();
         }
         if (driver.getRawButtonPressed(Xbox.BUTTON_A)) {
-
             intake.intakeDown();
-
         }
         if (driver.getRawButtonReleased(Xbox.BUTTON_Y)) {
-
             intake.intakeUp();
-
         }
     }
-    // probably different buttons for both Control and Prep
 
     public void ClimbingPeriodic() {
         if (gunner.getPOV() == (Xbox.DPAD_NORTH)) {

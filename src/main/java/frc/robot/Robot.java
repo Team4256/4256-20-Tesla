@@ -8,10 +8,12 @@
 package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Limelight.CamMode;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -29,9 +31,9 @@ public class Robot extends TimedRobot {
   public static double gyroHeading = 0.0;
   private JoystickControl subsystems = new JoystickControl();
   private static Gyro gyro = Gyro.getInstance();
-  private static Auto auto = new Auto();
-  private static D_Swerve swerve = D_Swerve.getInstance();
-
+  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+  Limelight camera = Limelight.getInstance();
+  D_Swerve swerve = D_Swerve.getInstance();
   public synchronized static void updateGyroHeading() {
     gyroHeading = gyro.getCurrentAngle();
 }
@@ -51,7 +53,6 @@ public class Robot extends TimedRobot {
     gyro.reset();
     subsystems.setSwerveToZero();
     
-    // SmartDashboard.putNumber("ShooterSpeed", 0.0);
     
     
     
@@ -71,6 +72,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
       subsystems.displaySwerveAngles();
       updateGyroHeading();
+      swerve.completeLoopUpdate();
         // apollo.getEntry("Selected Starting Position").setString(autoModeChooser.getRawSelections()[0]);
         // apollo.getEntry("Desired Auto Mode").setString(autoModeChooser.getRawSelections()[1]);
         // apollo.getEntry("Has Ball Test").setBoolean(ballIntake.hasBall());
@@ -127,6 +129,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    camera.turnLEDOn();
+    table.getEntry("pipeline").setNumber(1);
+    NetworkTableEntry tx = table.getEntry("tx");
+    NetworkTableEntry ty = table.getEntry("ty");
+    NetworkTableEntry ta = table.getEntry("ta");
+    
+    double x = tx.getDouble(0.0);
+    double y = ty.getDouble(0.0);
+    double area = ta.getDouble(0.0);
     subsystems.swervePeriodic();
     subsystems.intakePeriodic();
     subsystems.shooterPeriodic();
@@ -140,5 +151,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    
+    camera.turnLEDOn();
+    // camera.updateVisionTracking2();
+    // camera.setCamMode(CamMode.VISION);
   }
 }

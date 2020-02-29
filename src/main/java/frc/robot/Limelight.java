@@ -21,6 +21,8 @@ public class Limelight {
 
     private boolean hasDirection = false;//updateVisionTrackingStickier
 
+    
+
     private Limelight() {
     }
 
@@ -53,6 +55,10 @@ public class Limelight {
     }
 
     public synchronized double getTargetOffsetDegrees() {
+        return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0.0);
+    }
+
+    public synchronized double putTxToDashboard() {
         return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0.0);
     }
 

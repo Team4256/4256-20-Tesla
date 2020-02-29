@@ -174,10 +174,17 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         } else if (Math.abs(percentSpeed) < .01) {
             percentSpeed = Math.signum(percentSpeed) * .01;
         }
-
         super.set(percentSpeed);
-        SmartDashboard.putNumber("Percent Output", percentSpeed);
+        updated = true;
+        lastSetpoint = percentSpeed; 
+        
     }
+
+    public double getPIDError() {
+        return anglePIDController.getPositionError();
+    }
+
+      
 
     public double pathTo(double target) {// ANGLE
         final double current = getCurrentAngle();
@@ -211,11 +218,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         return 0;
     }
 
-    @Override
-    public double getPIDError() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+    
 
     
     
