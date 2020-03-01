@@ -151,7 +151,7 @@ public class Auto {
     // mode1: start from the right 
     //might take out the driving to ports function
     public void mode1(){
-      if(phase1 == PhaseStates.NOT_SARTED){
+      if(phase1 == PhaseStates.NOT_SARTED){ // Starts the shooter motors
         phase1 = PhaseStates.STARTED;
         shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED);
       }
@@ -162,7 +162,7 @@ public class Auto {
           return;
         }
       }
-      if(phase2 == PhaseStates.NOT_SARTED){
+      if(phase2 == PhaseStates.NOT_SARTED){ // Aligns and shoots pre loaded power cells
         phase2 = PhaseStates.STARTED;
         stopWatch.resetTimer();
       }
@@ -174,7 +174,7 @@ public class Auto {
         else {
           return;
         }
-        if(phase3 == PhaseStates.NOT_SARTED){
+        if(phase3 == PhaseStates.NOT_SARTED){ // Turns towards target
           phase3 = PhaseStates.STARTED;
           stopWatch.resetTimer();
         }
@@ -186,7 +186,7 @@ public class Auto {
           else {
             return;
       }
-      if(phase4 == PhaseStates.NOT_SARTED){
+      if(phase4 == PhaseStates.NOT_SARTED){ // Drives to trench and intakes power cells
         swerve.resetEncoderPosition();
         phase4 = PhaseStates.STARTED;
       }
@@ -199,7 +199,7 @@ public class Auto {
         else {
           return;
        } 
-       if(phase5 == PhaseStates.NOT_SARTED){
+       if(phase5 == PhaseStates.NOT_SARTED){ //Shoots previously gathered power cells
         phase5 = PhaseStates.STARTED;
         stopWatch.resetTimer();
       }
