@@ -11,7 +11,7 @@ public class Parameters{
     public static final double AUTO_SWERVE_TRACTION_SPEED = 0.1; //TODO get the actual speed
    // public static final double AUTO_SWERVE_ROTATION_SPEED = 0.5; //TODO get the actual speed
     public static final double CROSS_WHITE_LINE_DISTANCE_IN_INCHES = 6; //TODO get the actual DISTANCE
-    public static final double DRIVE_TO_TRENCH_DISTANCE_IN_INCHES = 20; //TODO get the actual DISTANCE
+    public static final double DRIVE_TO_TRENCH_DISTANCE_IN_INCHES = 186; //TODO get the actual DISTANCE
     public static final double MOVE_BACK_DISTANCE_IN_INCHES = 20; //TODO get the actual DISTANCE mode 4 only after crossing the white line
     public static final double STARTING_DISTANCE_FROM_RIGHT_IN_INCHES = 8; //TODO get the actual DISTANCE
     //public static final double STARTING_DISTANCE_FROM_MIDDLE_IN_INCHES = 5; //TODO get the actual DISTANCE

@@ -17,6 +17,14 @@ public class Auto {
     private Shooter shooter;
     private Gyro gyro;
     private Intake intake;
+    private boolean stageOneFinished;
+    private boolean stageTwoFinished;
+    private boolean stageThreeFinished;
+    private boolean stageFourFinished;
+    private double elapsedTime;
+    private StopWatch stopWatch = StopWatch.getInstance();
+    private Shooter cellshooter = Shooter.getInstance();
+   private Intake intakae = Intake.getInstance();
     
    
 
@@ -31,6 +39,11 @@ public class Auto {
     public void autoInit(){
       gyro.reset();
       swerve.resetEncoderPosition();
+    stageOneFinished = false;
+    stageTwoFinished = false;
+    stageThreeFinished = false;
+    stageFourFinished = false;
+    elapsedTime = 0.0;
     }
 
 
@@ -38,7 +51,7 @@ public class Auto {
     private boolean crossWhiteLine(){
       double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
       
-      SmartDashboard.putNumber("Rotation Counts", distanceTravelled);
+      SmartDashboard.putNumber("distance travelled", distanceTravelled);
       
       if(distanceTravelled < Parameters.CROSS_WHITE_LINE_DISTANCE_IN_INCHES) {
         swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
@@ -52,6 +65,7 @@ public class Auto {
         swerve.resetEncoderPosition();
         swerve.setSpeed(0.0);
         swerve.setSpin(0.0);
+        stageOneFinished = true;
         return true;
       
           
@@ -66,7 +80,7 @@ public class Auto {
       if(distanceTravelled < Parameters.MOVE_BACK_DISTANCE_IN_INCHES){
         swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
         swerve.setSpin(0.0);
-        swerve.travelTowards(180);
+        swerve.travelTowards(0.0);
       }
       else{
         swerve.resetEncoderPosition();
@@ -80,9 +94,9 @@ public class Auto {
 
     private boolean drivingToPorts(double distance){
       double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
-      //SmartDashboard.putNumber("Xposition", Xposition);
+      SmartDashboard.putNumber("To Ports Distance", distanceTravelled);
       if(distanceTravelled < distance){
-      swerve.setSpin(90.0);
+      // swerve.setSpin(.30);
       swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
       swerve.travelTowards(270);// ask if the value is right 
       return false;
@@ -91,6 +105,7 @@ public class Auto {
       swerve.resetEncoderPosition();
       swerve.setSpeed(0.0);
       swerve.setSpin(0.0);
+      stageTwoFinished = true;
       return true;
     }
   }
@@ -116,22 +131,102 @@ public class Auto {
         swerve.resetEncoderPosition();
         swerve.setSpeed(0.0);
         intake.stop();
+        stageThreeFinished = true;
         return true;
       }
      
       
 
     }
-
+    
+    public static enum PhaseStates {
+      NOT_SARTED, STARTED, ENDED
+    }
+  private PhaseStates phase1 = PhaseStates.NOT_SARTED;
+  private PhaseStates phase2 = PhaseStates.NOT_SARTED;
+  private PhaseStates phase3 = PhaseStates.NOT_SARTED;
+  private PhaseStates phase4 = PhaseStates.NOT_SARTED;
+  private PhaseStates phase5 = PhaseStates.NOT_SARTED;
 
     // mode1: start from the right 
     //might take out the driving to ports function
     public void mode1(){
-      if(getBallsFromTrench(Parameters.DRIVE_TO_TRENCH_DISTANCE_IN_INCHES)){
-        if(drivingToPorts(Parameters.STARTING_DISTANCE_FROM_RIGHT_IN_INCHES)){
-          alignAndShoot();
+      if(phase1 == PhaseStates.NOT_SARTED){
+        phase1 = PhaseStates.STARTED;
+        shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED);
+      }
+      if(phase1 == PhaseStates.STARTED){
+        if(shooter.isSpunUp()){
+          phase1 = PhaseStates.ENDED; }
+       else{
+          return;
         }
       }
+      if(phase2 == PhaseStates.NOT_SARTED){
+        phase2 = PhaseStates.STARTED;
+        stopWatch.resetTimer();
+      }
+      if(phase2 == PhaseStates.STARTED){
+        alignAndShoot();
+        if(stopWatch.getElapsedTime() > 2){
+          phase2 = PhaseStates.ENDED;
+        }
+        else {
+          return;
+        }
+        if(phase3 == PhaseStates.NOT_SARTED){
+          phase3 = PhaseStates.STARTED;
+          stopWatch.resetTimer();
+        }
+        if(phase3 == PhaseStates.STARTED)
+          swerve.face(0.0, 0.3);
+          if(stopWatch.getElapsedTime() > .5){
+            phase3 = PhaseStates.ENDED;
+          }
+          else {
+            return;
+      }
+      if(phase4 == PhaseStates.NOT_SARTED){
+        swerve.resetEncoderPosition();
+        phase4 = PhaseStates.STARTED;
+      }
+      if(phase4 == PhaseStates.STARTED){
+        intakae.succ();
+        double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
+      if(distanceTravelled >= 186){
+          phase4 = PhaseStates.ENDED;
+        }
+        else {
+          return;
+       } 
+       if(phase5 == PhaseStates.NOT_SARTED){
+        phase5 = PhaseStates.STARTED;
+        stopWatch.resetTimer();
+      }
+      if(phase5 == PhaseStates.STARTED){
+        alignAndShoot();
+        if(stopWatch.getElapsedTime() > 3){
+          phase5 = PhaseStates.ENDED;
+          shooter.STOP();
+        }
+        else {
+          return;
+        }
+      }
+    }
+  }
+      
+      
+
+        
+    
+
+
+      // if(getBallsFromTrench(Parameters.DRIVE_TO_TRENCH_DISTANCE_IN_INCHES)){
+      //   if(drivingToPorts(Parameters.STARTING_DISTANCE_FROM_RIGHT_IN_INCHES)){
+      //     alignAndShoot();
+      //   }
+      // }
       
       
       
@@ -162,7 +257,31 @@ public class Auto {
       //   moveBack();
        
       // } 
-      crossWhiteLine();
+
+
+      // if(!stageOneFinished){
+      //   crossWhiteLine();
+      // }
+      // else if(!stageTwoFinished){
+      //   drivingToPorts(Parameters.DRIVE_TO_TRENCH_DISTANCE_IN_INCHES);
+      // }
+      // else{
+      //   alignAndShoot();
+      // }
+      elapsedTime +=0.02;
+
+      //spin shooter motors --> align and shoot
+      alignAndShoot();
+      if(!stageOneFinished){
+        crossWhiteLine();
+      }
+      else if(!stageTwoFinished){
+        drivingToPorts(Parameters.DRIVE_TO_TRENCH_DISTANCE_IN_INCHES);
+      }
+      else{
+        alignAndShoot();
+      }
+      
     }
 
 }

@@ -67,10 +67,10 @@ public final class D_Swerve implements Drivetrain {
 
 
 	public double getAverageIntegratedSensorPosition(){
-		double encoderCountsA = moduleA.getIntegratedSensorENcoderCounts();
-		double encoderCountsB = moduleB.getIntegratedSensorENcoderCounts();
-		double encoderCountsC = moduleC.getIntegratedSensorENcoderCounts();
-		double encoderCountsD = moduleD.getIntegratedSensorENcoderCounts();
+		double encoderCountsA = Math.abs(moduleA.getIntegratedSensorENcoderCounts());   
+		double encoderCountsB = Math.abs(moduleB.getIntegratedSensorENcoderCounts());
+		double encoderCountsC = Math.abs(moduleC.getIntegratedSensorENcoderCounts());
+		double encoderCountsD = Math.abs(moduleD.getIntegratedSensorENcoderCounts());
 
 		double averageEncoderCounts = (encoderCountsA + encoderCountsB + encoderCountsC + encoderCountsD)/4;
 		double averageDistanceTraveled = ((averageEncoderCounts/2048)/8.3121)*12.56637;

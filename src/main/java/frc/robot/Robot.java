@@ -72,6 +72,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+      camera.turnLEDOn();
       subsystems.displaySwerveAngles();
       updateGyroHeading();
       swerve.completeLoopUpdate();
@@ -97,7 +98,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     
     m_autoSelected = m_chooser.getSelected();
-    m_autoSelected = SmartDashboard.getString("Auto Selector", port);
+    m_autoSelected = SmartDashboard.getString("Auto Selector", crossLine );
     System.out.println("Auto selected: " + m_autoSelected);
     auto.autoInit();
   }
