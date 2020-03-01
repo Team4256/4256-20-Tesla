@@ -128,6 +128,7 @@ public class Robot extends TimedRobot {
     subsystems.intakePeriodic();
     subsystems.shooterPeriodic();
     subsystems.ClimbingPeriodic();
+    SmartDashboard.putNumber("gyroOffset", Parameters.GYRO_OFFSET);
     
     
   }

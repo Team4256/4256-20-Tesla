@@ -145,32 +145,9 @@ public class JoystickControl {
         if (gunner.getAxisPress(Xbox.AXIS_LT, 0.5)) {
             cellShooter.SpinShooterPrep();
         }
-        // if (gunner.getAxisPress(Xbox.AXIS_LT, 0.1)) {
-        // if (!leftTriggerPrevPressed) {
-        // if (leftTriggerTurnsMotorOn) {
-        // cellShooter.SpinShooterPrep();
-        // } else {
-        // cellShooter.STOP();
-        // }
-        // }
-        // leftTriggerPrevPressed = true;
-        // } else {
-        // if (leftTriggerPrevPressed) {
-        // leftTriggerPrevPressed = false;
-        // leftTriggerPrevPressed = !leftTriggerPrevPressed;
-        // }
-        // }
-
-        // if (!gunner.getAxisPress(Xbox.AXIS_LT, 0.1)) {
-        // cellShooter.STOP();
-        // }
         if (gunner.getAxisPress(Xbox.AXIS_RT, 0.5)) {
             cellShooter.ShooterRange();
         }
-        if (driver.getRawButtonPressed(Xbox.BUTTON_B)) {
-            cellShooter.spinStirrerMotors();
-        }
-
         cellShooter.periodic();
 
     }

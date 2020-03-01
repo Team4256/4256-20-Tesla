@@ -36,8 +36,9 @@ public class Aligner {
 
     
 
-    public boolean getIsAtTarget() {
-        return orientationPID.atSetpoint();
+    public boolean getIsAtTarget(double threshold) {
+        return camera.getTargetOffsetDegrees() <= threshold;
+        
     }
     public double getDistanceToTarget(){
         return camera.getTargetOffsetDegrees();

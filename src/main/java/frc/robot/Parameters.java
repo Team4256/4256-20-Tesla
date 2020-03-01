@@ -81,7 +81,7 @@ public class Parameters{
 
     public static final double angleEncoderMinVoltage[] = {0.00366, 0.01099, 0.009766, 0.01343};
     public static final double angleEncoderMaxVoltage[] = {4.9133, 4.9255, 4.9219, 4.9243};
-    public static final double angleEncoderTareVoltage[] = {4.155,1.748,1.331,4.215};//Swerve Number(A,B,C,D):
+    public static final double angleEncoderTareVoltage[] = {4.155,1.752,1.297,4.234};//Swerve Number(A,B,C,D):
     // Aligner tolerances
 
     public static final double POSITION_TOLERANCE = 5.00;
