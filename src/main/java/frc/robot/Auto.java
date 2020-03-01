@@ -151,14 +151,16 @@ public class Auto {
     // mode1: start from the right 
     //might take out the driving to ports function
     public void mode1(){
+      SmartDashboard.putString("Autonomus phase","Phase 0");
       if(phase1 == PhaseStates.NOT_SARTED){ // Starts the shooter motors
         phase1 = PhaseStates.STARTED;
-        shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED);
+       // shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED);
       }
       if(phase1 == PhaseStates.STARTED){
-        if(shooter.isSpunUp()){
+        if(shooter.isSpunUp() == false){
           phase1 = PhaseStates.ENDED; }
        else{
+        SmartDashboard.putString("Autonomus phase","Phase 1");
           return;
         }
       }
@@ -172,6 +174,7 @@ public class Auto {
           phase2 = PhaseStates.ENDED;
         }
         else {
+          SmartDashboard.putString("Autonomus phase","Phase 2");
           return;
         }
         if(phase3 == PhaseStates.NOT_SARTED){ // Turns towards target
@@ -184,6 +187,7 @@ public class Auto {
             phase3 = PhaseStates.ENDED;
           }
           else {
+            SmartDashboard.putString("Autonomus phase","Phase 3");
             return;
       }
       if(phase4 == PhaseStates.NOT_SARTED){ // Drives to trench and intakes power cells
@@ -197,6 +201,7 @@ public class Auto {
           phase4 = PhaseStates.ENDED;
         }
         else {
+          SmartDashboard.putString("Autonomus phase","Phase 4");
           return;
        } 
        if(phase5 == PhaseStates.NOT_SARTED){ //Shoots previously gathered power cells
@@ -210,6 +215,7 @@ public class Auto {
           shooter.STOP();
         }
         else {
+          SmartDashboard.putString("Autonomus phase","Phase 5" );
           return;
         }
       }

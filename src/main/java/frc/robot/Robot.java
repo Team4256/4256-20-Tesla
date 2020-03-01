@@ -76,6 +76,7 @@ public class Robot extends TimedRobot {
       subsystems.displaySwerveAngles();
       updateGyroHeading();
       swerve.completeLoopUpdate();
+      StopWatch.getInstance().updateTimer(); 
         // apollo.getEntry("Selected Starting Position").setString(autoModeChooser.getRawSelections()[0]);
         // apollo.getEntry("Desired Auto Mode").setString(autoModeChooser.getRawSelections()[1]);
         // apollo.getEntry("Has Ball Test").setBoolean(ballIntake.hasBall());
@@ -109,21 +110,22 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     
-    switch (m_autoSelected) {
-    case port:
-      auto.mode2();
-      break;
-    case leftTrench:
-   // default:
-      auto.mode3();
-      break;
-      case rightTrench:
+  //   switch (m_autoSelected) {
+  //   case port:
+  //     auto.mode2();
+  //     break;
+  //   case leftTrench:
+  //  // default:
+  //     auto.mode3();
+  //     break;
+  //     case rightTrench:
+  //     auto.mode1();
+  //     break;
+  //     case crossLine:
+  //     auto.mode4();
+  //     break;
+  // }  
       auto.mode1();
-      break;
-      case crossLine:
-      auto.mode4();
-      break;
-  }  
   swerve.completeLoopUpdate();
   }
 
