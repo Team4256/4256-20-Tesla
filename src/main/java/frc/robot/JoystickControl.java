@@ -92,6 +92,10 @@ public class JoystickControl {
         final boolean turbo = driver.getRawButton(Xbox.BUTTON_STICK_LEFT);
 
         if (true) {
+            if (driver.getRawButtonPressed(Xbox.BUTTON_START)) {
+                swerve.faceTo(90); //gyro align to a position set in the parameters of this method
+            }
+            
             aligner.camera.turnLEDOn();
             if (driver.getRawButtonPressed(Xbox.BUTTON_X)) {
                 cellShooter.ShootAlign();
