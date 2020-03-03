@@ -188,6 +188,12 @@ public class JoystickControl {
         if (gunner.getPOV() == (Xbox.DPAD_EAST)) {
             climber.extendClimberPolesHigh();
         }
+        if (!(gunner.getPOV() == (Xbox.DPAD_EAST))) {
+            climber.stop();
+        }
+        if (!(gunner.getPOV() == (Xbox.DPAD_EAST))) {
+            climber.stop();
+        }
         if (gunner.getPOV() == (Xbox.DPAD_SOUTH)) {
             climber.retractClimberPoles(); // both poles at the same time
 

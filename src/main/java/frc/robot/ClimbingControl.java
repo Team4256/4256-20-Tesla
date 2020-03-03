@@ -29,6 +29,7 @@ public class ClimbingControl {
         ROTATEARMSDOWN,
         EXTENDPOLES,
         CLIMB,
+        RETRACTPOLES,
         STOP;
     }
     public ClimbingStates currentState = ClimbingStates.STOP;
@@ -48,7 +49,7 @@ public class ClimbingControl {
         targetHeight = Parameters.MED_HEIGHT_COUNT;
     }
     public void retractClimberPoles(){
-        currentState = ClimbingStates.CLIMB;
+        currentState = ClimbingStates.RETRACTPOLES;
         retractingSpeedMotorLeft = Parameters.CLIMBER_MOTOR_SPEED_DPAD;
         retractingSpeedMotorRight = Parameters.CLIMBER_MOTOR_SPEED_DPAD;
     }
@@ -75,10 +76,13 @@ public class ClimbingControl {
             case EXTENDPOLES:
               extendPoles();
             break;
-            case CLIMB:
-              climb();
+            case RETRACTPOLES:
+              retractPoles();
+            // case CLIMB:
+            //   climb();
             break;
             case STOP:
+              stop();
             break;
         }
 
@@ -111,27 +115,23 @@ public class ClimbingControl {
 
     
     
-    public void extendPoles()
-    {
-        // if  (climbMotorRight.getSensorCollection().getIntegratedSensorPosition() < targetHeight)
-        // { 
-        //     //climbMotorRight.set(Parameters.CLIMBER_MOTOR_SPEED_DPAD);
-        //     climbMotorLeft.set(Parameters.CLIMBER_MOTOR_SPEED_DPAD);
-        // } 
-        // else 
-        // {
-        //   //climbMotorRight.set(0.0);
-        //   climbMotorLeft.set(0.0);
-         
-        // }
-    }  
-    
-    
-
-
-    public void climb(){ 
-        climbMotorLeft.set(-retractingSpeedMotorLeft);
-       climbMotorRight.set(-retractingSpeedMotorRight);
+    public void extendPoles(){ 
+            climbMotorRight.set(-Parameters.CLIMBER_MOTOR_SPEED_DPAD);
+            climbMotorLeft.set(Parameters.CLIMBER_MOTOR_SPEED_DPAD);
         
+    }  
+
+    public void retractPoles() {
+        climbMotorRight.set(Parameters.CLIMBER_MOTOR_SPEED_DPAD);
+        climbMotorLeft.set(-Parameters.CLIMBER_MOTOR_SPEED_DPAD);
+    
     }
+    
+    
+
+
+    // public void climb(){ 
+    //     climbMotorLeft.set(retractingSpeedMotorLeft);
+    //     climbMotorRight.set(retractingSpeedMotorRight);
+    // }
 }

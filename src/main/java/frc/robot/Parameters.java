@@ -39,17 +39,17 @@ public class Parameters{
     public static final Color myYellow = ColorMatch.makeColor(0.320557, 0.556641, 0.122803);
 
     //soloniod motor stuff in competition up will be 2 down will be 3
-    public static final int CLIMBER_FORWARD_CHANNEL = 6; //solenoid port Extend 
-    public static final int CLIMBER_REVERSE_CHANNEL = 7; //solenoid port Retract
-    public static final double CLIMBING_SPEED_LOW = 0.3;
+    public static final int CLIMBER_REVERSE_CHANNEL = 7; //Climber arms down channel solenoid port Retract
+    public static final int CLIMBER_FORWARD_CHANNEL = 6; //Climber arms up channel Solonoid Port Extend
+    public static final double CLIMBING_SPEED_LOW = 0.2;
     // add motors for arm going up and down
-    public static final int R_CLIMBER_MOTOR_ID = 32; //Climber Motor right
+    public static final int R_CLIMBER_MOTOR_ID = 29; //Climber Motor right
     public static final int L_CLIMBER_MOTOR_ID = 28; //Climber Motor RIGHT
     //need actual encoder values, from engineering team
-    public static double MED_HEIGHT_COUNT = 2000;
-    public static double MAX_HEIGHT_COUNT = 4200;//NICE
-    public static final double CLIMBER_MOTOR_SPEED_DPAD = 0.5; //need the actual speed. This is for the Dpad when both poles retract at the same time
-    public static final double CLIMBER_MOTOR_SPEED_INDIVIDUAL = 0.5;//This is for when the joysticks are controlling individual motors
+    public static double MED_HEIGHT_COUNT = 10;
+    public static double MAX_HEIGHT_COUNT = 10;//NICE
+    public static final double CLIMBER_MOTOR_SPEED_DPAD = 0.2; //need the actual speed. This is for the Dpad when both poles retract at the same time
+    public static final double CLIMBER_MOTOR_SPEED_INDIVIDUAL = 0.2;//This is for when the joysticks are controlling individual motors
 
     //INTAKE
     public static final int SUCCMOTOR_ID = 16; //Intake Motor
@@ -79,9 +79,23 @@ public class Parameters{
 
     // Minimum and Maximum Voltage
 
-    public static final double angleEncoderMinVoltage[] = {0.00366, 0.01099, 0.009766, 0.01343};
-    public static final double angleEncoderMaxVoltage[] = {4.9133, 4.9255, 4.9219, 4.9243};
-    public static final double angleEncoderTareVoltage[] = {4.155,1.752,1.297,4.234};//Swerve Number(A,B,C,D):
+    public static final double angleEncoderMinVoltage[] = {.0354, .0219, .0073, .017};
+    public static final double angleEncoderMaxVoltage[] = {4.9218, 4.9243, 4.9145, 4.923};
+    public static final double angleEncoderTareVoltage[] = {3.5864,2.8491,2.3742,1.3354};//Swerve Number(A,B,C,D): PRACTICE 
+     /** COMPETITION BOT
+     * A (Swerve Number XX) MIN. VOL. = 0.00366, MAX. VOL. = 4.9133, TARE VOL. = 4.155
+     * B (Swerve Number XX) MIN. VOL. = 0.01099, MAX. VOL. = 4.9255, TARE VOL. = 1.752
+     * C (Swerve Number XX) MIN. VOL. = 0.009766, MAX. VOL. = 4.9219, TARE VOL. = 1.297
+     * D (Swerve Number XX) MIN. VOL. = 0.01343, MAX. VOL. = 4.9243, TARE VOL. = 4.234
+    /** PRACTICE BOT
+     * A (Swerve Number XX) MIN. VOL. = 0.00366, MAX. VOL. = 4.9133, TARE VOL. = 4.155
+     * B (Swerve Number XX) MIN. VOL. = 0.01099, MAX. VOL. = 4.9255, TARE VOL. = 1.752
+     * C (Swerve Number XX) MIN. VOL. = 0.009766, MAX. VOL. = 4.9219, TARE VOL. = 1.297
+     * D (Swerve Number XX) MIN. VOL. = 0.01343, MAX. VOL. = 4.9243, TARE VOL. = 4.234
+     *      public static final double angleEncoderMinVoltage[] = {0.00366, 0.01099, 0.009766, 0.01343};
+            public static final double angleEncoderMaxVoltage[] = {4.9133, 4.9255, 4.9219, 4.9243};
+            public static final double angleEncoderTareVoltage[] = {4.155,1.752,1.297,4.234};
+     */
     // Aligner tolerances
 
     public static final double POSITION_TOLERANCE = 5.00;

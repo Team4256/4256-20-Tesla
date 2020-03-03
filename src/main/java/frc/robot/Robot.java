@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
     gyro.setAngleAdjustment(Parameters.GYRO_OFFSET);
     gyro.reset();
     subsystems.setSwerveToZero();
-    
+    SmartDashboard.putNumber("ShooterSpeed", 0.0 );
     
     
     
@@ -69,6 +69,7 @@ public class Robot extends TimedRobot {
       subsystems.displaySwerveAngles();
       updateGyroHeading();
       swerve.completeLoopUpdate();
+      
         // apollo.getEntry("Selected Starting Position").setString(autoModeChooser.getRawSelections()[0]);
         // apollo.getEntry("Desired Auto Mode").setString(autoModeChooser.getRawSelections()[1]);
         // apollo.getEntry("Has Ball Test").setBoolean(ballIntake.hasBall());
