@@ -200,4 +200,9 @@ public final class SwerveModule {
     public double getIntegratedSensorENcoderCounts(){
 		return tractionControl.getPositionFromIntegratedSensor();
 	}
+
+	public double getRPM() {
+		return tractionControl.getRPM();
+	}
+    
 }

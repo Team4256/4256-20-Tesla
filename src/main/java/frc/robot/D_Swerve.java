@@ -78,6 +78,19 @@ public final class D_Swerve implements Drivetrain {
 		return averageDistanceTraveled;
 	}
 
+	public void getRPM() {
+		double encoderVelocityA = moduleA.getRPM();
+		double encoderVelocityB = moduleB.getRPM();
+		double encoderVelocityC = moduleC.getRPM();
+		double encoderVelocityD = moduleD.getRPM();
+		
+		SmartDashboard.putNumber("encoderVelocityA", encoderVelocityA);
+		SmartDashboard.putNumber("encoderVelocityB", encoderVelocityB);
+		SmartDashboard.putNumber("encoderVelocityC", encoderVelocityC);
+		SmartDashboard.putNumber("encoderVelocityD", encoderVelocityD);
+		
+	}
+
 
 
 	private void holonomic_encoderIgnorant(final double direction, double speed, final double spin) {
@@ -108,7 +121,10 @@ public final class D_Swerve implements Drivetrain {
 
 		if (!bad && isThere(10.0)) {
 			final double[] speeds_final = computeSpeeds(comps_desired);
-			SmartDashboard.putNumberArray("speeedsFinal", speeds_final);
+			SmartDashboard.putNumber("speedCommand A", speeds_final[0]);
+			SmartDashboard.putNumber("speedCommandB", speeds_final[1]);
+			SmartDashboard.putNumber("speedCommandC", speeds_final[2]);
+			SmartDashboard.putNumber("speedCommandD", speeds_final[3]);
 			for (int i = 0; i < 4; i++)
 				modules[i].set(speeds_final[i]);// control traction if good and there
 		} else
@@ -255,7 +271,7 @@ public final class D_Swerve implements Drivetrain {
 	public void correctFor(final double errorDirection, final double errorMagnitude) {
 		travelTowards(errorDirection);
 
-		double speed = PID.get("leash", errorMagnitude);// DO NOT use I gain with this because errorMagnitude is always
+		//double speed = PID.get("leash", errorMagnitude);// DO NOT use I gain with this because errorMagnitude is always
 														// positive
 		if (speed > 0.6)
 			speed = 0.6;
@@ -266,7 +282,7 @@ public final class D_Swerve implements Drivetrain {
 	@Override
 	public double face(final double orientation, double maximumOutput) {
 		final double error = Compass.path(Robot.gyroHeading, orientation);
-		final double spin = PID.get("spin", error);
+		//final double spin = PID.get("spin", error);
 		setSpin(Math.max(-maximumOutput, Math.min(spin, maximumOutput)));
 		return error;
 	}

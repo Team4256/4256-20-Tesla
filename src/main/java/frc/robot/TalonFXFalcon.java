@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +29,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     private double lastSetpoint = 0.0;
     private Logger logger;
     private PIDController anglePIDController = new PIDController(.005, 0.0, 0.00);
+    private PIDController falconVelocityPID = new PIDController(0.001, 0.0, 0.0);
     public final Compass compass = new Compass();
     private double lastLegalDirection = 1.0;
     private AnalogInput encoderPort;
@@ -35,9 +37,11 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     private double encoderMinVoltage;
     private double encoderMaxVoltage;
     private double encoderTareVoltage;
+    private double tractionSppeedAdjustment = 0.0;
     double maxAngle = 0;
     double minAngle = 360;
     public static final int kTimeoutMS = 10;
+   
     
     
 
@@ -170,72 +174,55 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     // Set Speed
     @Override
-    public void setSpeed(final double speed) {
-        super.set(speed);
-        lastSetpoint = speed;
+    public void setSpeed(final double inputPercentageSpeed) {
+
+       
+        double motorSpeed = getSensorCollection().getIntegratedSensorVelocity();
+        double expectedSpeed = inputPercentageSpeed*Parameters.FALCON_PERCENT_TO_ENCODER_SPEED;
+        double adjustmentToSpeedAdjustment = falconVelocityPID.calculate(motorSpeed, expectedSpeed);
+        tractionSppeedAdjustment += adjustmentToSpeedAdjustment;
+        double adjustedPercentageSpeed = inputPercentageSpeed + tractionSppeedAdjustment;
+
+        super.set(adjustedPercentageSpeed);
+        lastSetpoint = adjustedPercentageSpeed;
         updated = true;
-        logger.log(Level.FINE, Double.toString(speed));
+        logger.log(Level.FINE, Double.toString(adjustedPercentageSpeed));
+        
     }
+
+
 
     // Set Angle
     public void setAngle(double targetAngle) {
 
-
-
         int channelID = encoderPort.getChannel();
-
         double encoderPosition = getCurrentAngle();
-
-        
-
         while (targetAngle <= -180) {
-
             targetAngle += 360;
-
         } 
 
         while (targetAngle > 180) {
-
             targetAngle -= 360;
-
         }
-
-
-
         double error = targetAngle - encoderPosition;
 
-        
-
         while (targetAngle - encoderPosition > 180) {
-
             encoderPosition += 360;
-
         }
-
-        
 
         while (targetAngle - encoderPosition < -180) {
-
             encoderPosition -= 360;
-
         }
-
-        
 
         double percentSpeed = anglePIDController.calculate(encoderPosition, targetAngle);
 
         if (Math.abs(percentSpeed) > .5) {
-
             percentSpeed = Math.signum(percentSpeed) * .5;
-
         }
 
         super.set(percentSpeed);
-
         updated = true;
-
         lastSetpoint = percentSpeed; 
-
         
 
     }

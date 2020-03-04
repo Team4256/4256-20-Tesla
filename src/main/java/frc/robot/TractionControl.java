@@ -23,6 +23,10 @@ public class TractionControl{
     return tractionMotor.getRPS();
    }
 
+   public double getRPM() {
+       return tractionMotor.getRPM();
+   }
+
 
    public void resetEncoder() {
     tractionMotor.resetEncoder();
