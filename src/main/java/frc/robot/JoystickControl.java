@@ -92,6 +92,10 @@ public class JoystickControl {
         final boolean turbo = driver.getRawButton(Xbox.BUTTON_STICK_LEFT);
 
         if (true) {
+            if (driver.getRawButtonPressed(Xbox.BUTTON_START)) {
+                swerve.faceTo(90); //gyro align to a position set in the parameters of this method
+            }
+            
             aligner.camera.turnLEDOn();
             if (driver.getRawButtonPressed(Xbox.BUTTON_X)) {
                 cellShooter.ShootAlign();
@@ -145,32 +149,9 @@ public class JoystickControl {
         if (gunner.getAxisPress(Xbox.AXIS_LT, 0.5)) {
             cellShooter.SpinShooterPrep();
         }
-        // if (gunner.getAxisPress(Xbox.AXIS_LT, 0.1)) {
-        // if (!leftTriggerPrevPressed) {
-        // if (leftTriggerTurnsMotorOn) {
-        // cellShooter.SpinShooterPrep();
-        // } else {
-        // cellShooter.STOP();
-        // }
-        // }
-        // leftTriggerPrevPressed = true;
-        // } else {
-        // if (leftTriggerPrevPressed) {
-        // leftTriggerPrevPressed = false;
-        // leftTriggerPrevPressed = !leftTriggerPrevPressed;
-        // }
-        // }
-
-        // if (!gunner.getAxisPress(Xbox.AXIS_LT, 0.1)) {
-        // cellShooter.STOP();
-        // }
         if (gunner.getAxisPress(Xbox.AXIS_RT, 0.5)) {
             cellShooter.ShooterRange();
         }
-        if (driver.getRawButtonPressed(Xbox.BUTTON_B)) {
-            cellShooter.spinStirrerMotors();
-        }
-
         cellShooter.periodic();
 
     }
@@ -206,6 +187,12 @@ public class JoystickControl {
         }
         if (gunner.getPOV() == (Xbox.DPAD_EAST)) {
             climber.extendClimberPolesHigh();
+        }
+        if (!(gunner.getPOV() == (Xbox.DPAD_EAST))) {
+            climber.stop();
+        }
+        if (!(gunner.getPOV() == (Xbox.DPAD_EAST))) {
+            climber.stop();
         }
         if (gunner.getPOV() == (Xbox.DPAD_SOUTH)) {
             climber.retractClimberPoles(); // both poles at the same time

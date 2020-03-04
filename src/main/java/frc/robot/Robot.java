@@ -53,8 +53,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
     gyro.setAngleAdjustment(Parameters.GYRO_OFFSET);
     gyro.reset();
-    //subsystems.setSwerveToZero();
-    
+    subsystems.setSwerveToZero();
+    SmartDashboard.putNumber("ShooterSpeed", 0.0 );
     
     
     
@@ -147,6 +147,7 @@ public class Robot extends TimedRobot {
     subsystems.intakePeriodic();
     subsystems.shooterPeriodic();
     subsystems.ClimbingPeriodic();
+    SmartDashboard.putNumber("gyroOffset", Parameters.GYRO_OFFSET);
     
     
   }

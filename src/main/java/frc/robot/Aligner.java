@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Add your docs here.
  */
 public class Aligner {
-    private PIDController orientationPID = new PIDController(-.025, 0, 0);
+    private PIDController orientationPID = new PIDController(-.0242, 0, 0);
     private PIDController positionPID = new PIDController(0, 0, 0);
     private static D_Swerve swerveSystem;
     public static Aligner instance = null;
@@ -36,8 +36,9 @@ public class Aligner {
 
     
 
-    public boolean getIsAtTarget() {
-        return orientationPID.atSetpoint();
+    public boolean getIsAtTarget(double threshold) {
+        return camera.getTargetOffsetDegrees() <= threshold;
+        
     }
     public double getDistanceToTarget(){
         return camera.getTargetOffsetDegrees();

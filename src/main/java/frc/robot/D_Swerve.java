@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public final class D_Swerve implements Drivetrain {
@@ -23,7 +24,8 @@ public final class D_Swerve implements Drivetrain {
 	private double moduleD_maxSpeed = 70.0;// always put max slightly higher than max observed
 	private double moduleD_previousAngle = 0.0;
 	private double previousSpin = 0.0;
-
+	private PIDController pid = new PIDController(0.0, 0.0, 0.0); 
+	private Gyro gyro = Gyro.getInstance();
 	private double direction = 0.0, speed = 0.0, spin = 0.0;
 
 	private SwerveMode currentSwerveMode = SwerveMode.FIELD_CENTRIC;
@@ -157,6 +159,10 @@ public final class D_Swerve implements Drivetrain {
 		moduleD.swivelTo(45.0);
 	}
 
+	public double faceTo(double direction) {
+		return pid.calculate(gyro.getCurrentAngle(), direction);
+	}
+	
 	public boolean isThere(final double threshold) {
 		return true;
 		// return moduleA.isThere(threshold) && moduleB.isThere(threshold) &&

@@ -72,6 +72,10 @@ public class Xbox extends XboxController {
 	 * in which case it returns getRawAxis()
 	**/
 	public double getDeadbandedAxis(final int axis) {return getDeadbandedAxis(axis, deadbands[axis]);}
+		
+		// double deadBandedAxis = getDeadbandedAxis(axis, deadbands[axis]);
+		// return (deadBandedAxis - deadbands[axis]) / (1 - deadbands[axis]); // this is to make the joystick command smoother
+	
 	
 	
 	/**
