@@ -8,9 +8,14 @@ public class Parameters{
     public static final double GYRO_OFFSET = 0;
 
     //Automomous
-    public static final double AUTO_SWERVE_TRACTION_SPEED = 0.5; //TODO get the actual speed
-    public static final double AUTO_SWERVE_ROTATION_SPEED = 0.5; //TODO get the actual speed
-    public static final double CROSS_WHITE_LINE_DISTANCE_IN_METERS = 1; //TODO get the actual DISTANCE
+    public static final double AUTO_SWERVE_TRACTION_SPEED = 0.2; //TODO get the actual speed
+    public static final double FALCON_PERCENT_TO_ENCODER_SPEED = 18000; //TODO get the actual speed
+    public static final double CROSS_WHITE_LINE_DISTANCE_IN_INCHES = 120; //TODO get the actual DISTANCE
+    public static final double DRIVE_TO_TRENCH_DISTANCE_IN_INCHES = 186; //TODO get the actual DISTANCE
+    public static final double MOVE_BACK_DISTANCE_IN_INCHES = 20; //TODO get the actual DISTANCE mode 4 only after crossing the white line
+    public static final double STARTING_DISTANCE_FROM_RIGHT_IN_INCHES = 8; //TODO get the actual DISTANCE
+    //public static final double STARTING_DISTANCE_FROM_MIDDLE_IN_INCHES = 5; //TODO get the actual DISTANCE
+    //public static final double STARTING_DISTANCE_FROM_LEFT_IN_INCHES = 0; //TODO get the actual DISTANCE
 
     
 

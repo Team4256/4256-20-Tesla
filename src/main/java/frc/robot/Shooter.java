@@ -1,7 +1,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import jdk.jfr.Threshold;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
@@ -30,9 +29,12 @@ public class Shooter {
   private D_Swerve swerve;
   boolean SpinUp = false;
   private static Shooter instance = null;
+  private ShootingStates previousShootingState = ShootingStates.OFF;
+  private double previousEncoderVelocity;
+  private double currentEncoderVelocity;
 
-  // private CANEncoder shooterMotorEncoder1;
-  // private CANEncoder shooterMotorEncoder2;
+  
+
   public enum ShootingStates {
     SPINUP, SHOOTNOALIGN, SHOOTALIGN, SHOOTERRANGE, OFF;
   }
@@ -74,11 +76,10 @@ public class Shooter {
     feederMotor = new TalonSRX(feederMotorID);
     shroudSolenoid = new DoubleSolenoid(shroudReverseChannel, shroudForwardChannel);
     shooterAligner = Aligner.getInstance();
+      }
 
-    // shooterMotorEncoder1 = new CANEncoder(shooterMotor1);
-    // shooterMotorEncoder2 = new CANEncoder(shooterMotor2);
-
-  }
+  // shooterMotorEncoder1 = new CANEncoder(shooterMotor1);
+  // shooterMotorEncoder2 = new CANEncoder(shooterMotor2);
 
   public synchronized static Shooter getInstance() {
     if (instance == null) {
@@ -107,6 +108,7 @@ public class Shooter {
       stop();
       break;
     }
+    previousShootingState = currentShootingState;
   }
 
   // Hopper and Feeder Motors
@@ -119,62 +121,37 @@ public class Shooter {
    */
 
   public void spinShooterMotors(double speed) {
+    
+    if(previousShootingState != ShootingStates.SPINUP){
+      previousEncoderVelocity = 0.0;
+      currentEncoderVelocity = 0.0;
+    }
     shooterMotor1.set(TalonFXControlMode.PercentOutput, speed);
     shooterMotor2.set(TalonFXControlMode.PercentOutput, speed);
     SpinUp = true;
   }
+
+
 
   public void spinStirrerMotors() {
     stirrerMotor.quickSet(Parameters.STIRRER_MOTOR_SPEED);
     SmartDashboard.putNumber("stirrrer direction", Parameters.STIRRER_MOTOR_SPEED);
   }
 
+
+
   public void stopStirrerMotors() {
     stirrerMotor.quickSet(0.0);
   }
 
+
+
+
   public void shootAlign() {
-  
-
       shooterAligner.alignRobotToTarget();
-
-       if (shooterAligner.getIsAtTarget(5)) {
-        stirrerMotor.set(ControlMode.PercentOutput, -Parameters.FEEDER_STIRRER_MOTOR_SPEED);
-        feederMotor.set(ControlMode.PercentOutput, Parameters.FEEDER_STIRRER_MOTOR_SPEED);
-       }
-
-      // spinShooterMotors(speed);
-      // stirrerMotor.set(ControlMode.PercentOutput, Parameters.MOTORSPEEDMEDIUM);
-      // feederMotor.set(ControlMode.PercentOutput, 0.5);
-      // SmartDashboard.putString("Alive", "Is alive");
-      // SmartDashboard.putNumber("shooterSpeed(RPM)",
-      // shooterMotor1.getSensorCollection().getIntegratedSensorVelocity() / 2048 *
-      // 600);
-
-    
-    /*
-     * if (target is found && motorSpeed >= a certain number){ addjust the speed of
-     * the shooterwheel according to the data we receive from limelight move to the
-     * correct position hopperMotor.set(ControlMode.PercentOutput, 0.5);
-     * feederMotor.set(ControlMode.PercentOutput, 0.5);
-     * 
-     * } else if(target is found && motorSpeed !>= certain number){
-     * shooterMotorSpeed +=0.1; } else if(target is not found && motorSpeed >= a
-     * certain number){ look for target } else{ look for target shooterMotorspeed +=
-     * 0.1; }
-     * 
-     * shooterMotor1.set(TalonFXControlMode.PercentOutput,
-     * Parameters.motorSpeedMedium); //shooterMotor1.set(0.5);
-     * shooterMotor2.set(.5); stirrerMotor.set(ControlMode.PercentOutput, 0.5);
-     * feederMotor.set(ControlMode.PercentOutput, 0.5);
-     * SmartDashboard.putString("Alive", "Is alive");
-     * SmartDashboard.putNumber("shooterSpeed(RPM)",
-     * shooterMotor1.getSensorCollection().getIntegratedSensorVelocity() / 2048 *
-     * 600); // shooterMotor2.set(TalonFXControlMode.Follower,
-     * shooterMotor1.getDeviceID());
-     * 
-     */
   }
+
+
 
   public void shootUnAligned() {
     // spinShooterMotors(-Parameters.SHOOTER_MOTOR_SPEED);
@@ -186,6 +163,8 @@ public class Shooter {
     shooterMotor2.set(TalonFXControlMode.Follower, shooterMotor1.getDeviceID());
   }
 
+
+
   public void range() {
     if (shroudSolenoid.get() == Value.kForward) {
       shroudSolenoid.set(Value.kReverse);
@@ -195,6 +174,20 @@ public class Shooter {
     STOP();
   }
 
+
+
+  public boolean isSpunUp(){
+    currentEncoderVelocity = shooterMotor1.getSensorCollection().getIntegratedSensorVelocity();
+
+    if(currentEncoderVelocity !=0 && previousEncoderVelocity/currentEncoderVelocity > 0.95){
+      return true;
+    }
+    else{
+      previousEncoderVelocity = currentEncoderVelocity;
+      return false;
+    }
+    
+  }
   // public double distanceSpeed(){
   // double distance = shooterAligner.DistanceToTarget();
   // if (distance >= Parameters.DISTANCE_LOW_MIN && distance <=

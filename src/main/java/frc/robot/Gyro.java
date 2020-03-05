@@ -14,7 +14,7 @@ public class Gyro extends AHRS {
 		compass = new Compass();
 	}
 
-	public synchronized static Gyro getInstance() {
+	public static synchronized Gyro getInstance() {
 		if (instance == null) {
 			instance = new Gyro(Parameters.GYRO_UPDATE_HZ);
 		} 

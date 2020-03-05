@@ -22,8 +22,10 @@ import frc.robot.Limelight.CamMode;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
+  private static final String port = "port";
+  private static final String leftTrench = "left trench";
+  private static final String rightTrench = "right trench";
+  private static final String crossLine = "cross white line";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static double gyroHeading = 0.0;
@@ -32,8 +34,10 @@ public class Robot extends TimedRobot {
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   Limelight camera = Limelight.getInstance();
   D_Swerve swerve = D_Swerve.getInstance();
+  private static Auto auto = new Auto();
   public synchronized static void updateGyroHeading() {
     gyroHeading = gyro.getCurrentAngle();
+   
 }
   //private Compressor compress = new Compressor();
   /**
@@ -42,8 +46,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
+    m_chooser.setDefaultOption("cross white line", crossLine);
+    m_chooser.addOption("left trench", leftTrench);
+    m_chooser.addOption("right trench", rightTrench);
+    m_chooser.addOption("port", port);
     SmartDashboard.putData("Auto choices", m_chooser);
     gyro.setAngleAdjustment(Parameters.GYRO_OFFSET);
     gyro.reset();
@@ -66,11 +72,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+      camera.turnLEDOn();
       subsystems.displaySwerveAngles();
       updateGyroHeading();
       SmartDashboard.putNumber("Gyro Heading", Robot.gyroHeading);
       swerve.completeLoopUpdate();
-      
+      StopWatch.getInstance().updateTimer(); 
         // apollo.getEntry("Selected Starting Position").setString(autoModeChooser.getRawSelections()[0]);
         // apollo.getEntry("Desired Auto Mode").setString(autoModeChooser.getRawSelections()[1]);
         // apollo.getEntry("Has Ball Test").setBoolean(ballIntake.hasBall());
@@ -91,9 +98,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    
     m_autoSelected = m_chooser.getSelected();
-    m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
+    m_autoSelected = SmartDashboard.getString("Auto Selector", crossLine );
     System.out.println("Auto selected: " + m_autoSelected);
+    auto.autoInit();
   }
 
   /**
@@ -101,15 +110,24 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-    case kCustomAuto:
-      // Put custom auto code here
-      break;
-    case kDefaultAuto:
-    default:
-      // Put default auto code here
-      break;
-    }
+    
+  //   switch (m_autoSelected) {
+  //   case port:
+  //     auto.mode2();
+  //     break;
+  //   case leftTrench:
+  //  // default:
+  //     auto.mode3();
+  //     break;
+  //     case rightTrench:
+  //     auto.mode1();
+  //     break;
+  //     case crossLine:
+  //     auto.mode4();
+  //     break;
+  // }  
+      auto.mode2();
+  swerve.completeLoopUpdate();
   }
 
   /**

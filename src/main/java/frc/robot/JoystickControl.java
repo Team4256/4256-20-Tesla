@@ -14,7 +14,7 @@ public class JoystickControl {
     
     private ClimbingControl climber = new ClimbingControl();
 
-    private Intake intake = new Intake();
+    private Intake intake = Intake.getInstance();
     private Aligner aligner = Aligner.getInstance();
     private Shooter cellShooter = Shooter.getInstance();
     // private Shooter cellShooter = new Shooter(aligner, Parameters.SHOOTERMOTOR_L_ID, Parameters.SHOOTERMOTOR_R_ID,
@@ -126,9 +126,9 @@ public class JoystickControl {
                 speed *= speed;
             }
         }
-        SmartDashboard.putNumber("XPosition", gyro.getDisplacementX());
-        SmartDashboard.putNumber("YPosition", gyro.getDisplacementY());
-        SmartDashboard.putNumber("ZPosition", gyro.getDisplacementZ());
+        // SmartDashboard.putNumber("Xposition", gyro.getDisplacementX());
+        // SmartDashboard.putNumber("Yposition", gyro.getDisplacementY());
+        // SmartDashboard.putNumber("Zposition", gyro.getDisplacementZ());
 
 
     }

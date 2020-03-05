@@ -115,10 +115,19 @@ public class ClimbingControl {
 
     
     
-    public void extendPoles(){ 
-            climbMotorRight.set(-Parameters.CLIMBER_MOTOR_SPEED_DPAD);
+    public void extendPoles()
+    {
+        if  (climbMotorRight.getSensorCollection().getIntegratedSensorPosition() < targetHeight)
+        { 
+            //climbMotorRight.set(Parameters.CLIMBER_MOTOR_SPEED_DPAD);
             climbMotorLeft.set(Parameters.CLIMBER_MOTOR_SPEED_DPAD);
-        
+        } 
+        else 
+        {
+          //climbMotorRight.set(0.0);
+          climbMotorLeft.set(0.0);
+         
+        }
     }  
 
     public void retractPoles() {
@@ -130,8 +139,9 @@ public class ClimbingControl {
     
 
 
-    // public void climb(){ 
-    //     climbMotorLeft.set(retractingSpeedMotorLeft);
-    //     climbMotorRight.set(retractingSpeedMotorRight);
-    // }
+    public void climb(){ 
+       climbMotorLeft.set(-retractingSpeedMotorLeft);
+       climbMotorRight.set(-retractingSpeedMotorRight);
+        
+    }
 }
