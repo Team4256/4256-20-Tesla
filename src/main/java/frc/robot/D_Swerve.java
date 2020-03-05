@@ -90,6 +90,7 @@ public final class D_Swerve implements Drivetrain {
 		SmartDashboard.putNumber("encoderVelocityB", encoderVelocityB);
 		SmartDashboard.putNumber("encoderVelocityC", encoderVelocityC);
 		SmartDashboard.putNumber("encoderVelocityD", encoderVelocityD);
+
 		
 	}
 
@@ -159,9 +160,19 @@ public final class D_Swerve implements Drivetrain {
 		moduleD.swivelTo(45.0);
 	}
 
-	public double faceTo(double direction) {
-		return pid.calculate(gyro.getCurrentAngle(), direction);
+
+	public void faceTo(double direction) {
+		double gyroHeading = Robot.gyroHeading;
+		while(direction-gyroHeading > 180){
+			gyroHeading += 360;
+		}
+		while(direction - gyroHeading < -180){
+			gyroHeading -= 360;
+		}
+		double faceSpeed = pid.calculate(gyroHeading, direction);
+		setSpin(faceSpeed);
 	}
+	
 	
 	public boolean isThere(final double threshold) {
 		return true;

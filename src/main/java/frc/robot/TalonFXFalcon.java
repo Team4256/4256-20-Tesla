@@ -180,6 +180,8 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         double motorSpeed = getSensorCollection().getIntegratedSensorVelocity();
         double expectedSpeed = inputPercentageSpeed*Parameters.FALCON_PERCENT_TO_ENCODER_SPEED;
         double adjustmentToSpeedAdjustment = falconVelocityPID.calculate(motorSpeed, expectedSpeed);
+
+        adjustmentToSpeedAdjustment = Math.abs(adjustmentToSpeedAdjustment) <=0.1 ? adjustmentToSpeedAdjustment: Math.signum(adjustmentToSpeedAdjustment )*0.1;
         tractionSppeedAdjustment += adjustmentToSpeedAdjustment;
 
         if(getDeviceID() == 21){
@@ -189,8 +191,9 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
             SmartDashboard.putNumber("motor speed", motorSpeed);
             SmartDashboard.putNumber("expected speed", expectedSpeed);
         }
-        
+
         double adjustedPercentageSpeed = inputPercentageSpeed + tractionSppeedAdjustment;
+        adjustedPercentageSpeed = inputPercentageSpeed;
         
         super.set(adjustedPercentageSpeed);
         lastSetpoint = adjustedPercentageSpeed;
