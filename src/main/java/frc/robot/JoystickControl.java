@@ -182,6 +182,9 @@ public class JoystickControl {
         if (gunner.getPOV() == (Xbox.DPAD_NORTH)) {
             climber.climberArmUp();
         }
+        // if (gunner.getRawButtonPressed(Xbox.BUTTON_STICK_LEFT)) {
+        //     climber.climberArmDown();
+        // }
         if (gunner.getPOV() == (Xbox.DPAD_WEST)) {
             climber.extendClimberPolesMedium();
         }

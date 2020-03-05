@@ -68,6 +68,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
       subsystems.displaySwerveAngles();
       updateGyroHeading();
+      SmartDashboard.putNumber("Gyro Heading", Robot.gyroHeading);
       swerve.completeLoopUpdate();
       
         // apollo.getEntry("Selected Starting Position").setString(autoModeChooser.getRawSelections()[0]);
