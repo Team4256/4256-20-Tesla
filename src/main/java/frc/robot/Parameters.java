@@ -32,8 +32,8 @@ public class Parameters{
     public static final int TRACTION_MOTOR_D_ID = 24; // AFT Right
    // Color Wheel
     public static final int WHEEL_ARM_MOTOR_ID = 15; // Main
-    public static final int WHEEL_ARM_UP_SOLENOID_CHANNEL = 4; //EXTEND
-    public static final int WHEEL_ARM_DOWN_SOLENOID_CHANNEL = 5; // RETRACT
+    // public static final int WHEEL_ARM_UP_SOLENOID_CHANNEL = 4; //EXTEND
+    // public static final int WHEEL_ARM_DOWN_SOLENOID_CHANNEL = 5; // RETRACT
     public static final double COLOR_MOTOR_SPEED = 0.5;
     public static final int TARGET_WEDGE_COUNT = 3*8+4; // 3 REVOLUTIONS, 8 WEDGES PER REVOLUTION, + 4 EXTRA WEDGES
 
@@ -44,8 +44,10 @@ public class Parameters{
     public static final Color myYellow = ColorMatch.makeColor(0.320557, 0.556641, 0.122803);
 
     //soloniod motor stuff in competition up will be 2 down will be 3
-    public static final int CLIMBER_REVERSE_CHANNEL = 7; //Climber arms down channel solenoid port Retract
-    public static final int CLIMBER_FORWARD_CHANNEL = 6; //Climber arms up channel Solonoid Port Extend
+    public static final int CLIMBER_LOCK_FORWARD_CHANNEL =  4; //Lock gear engage for climbing on Falcons
+    public static final int CLIMBER_LOCK_REVERSE_CHANNEL =  5; //Lock gear disengage for climbing on Falcons
+    public static final int CLIMBER_FORWARD_CHANNEL = 0; //Climber rotate arms up channel Solonoid Port Extend
+    public static final int CLIMBER_REVERSE_CHANNEL = 1; //Climber rotate arms down channel solenoid port Retract
     public static final double CLIMBING_SPEED_LOW = 0.2;
     // add motors for arm going up and down
     public static final int R_CLIMBER_MOTOR_ID = 29; //Climber Motor right
@@ -58,10 +60,10 @@ public class Parameters{
 
     //INTAKE
     public static final int SUCCMOTOR_ID = 16; //Intake Motor
-    public static final int INTAKE_FORWARD_CHANNEL = 0;//TODO need to get the real channel ID
+    public static final int INTAKE_FORWARD_CHANNEL = 6;//TODO need to get the real channel ID
     public static final double INTAKE_SUCC_MOTOR = 0.5;//TODO need to get the actual channel ID
     public static final double INTAKE_MOTOR_SPEED = 0.3;
-    public static final int INTAKE_REVERSE_CHANNEL = 1; //TODO get the actual intake motor speed 
+    public static final int INTAKE_REVERSE_CHANNEL = 7; //TODO get the actual intake motor speed 
 
     //shooter
     public static final int SHOOTERMOTOR_L_ID = 26;

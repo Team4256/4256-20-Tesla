@@ -182,7 +182,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         double adjustmentToSpeedAdjustment = falconVelocityPID.calculate(motorSpeed, expectedSpeed);
         tractionSppeedAdjustment += adjustmentToSpeedAdjustment;
         double adjustedPercentageSpeed = inputPercentageSpeed + tractionSppeedAdjustment;
-
+        adjustedPercentageSpeed = inputPercentageSpeed;
         super.set(adjustedPercentageSpeed);
         lastSetpoint = adjustedPercentageSpeed;
         updated = true;

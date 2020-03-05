@@ -12,7 +12,7 @@ public class JoystickControl {
     private Xbox gunner = new Xbox(1);
     private D_Swerve swerve = D_Swerve.getInstance();
     
-    private ClimbingControl climber = new ClimbingControl();
+    private ClimbingControl climber = ClimbingControl.getInstance();
 
     private Intake intake = Intake.getInstance();
     private Aligner aligner = Aligner.getInstance();
@@ -179,9 +179,22 @@ public class JoystickControl {
     }
 
     public void ClimbingPeriodic() {
-        if (gunner.getPOV() == (Xbox.DPAD_NORTH)) {
+        if (gunner.getRawButtonPressed(Xbox.BUTTON_Y)) {
             climber.climberArmUp();
         }
+        
+        if (gunner.getRawButtonPressed(Xbox.BUTTON_A)) {
+            climber.climberArmDown();
+        }
+        
+        if (gunner.getRawButtonPressed(Xbox.BUTTON_X)) {
+            climber.engageLock();
+        }
+        
+        if (gunner.getRawButtonPressed(Xbox.BUTTON_B)) {
+            climber.disngageLock();
+        }
+        
         // if (gunner.getRawButtonPressed(Xbox.BUTTON_STICK_LEFT)) {
         //     climber.climberArmDown();
         // }

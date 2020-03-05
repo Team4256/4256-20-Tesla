@@ -181,7 +181,7 @@ public final class D_Swerve implements Drivetrain {
 		for (SwerveModule module : modules)
 			module.completeLoopUpdate();
 		// for (SwerveModule module : modules) module.swivelTo(0.0);
-
+		getRPM();
 	}
 
 	// -------------------------------------------------COMPUTATION

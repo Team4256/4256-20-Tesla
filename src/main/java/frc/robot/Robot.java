@@ -34,6 +34,7 @@ public class Robot extends TimedRobot {
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   Limelight camera = Limelight.getInstance();
   D_Swerve swerve = D_Swerve.getInstance();
+  private ClimbingControl climber = ClimbingControl.getInstance();
   private static Auto auto = new Auto();
   public synchronized static void updateGyroHeading() {
     gyroHeading = gyro.getCurrentAngle();
@@ -55,8 +56,6 @@ public class Robot extends TimedRobot {
     gyro.reset();
     subsystems.setSwerveToZero();
     SmartDashboard.putNumber("ShooterSpeed", 0.0 );
-    
-    
     
    // compress.start();
   }

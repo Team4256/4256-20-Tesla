@@ -333,7 +333,7 @@ public class Auto {
       //     alignAndShoot();
       //   //}  
       // }
-    }
+    
 
     // mode3: start from the left
     public void mode3(){
