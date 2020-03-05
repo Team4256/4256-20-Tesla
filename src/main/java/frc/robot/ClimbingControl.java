@@ -12,7 +12,8 @@ import com.fasterxml.jackson.databind.deser.impl.CreatorCandidate.Param;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;				
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;	
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;			
 
 public class ClimbingControl {
     
@@ -20,9 +21,11 @@ public class ClimbingControl {
     private WPI_TalonFX climbMotorRight;
     private WPI_TalonFX climbMotorLeft;
     private DoubleSolenoid armRotationSolenoid;
+    private DoubleSolenoid climberLock;
     private double targetHeight;
     public double retractingSpeedMotorLeft;
     public double retractingSpeedMotorRight;
+    private static ClimbingControl instance = null;
     
     public enum ClimbingStates{
         ROTATEARMSUP,
@@ -30,6 +33,8 @@ public class ClimbingControl {
         EXTENDPOLES,
         CLIMB,
         RETRACTPOLES,
+        LOCKENGAGE,
+        LOCKDISENGAGE,
         STOP;
     }
     public ClimbingStates currentState = ClimbingStates.STOP;
@@ -52,6 +57,12 @@ public class ClimbingControl {
         currentState = ClimbingStates.RETRACTPOLES;
         retractingSpeedMotorLeft = Parameters.CLIMBER_MOTOR_SPEED_DPAD;
         retractingSpeedMotorRight = Parameters.CLIMBER_MOTOR_SPEED_DPAD;
+    }
+    public void engageLock() {
+        currentState = ClimbingStates.LOCKENGAGE;
+    }
+    public void disngageLock() {
+        currentState = ClimbingStates.LOCKDISENGAGE;
     }
     public void retractIndividualClimberPole(double leftMotorSpeed, double rightMotorSpeed){
         if(leftMotorSpeed !=0.0 || rightMotorSpeed != 0.0){
@@ -84,6 +95,12 @@ public class ClimbingControl {
             case STOP:
               stop();
             break;
+            case LOCKENGAGE:
+                lockEngage();
+            break;
+            case LOCKDISENGAGE:
+                lockDisengage();
+
         }
 
     }
@@ -92,28 +109,33 @@ public class ClimbingControl {
 
     
     //need to add device numbers based on excel sheet
-    public ClimbingControl(){
+    private ClimbingControl(){
         climbMotorRight = new WPI_TalonFX(Parameters.R_CLIMBER_MOTOR_ID); 
         climbMotorLeft = new WPI_TalonFX(Parameters.L_CLIMBER_MOTOR_ID);
         climbMotorLeft.setNeutralMode(NeutralMode.Brake);
         climbMotorRight.setNeutralMode(NeutralMode.Brake);
         armRotationSolenoid = new DoubleSolenoid(Parameters.CLIMBER_FORWARD_CHANNEL, Parameters.CLIMBER_REVERSE_CHANNEL);
+        climberLock = new DoubleSolenoid(Parameters.CLIMBER_LOCK_FORWARD_CHANNEL, Parameters.CLIMBER_LOCK_REVERSE_CHANNEL);
         climbMotorRight.getSensorCollection().setIntegratedSensorPosition(0,0);
-
-
-
     }
+
+    public synchronized static ClimbingControl getInstance() {
+        if (instance == null) {
+          instance = new ClimbingControl();
+        }
+        return instance;
+          
+        }
+    
     public void rotateArmUp(){
-        armRotationSolenoid.set(DoubleSolenoid.Value.kReverse);
+        armRotationSolenoid.set(Value.kForward);
     } 
 
 
 
     public void rotateArmDown() {
-        armRotationSolenoid.set(DoubleSolenoid.Value.kForward);
+        armRotationSolenoid.set(Value.kReverse);
     }
-
-    
     
     public void extendPoles()
     {
@@ -143,5 +165,13 @@ public class ClimbingControl {
        climbMotorLeft.set(-retractingSpeedMotorLeft);
        climbMotorRight.set(-retractingSpeedMotorRight);
         
+    }
+
+    public void lockEngage() {
+        climberLock.set(DoubleSolenoid.Value.kForward);
+    }
+
+    public void lockDisengage() {
+        climberLock.set(DoubleSolenoid.Value.kReverse);
     }
 }
