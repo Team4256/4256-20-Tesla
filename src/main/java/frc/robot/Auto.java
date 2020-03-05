@@ -184,7 +184,7 @@ public class Auto {
           stopWatch.resetTimer();
         }
         if(phase3 == PhaseStates.STARTED){
-          swerve.face(0.0, 0.3); //make sure this is right 
+          swerve.faceTo(0); //make sure this is right 
           if(stopWatch.getElapsedTime() > .5){
             phase3 = PhaseStates.ENDED;
           }
@@ -279,7 +279,7 @@ public class Auto {
           stopWatch.resetTimer();
         }
         if(phase3 == PhaseStates.STARTED){
-          swerve.face(0.0, 0.3);
+          swerve.faceTo(0);
           if(stopWatch.getElapsedTime() > .5){
             phase3 = PhaseStates.ENDED;
           }
