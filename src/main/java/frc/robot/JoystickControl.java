@@ -101,10 +101,11 @@ public class JoystickControl {
                 cellShooter.ShootAlign();
             }
             if (driver.getRawButtonReleased(Xbox.BUTTON_X)) {
-                cellShooter.STOP();
+                cellShooter.stopHopper();
+                cellShooter.stopShooterWheel();
             }
             if (aligner.camera.hasTarget()) {
-               SmartDashboard.putNumber("TargitoOffsito", aligner.camera.getTargetOffsetDegrees());
+               SmartDashboard.putNumber("TargetOffset", aligner.camera.getTargetOffsetDegrees());
             }
  
             if (driver.getRawButtonPressed(driver.BUTTON_B) ) {
@@ -143,14 +144,23 @@ public class JoystickControl {
             isShooting = true;
             cellShooter.ShootNoAlign();
         }
-        if (driver.getRawButtonReleased(Xbox.BUTTON_RB)) {
-            cellShooter.STOP();
+        // if (driver.getRawButtonReleased(Xbox.BUTTON_RB)) {
+        //     cellShooter.shootUnAligned();
+        // }
+        if (driver.getAxisActivity(Xbox.AXIS_RT)) {
+            cellShooter.ShootAlign();
         }
-        if (gunner.getAxisPress(Xbox.AXIS_LT, 0.5)) {
+        
+        if (gunner.getRawButtonPressed(Xbox.BUTTON_LB)) {
             cellShooter.SpinShooterPrep();
+        } else {
+            cellShooter.stopHopper();
+            cellShooter.stopShooterWheel();
         }
+        
+
         if (gunner.getAxisPress(Xbox.AXIS_RT, 0.5)) {
-            cellShooter.ShooterRange();
+            cellShooter.shroudToggle();
         }
         cellShooter.periodic();
 

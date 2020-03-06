@@ -29,43 +29,44 @@ public class Shooter {
   private D_Swerve swerve;
   boolean SpinUp = false;
   private static Shooter instance = null;
-  private ShootingStates previousShootingState = ShootingStates.OFF;
+  private ShootingWheelStates previousShootingState = ShootingWheelStates.OFF;
   private double previousEncoderVelocity;
   private double currentEncoderVelocity;
 
   
 
-  public enum ShootingStates {
-    SPINUP, SHOOTNOALIGN, SHOOTALIGN, SHOOTERRANGE, OFF;
+  public enum ShootingWheelStates {
+    SPINUP, OFF
+  }
+  public enum HopperStates {
+    SHOOTALIGN, SHOOTUNALIGNED, OFF
   }
 
-  public enum FeederStates {
-
-  }
-
-  private ShootingStates currentShootingState = ShootingStates.OFF;
-  private ShootingStates currentFeederStates = ShootingStates.OFF;
+  private ShootingWheelStates currentShootingState = ShootingWheelStates.OFF;
+  private HopperStates currentHopperStates = HopperStates.OFF;
   private Aligner shooterAligner;
 
   // Constructor
-  public void SpinShooterPrep() {
-    currentShootingState = ShootingStates.SPINUP;
-  }
-
   public void ShootNoAlign() {
-    currentShootingState = ShootingStates.SHOOTNOALIGN;
+    currentHopperStates = HopperStates.SHOOTUNALIGNED; 
+    currentShootingState = ShootingWheelStates.SPINUP;
   }
 
   public void ShootAlign() {
-    currentShootingState = ShootingStates.SHOOTALIGN;
+    currentShootingState = currentShootingState.SPINUP;
+    currentHopperStates = currentHopperStates.SHOOTALIGN;
   }
 
-  public void ShooterRange() {
-    currentShootingState = ShootingStates.SHOOTERRANGE;
+  public void shroudToggle() {
+    range();
   }
-
-  public void STOP() {
-    currentShootingState = ShootingStates.OFF;
+  
+  public void SpinShooterPrep() {
+    if (currentShootingState == ShootingWheelStates.SPINUP) {
+      currentShootingState = ShootingWheelStates.OFF;
+    } else {
+      currentShootingState = ShootingWheelStates.SPINUP;
+    }
   }
 
   private Shooter(int shootermotorID1, int shooterMotorID2, int hopperMotorID, int feederMotorID,
@@ -90,22 +91,13 @@ public class Shooter {
   }
 
   public void periodic() {
-    double shooterSpeedTest = SmartDashboard.getNumber("ShooterSpeed", 0.0);
+    double shooterSpeedTest = SmartDashboard.getNumber("ShooterSpeed", 0.1);
     switch (currentShootingState) {
     case SPINUP:
       spinShooterMotors(shooterSpeedTest);
       break;
-    case SHOOTNOALIGN:
-      shootUnAligned();
-      break;
-    case SHOOTALIGN:
-      shootAlign();
-      break;
-    case SHOOTERRANGE:
-      range();
-      break;
     case OFF:
-      stop();
+      stopShooterWheel();
       break;
     }
     previousShootingState = currentShootingState;
@@ -122,7 +114,7 @@ public class Shooter {
 
   public void spinShooterMotors(double speed) {
     
-    if(previousShootingState != ShootingStates.SPINUP){
+    if(previousShootingState != ShootingWheelStates.SPINUP){
       previousEncoderVelocity = 0.0;
       currentEncoderVelocity = 0.0;
     }
@@ -171,7 +163,6 @@ public class Shooter {
     } else {
       shroudSolenoid.set(Value.kForward);
     }
-    STOP();
   }
 
 
@@ -206,12 +197,14 @@ public class Shooter {
   // return 0;
   // }
   // }
-  public void stop() {
+  public void stopShooterWheel() {
     shooterMotor1.set(0.0);
     shooterMotor2.set(0.0);
+  }
+
+  public void stopHopper() {
     stirrerMotor.set(ControlMode.PercentOutput, 0.0);
     feederMotor.set(ControlMode.PercentOutput, 0.0);
-    //shooterAligner.turnLEDOff();
   }
 
 }

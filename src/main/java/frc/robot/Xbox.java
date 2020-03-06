@@ -152,7 +152,6 @@ public class Xbox extends XboxController {
 		}
 	}
 	
-	
 	/**
 	 * This function returns the length of the hypotenuse formed by the 2 axis of the specified stick. If deadbanded is true, small movements in the middle are ignored.
 	**/

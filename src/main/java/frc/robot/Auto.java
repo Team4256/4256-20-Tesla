@@ -220,7 +220,7 @@ public class Auto {
         alignAndShoot();
         if(stopWatch.getElapsedTime() > 3){
           phase5 = PhaseStates.ENDED;
-          shooter.STOP();
+          shooter.stopStirrerMotors();
         }
         else {
           SmartDashboard.putString("Autonomus phase","Phase 5" );
@@ -315,7 +315,7 @@ public class Auto {
         alignAndShoot();
         if(stopWatch.getElapsedTime() > 3){
           phase5 = PhaseStates.ENDED;
-          shooter.STOP();
+          shooter.stopStirrerMotors();
         }
         else {
           SmartDashboard.putString("Autonomus phase","Phase 5" );
