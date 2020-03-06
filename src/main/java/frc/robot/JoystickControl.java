@@ -205,19 +205,13 @@ public class JoystickControl {
             climber.disngageLock();
         }
         
-        // if (gunner.getRawButtonPressed(Xbox.BUTTON_STICK_LEFT)) {
-        //     climber.climberArmDown();
-        // }
         if (gunner.getPOV() == (Xbox.DPAD_WEST)) {
             climber.extendClimberPolesMedium();
         }
         if (gunner.getPOV() == (Xbox.DPAD_EAST)) {
             climber.extendClimberPolesHigh();
         }
-        if (!(gunner.getPOV() == (Xbox.DPAD_EAST))) {
-            climber.stop();
-        }
-        if (!(gunner.getPOV() == (Xbox.DPAD_EAST))) {
+        if ((gunner.getPOV() != (Xbox.DPAD_EAST)) && (gunner.getPOV() != (Xbox.DPAD_WEST))) {
             climber.stop();
         }
         if (gunner.getPOV() == (Xbox.DPAD_SOUTH)) {
