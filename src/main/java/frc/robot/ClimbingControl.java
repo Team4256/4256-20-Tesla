@@ -28,45 +28,49 @@ public class ClimbingControl {
     private static ClimbingControl instance = null;
     
     public enum ClimbingStates{
-        ROTATEARMSUP,
-        ROTATEARMSDOWN,
         EXTENDPOLES,
-        CLIMB,
         RETRACTPOLES,
-        LOCKENGAGE,
-        LOCKDISENGAGE,
         STOP;
     }
+    
     public ClimbingStates currentState = ClimbingStates.STOP;
 
     public void climberArmUp(){
-        currentState = ClimbingStates.ROTATEARMSUP;
+        rotateArmUp();
     }
     public void climberArmDown(){
-        currentState = ClimbingStates.ROTATEARMSDOWN;
+        rotateArmDown();
     }
     public void extendClimberPolesHigh(){
+
         currentState = ClimbingStates.EXTENDPOLES;
+
         targetHeight = Parameters.MAX_HEIGHT_COUNT;
+
     }
+
     public void extendClimberPolesMedium(){
+
         currentState = ClimbingStates.EXTENDPOLES;
+
         targetHeight = Parameters.MED_HEIGHT_COUNT;
+
     }
+
     public void retractClimberPoles(){
         currentState = ClimbingStates.RETRACTPOLES;
         retractingSpeedMotorLeft = Parameters.CLIMBER_MOTOR_SPEED_DPAD;
         retractingSpeedMotorRight = Parameters.CLIMBER_MOTOR_SPEED_DPAD;
     }
     public void engageLock() {
-        currentState = ClimbingStates.LOCKENGAGE;
+        lockEngage();
     }
     public void disngageLock() {
-        currentState = ClimbingStates.LOCKDISENGAGE;
+        lockDisengage();
     }
     public void retractIndividualClimberPole(double leftMotorSpeed, double rightMotorSpeed){
         if(leftMotorSpeed !=0.0 || rightMotorSpeed != 0.0){
-            currentState = ClimbingStates.CLIMB;
+            currentState = ClimbingStates.RETRACTPOLES;
         } 
         retractingSpeedMotorLeft = leftMotorSpeed*Parameters.CLIMBER_MOTOR_SPEED_INDIVIDUAL;
         retractingSpeedMotorRight = rightMotorSpeed*Parameters.CLIMBER_MOTOR_SPEED_INDIVIDUAL; 
@@ -78,28 +82,16 @@ public class ClimbingControl {
 
     public void periodic(){
         switch(currentState){
-            case ROTATEARMSUP:
-              rotateArmUp();
-            break;
-            case ROTATEARMSDOWN:
-              rotateArmDown();
-            break;
+    
             case EXTENDPOLES:
               extendPoles();
             break;
             case RETRACTPOLES:
               retractPoles();
-            // case CLIMB:
-            //   climb();
             break;
             case STOP:
               stop();
             break;
-            case LOCKENGAGE:
-                lockEngage();
-            break;
-            case LOCKDISENGAGE:
-                lockDisengage();
 
         }
 
@@ -137,35 +129,31 @@ public class ClimbingControl {
         armRotationSolenoid.set(Value.kReverse);
     }
     
-    public void extendPoles()
-    {
-        if  (climbMotorRight.getSensorCollection().getIntegratedSensorPosition() < targetHeight)
-        { 
-            //climbMotorRight.set(Parameters.CLIMBER_MOTOR_SPEED_DPAD);
+
+    public void extendPoles(){
+        if  (true || climbMotorRight.getSensorCollection().getIntegratedSensorPosition() < targetHeight){
+
+            climbMotorRight.set(-Parameters.CLIMBER_MOTOR_SPEED_DPAD);
             climbMotorLeft.set(Parameters.CLIMBER_MOTOR_SPEED_DPAD);
         } 
         else 
         {
-          //climbMotorRight.set(0.0);
+          climbMotorRight.set(0.0);
           climbMotorLeft.set(0.0);
-         
         }
+    
+    
     }  
 
+
     public void retractPoles() {
-        climbMotorRight.set(Parameters.CLIMBER_MOTOR_SPEED_DPAD);
-        climbMotorLeft.set(-Parameters.CLIMBER_MOTOR_SPEED_DPAD);
-    
-    }
-    
-    
-
-
-    public void climb(){ 
-       climbMotorLeft.set(-retractingSpeedMotorLeft);
-       climbMotorRight.set(-retractingSpeedMotorRight);
         
+        climbMotorRight.set(Parameters.CLIMBER_MOTOR_SPEED_DPAD);
+        climbMotorLeft.set(-Parameters.CLIMBER_MOTOR_SPEED_DPAD); //might need to switch sign
+    
+       
     }
+    
 
     public void lockEngage() {
         climberLock.set(DoubleSolenoid.Value.kForward);
