@@ -189,6 +189,7 @@ public class JoystickControl {
     }
 
     public void ClimbingPeriodic() {
+        climber.stopClimb();
         if (gunner.getRawButtonPressed(Xbox.BUTTON_Y)) {
             climber.climberArmUp();
         }
@@ -208,12 +209,12 @@ public class JoystickControl {
         if (gunner.getPOV() == (Xbox.DPAD_WEST)) {
             climber.extendClimberPolesMedium();
         }
-        if (gunner.getPOV() == (Xbox.DPAD_EAST)) {
+        if (gunner.getPOV() == (Xbox.DPAD_NORTH)) {
             climber.extendClimberPolesHigh();
         }
-        if ((gunner.getPOV() != (Xbox.DPAD_EAST)) && (gunner.getPOV() != (Xbox.DPAD_WEST))) {
-            climber.stop();
-        }
+        // if ((gunner.getPOV() != (Xbox.DPAD_EAST)) && (gunner.getPOV() != (Xbox.DPAD_WEST))) {
+        //     climber.stop();
+        // }
         if (gunner.getPOV() == (Xbox.DPAD_SOUTH)) {
             climber.retractClimberPoles(); // both poles at the same time
 

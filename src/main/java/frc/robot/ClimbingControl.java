@@ -75,8 +75,10 @@ public class ClimbingControl {
         retractingSpeedMotorLeft = leftMotorSpeed*Parameters.CLIMBER_MOTOR_SPEED_INDIVIDUAL;
         retractingSpeedMotorRight = rightMotorSpeed*Parameters.CLIMBER_MOTOR_SPEED_INDIVIDUAL; 
     }
-    public void stop(){
+    public void stopClimb(){
         currentState = ClimbingStates.STOP;
+        climbMotorLeft.set(0.0);
+        climbMotorRight.set(0.0);
     }
 
 
@@ -90,9 +92,8 @@ public class ClimbingControl {
               retractPoles();
             break;
             case STOP:
-              stop();
+              stopClimb();
             break;
-
         }
 
     }
