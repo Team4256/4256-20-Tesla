@@ -141,18 +141,18 @@ public class JoystickControl {
     public void shooterPeriodic() {
 
         if (driver.getRawButtonPressed(Xbox.BUTTON_RB)) {
-            isShooting = true;
             cellShooter.ShootNoAlign();
         }
-        if (driver.getRawButtonReleased(Xbox.BUTTON_STICK_RIGHT)) {
-            cellShooter.stopHopper();
 
-        }
-        // if (driver.getRawButtonReleased(Xbox.BUTTON_RB)) {
-        // cellShooter.shootUnAligned();
-        // }
         if (driver.getAxisActivity(Xbox.AXIS_RT)) {
             cellShooter.ShootAlign();
+        }
+
+        if (driver.getAxisActivity(Xbox.AXIS_RT)) {
+            cellShooter.stopHopper();
+            cellShooter.stopShooterWheel();
+        } else {
+            cellShooter.stopHOPPER();
         }
 
         if (gunner.getRawButtonPressed(Xbox.BUTTON_LB)) {
@@ -171,22 +171,24 @@ public class JoystickControl {
 
     // Intake Periodic
     public void intakePeriodic() {
-        if (driver.getAxisActivity(Xbox.AXIS_LT)) {
+        if (driver.getAxisPress(Xbox.AXIS_LT, .5)) {
             intake.succ();
+        } else {
+            intake.stop(); 
         }
-        if (driver.getRawButtonReleased(Xbox.AXIS_LT)) {
-            intake.stop();
-        }
+        // if (!driver.getAxisPress(Xbox.AXIS_LT, 5)) {
+        //     intake.stop();
+        // }
         if (driver.getRawButtonPressed(Xbox.BUTTON_LB)) {
             intake.spew();
         }
         if (driver.getRawButtonReleased(Xbox.BUTTON_LB)) {
             intake.stop();
         }
-        if (driver.getRawButtonPressed(Xbox.BUTTON_A)) {
+        if (driver.getRawButtonPressed(Xbox.BUTTON_Y)) {
             intake.intakeDown();
         }
-        if (driver.getRawButtonReleased(Xbox.BUTTON_Y)) {
+        if (driver.getRawButtonReleased(Xbox.BUTTON_A)) {
             intake.intakeUp();
         }
     }

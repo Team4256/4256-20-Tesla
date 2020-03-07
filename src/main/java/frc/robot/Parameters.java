@@ -63,8 +63,8 @@ public class Parameters{
     //INTAKE
     public static final int SUCCMOTOR_ID = 16; //Intake Motor
     public static final int INTAKE_FORWARD_CHANNEL = 0;//TODO need to get the real channel ID
-    public static final double INTAKE_SUCC_MOTOR = 0.5;//TODO need to get the actual channel ID
-    public static final double INTAKE_MOTOR_SPEED = 0.3;
+    public static final double INTAKE_SUCC_MOTOR = 0.4;//TODO need to get the actual channel ID
+    public static final double INTAKE_MOTOR_SPEED = 0.2;
     public static final int INTAKE_REVERSE_CHANNEL = 1; //TODO get the actual intake motor speed 
 
     //shooter

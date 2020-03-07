@@ -53,9 +53,12 @@ public class Shooter {
     currentShootingState = ShootingWheelStates.SPINUP;
   }
 
+  public void stopHOPPER () {
+    currentHopperStates = HopperStates.OFF;
+  }
   public void ShootAlign() {
-    currentShootingState = currentShootingState.SPINUP;
-    currentHopperStates = currentHopperStates.SHOOTALIGN;
+    // currentShootingState = currentShootingState.SPINUP;
+     currentHopperStates = currentHopperStates.SHOOTALIGN;
   }
 
   public void shroudToggle() {
@@ -109,10 +112,12 @@ public class Shooter {
   double shooterSpeedTest = SmartDashboard.getNumber("ShooterSpeed", 0.5);
   switch (currentHopperStates) {
   case SHOOTALIGN:
-    spinShooterMotors(shooterSpeedTest);
+    shootAlign();
     break;
   case SHOOTUNALIGNED:
     shootUnAligned();
+  case OFF:
+    stopHopper();
     break;
   }
   previousHopperState = currentHopperStates;
@@ -139,25 +144,22 @@ public class Shooter {
 
 
 
-  public void spinStirrerMotors() {
-    stirrerMotor.quickSet(Parameters.STIRRER_MOTOR_SPEED);
-    SmartDashboard.putNumber("stirrrer direction", Parameters.STIRRER_MOTOR_SPEED);
+  public void spinHopperMotors() {
+    stirrerMotor.set(ControlMode.PercentOutput, -Parameters.FEEDER_STIRRER_MOTOR_SPEED);
+    feederMotor.set(ControlMode.PercentOutput, Parameters.FEEDER_STIRRER_MOTOR_SPEED);
   }
-
-
 
   public void stopStirrerMotors() {
     stirrerMotor.quickSet(0.0);
   }
 
-
-
-
   public void shootAlign() {
       shooterAligner.alignRobotToTarget();
+      if (shooterAligner.getIsAtTarget(3)) {
+        spinShooterMotors(-Parameters.SHOOTER_MOTOR_SPEED);
+        spinHopperMotors();
+      }
   }
-
-
 
   public void shootUnAligned() {
     // spinShooterMotors(-Parameters.SHOOTER_MOTOR_SPEED);
@@ -168,8 +170,6 @@ public class Shooter {
         shooterMotor1.getSensorCollection().getIntegratedSensorVelocity() / 2048 * 600);
     shooterMotor2.set(TalonFXControlMode.Follower, shooterMotor1.getDeviceID());
   }
-
-
 
   public void range() {
     if (shroudSolenoid.get() == Value.kForward) {
