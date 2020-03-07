@@ -60,7 +60,8 @@ public class Limelight {
 
     public synchronized double getDistanceToTarget() {
         double a2 = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0.0);
-        double a1 = 78;
+        SmartDashboard.putNumber("ty", a2);
+        double a1 = 12;
         double h1 = 22;
         double h2 = 98.25;
         double angle = a1+a2;

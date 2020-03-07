@@ -11,8 +11,8 @@ public class Parameters{
     public static final double AUTO_SWERVE_TRACTION_SPEED = 0.2; //TODO get the actual speed
     public static final double FALCON_PERCENT_TO_ENCODER_SPEED = 18000; //TODO get the actual speed
     public static final double CROSS_WHITE_LINE_DISTANCE_IN_INCHES = 120; //TODO get the actual DISTANCE
-    public static final double DRIVE_TO_TRENCH_DISTANCE_IN_INCHES = 186; //TODO get the actual DISTANCE
-    public static final double MOVE_BACK_DISTANCE_IN_INCHES = 20; //TODO get the actual DISTANCE mode 4 only after crossing the white line
+    public static final double MOVE_BACK_RIGHT_TRENCH_DISTANCE_IN_INCHES = 130; //TODO get the actual DISTANCE
+    public static final double MOVE_BACK_LEFT_TRENCH_DISTANCE_IN_INCHES = 100; //TODO get the actual DISTANCE mode 4 only after crossing the white line
     public static final double STARTING_DISTANCE_FROM_RIGHT_IN_INCHES = 8; //TODO get the actual DISTANCE
     //public static final double STARTING_DISTANCE_FROM_MIDDLE_IN_INCHES = 5; //TODO get the actual DISTANCE
     //public static final double STARTING_DISTANCE_FROM_LEFT_IN_INCHES = 0; //TODO get the actual DISTANCE
@@ -88,23 +88,24 @@ public class Parameters{
 
     // Minimum and Maximum Voltage
 
-    public static final double angleEncoderMinVoltage[] = {.0354, .0219, .0073, .017};
-    public static final double angleEncoderMaxVoltage[] = {4.9218, 4.9243, 4.9145, 4.923};
-    public static final double angleEncoderTareVoltage[] = {3.5864,2.8491,2.3742,1.3354};//Swerve Number(A,B,C,D): PRACTICE 
+    // public static final double angleEncoderMinVoltage[] = {.0354, .0219, .0073, .017};
+    // public static final double angleEncoderMaxVoltage[] = {4.9218, 4.9243, 4.9145, 4.923};
+    // public static final double angleEncoderTareVoltage[] = {3.5864,2.8491,2.3742,1.3354};//Swerve Number(A,B,C,D): PRACTICE 
      /** COMPETITION BOT
      * A (Swerve Number XX) MIN. VOL. = 0.00366, MAX. VOL. = 4.9133, TARE VOL. = 4.155
      * B (Swerve Number XX) MIN. VOL. = 0.01099, MAX. VOL. = 4.9255, TARE VOL. = 1.752
      * C (Swerve Number XX) MIN. VOL. = 0.009766, MAX. VOL. = 4.9219, TARE VOL. = 1.297
      * D (Swerve Number XX) MIN. VOL. = 0.01343, MAX. VOL. = 4.9243, TARE VOL. = 4.234
-    /** PRACTICE BOT
-     * A (Swerve Number XX) MIN. VOL. = 0.00366, MAX. VOL. = 4.9133, TARE VOL. = 4.155
-     * B (Swerve Number XX) MIN. VOL. = 0.01099, MAX. VOL. = 4.9255, TARE VOL. = 1.752
-     * C (Swerve Number XX) MIN. VOL. = 0.009766, MAX. VOL. = 4.9219, TARE VOL. = 1.297
-     * D (Swerve Number XX) MIN. VOL. = 0.01343, MAX. VOL. = 4.9243, TARE VOL. = 4.234
-     *      public static final double angleEncoderMinVoltage[] = {0.00366, 0.01099, 0.009766, 0.01343};
+     * */
+    // PRACTICE BOT
+    //  * A (Swerve Number XX) MIN. VOL. = 0.00366, MAX. VOL. = 4.9133, TARE VOL. = 4.155
+    //  * B (Swerve Number XX) MIN. VOL. = 0.01099, MAX. VOL. = 4.9255, TARE VOL. = 1.752
+    //  * C (Swerve Number XX) MIN. VOL. = 0.009766, MAX. VOL. = 4.9219, TARE VOL. = 1.297
+    //  * D (Swerve Number XX) MIN. VOL. = 0.01343, MAX. VOL. = 4.9243, TARE VOL. = 4.234
+            public static final double angleEncoderMinVoltage[] = {0.00366, 0.01099, 0.009766, 0.01343};
             public static final double angleEncoderMaxVoltage[] = {4.9133, 4.9255, 4.9219, 4.9243};
             public static final double angleEncoderTareVoltage[] = {4.155,1.752,1.297,4.234};
-     */
+     
     // Aligner tolerances
 
     public static final double POSITION_TOLERANCE = 5.00;

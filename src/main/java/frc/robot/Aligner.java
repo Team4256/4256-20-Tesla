@@ -45,12 +45,15 @@ public class Aligner {
     }
 
     public double getOrientationCommand() {
-        return orientationPID.calculate(camera.getTargetOffsetDegrees(), 0);
+         double spiningSPeed =  orientationPID.calculate(camera.getTargetOffsetDegrees(), 0);
+         return spiningSPeed;
     }
 
     public void alignRobotToTarget(){
         //camera.turnLEDOn();
-        swerveSystem.setSpin(getOrientationCommand());
+        if(getOrientationCommand()<= 0.2){
+            swerveSystem.setSpin(getOrientationCommand());
+        }
         SmartDashboard.putNumber("Offset", camera.putTxToDashboard());
         
     }

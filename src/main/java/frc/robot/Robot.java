@@ -125,7 +125,7 @@ public class Robot extends TimedRobot {
   //     auto.mode4();
   //     break;
   // }  
-      auto.mode2();
+      auto.mode1();
   swerve.completeLoopUpdate();
   }
 
