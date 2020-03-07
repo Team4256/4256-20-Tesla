@@ -29,7 +29,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     private double lastSetpoint = 0.0;
     private Logger logger;
     private PIDController anglePIDController = new PIDController(.005, 0.0, 0.00);
-    private PIDController falconVelocityPID = new PIDController(0.001, 0.0, 0.0);
+    private PIDController falconVelocityPID = new PIDController(0.000005, 0.0, 0.0);
     public final Compass compass = new Compass();
     private double lastLegalDirection = 1.0;
     private AnalogInput encoderPort;
@@ -181,8 +181,10 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         double expectedSpeed = inputPercentageSpeed*Parameters.FALCON_PERCENT_TO_ENCODER_SPEED;
         double adjustmentToSpeedAdjustment = falconVelocityPID.calculate(motorSpeed, expectedSpeed);
 
-        adjustmentToSpeedAdjustment = Math.abs(adjustmentToSpeedAdjustment) <=0.1 ? adjustmentToSpeedAdjustment: Math.signum(adjustmentToSpeedAdjustment )*0.1;
+        adjustmentToSpeedAdjustment = Math.abs(adjustmentToSpeedAdjustment) <=0.01 ? adjustmentToSpeedAdjustment: Math.signum(adjustmentToSpeedAdjustment )*0.01;
         tractionSppeedAdjustment += adjustmentToSpeedAdjustment;
+
+        tractionSppeedAdjustment = Math.abs(tractionSppeedAdjustment) <=0.01 ? tractionSppeedAdjustment: Math.signum(tractionSppeedAdjustment )*0.01;
 
         if(getDeviceID() == 21){
             SmartDashboard.putNumber("Speed adjustment", tractionSppeedAdjustment);
@@ -193,7 +195,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         }
 
         double adjustedPercentageSpeed = inputPercentageSpeed + tractionSppeedAdjustment;
-        adjustedPercentageSpeed = inputPercentageSpeed;
+       // adjustedPercentageSpeed = inputPercentageSpeed;
         
         super.set(adjustedPercentageSpeed);
         lastSetpoint = adjustedPercentageSpeed;

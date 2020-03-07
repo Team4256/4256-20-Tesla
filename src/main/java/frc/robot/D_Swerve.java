@@ -24,7 +24,7 @@ public final class D_Swerve implements Drivetrain {
 	private double moduleD_maxSpeed = 70.0;// always put max slightly higher than max observed
 	private double moduleD_previousAngle = 0.0;
 	private double previousSpin = 0.0;
-	private PIDController pid = new PIDController(0.0, 0.0, 0.0); 
+	private PIDController pid = new PIDController(0.008, 0.0, 0.0); 
 	private Gyro gyro = Gyro.getInstance();
 	private double direction = 0.0, speed = 0.0, spin = 0.0;
 
@@ -86,10 +86,10 @@ public final class D_Swerve implements Drivetrain {
 		double encoderVelocityC = moduleC.getRPM();
 		double encoderVelocityD = moduleD.getRPM();
 		
-		SmartDashboard.putNumber("encoderVelocityA", encoderVelocityA);
-		SmartDashboard.putNumber("encoderVelocityB", encoderVelocityB);
-		SmartDashboard.putNumber("encoderVelocityC", encoderVelocityC);
-		SmartDashboard.putNumber("encoderVelocityD", encoderVelocityD);
+		// SmartDashboard.putNumber("encoderVelocityA", encoderVelocityA);
+		// SmartDashboard.putNumber("encoderVelocityB", encoderVelocityB);
+		// SmartDashboard.putNumber("encoderVelocityC", encoderVelocityC);
+		// SmartDashboard.putNumber("encoderVelocityD", encoderVelocityD);
 
 		
 	}
@@ -170,7 +170,10 @@ public final class D_Swerve implements Drivetrain {
 			gyroHeading -= 360;
 		}
 		double faceSpeed = pid.calculate(gyroHeading, direction);
+		faceSpeed = Math.abs(faceSpeed) <=0.4 ? faceSpeed: Math.signum(faceSpeed )*0.4;
+
 		setSpin(faceSpeed);
+		SmartDashboard.putNumber("FaceTo", faceSpeed);
 	}
 	
 	
