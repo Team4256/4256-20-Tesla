@@ -46,8 +46,8 @@ public class Parameters{
     //soloniod motor stuff in competition up will be 2 down will be 3
     public static final int CLIMBER_LOCK_FORWARD_CHANNEL =  4; //Lock gear engage for climbing on Falcons
     public static final int CLIMBER_LOCK_REVERSE_CHANNEL =  5; //Lock gear disengage for climbing on Falcons
-    public static final int CLIMBER_FORWARD_CHANNEL = 7; //Climber rotate arms up channel Solonoid Port Extend
-    public static final int CLIMBER_REVERSE_CHANNEL = 6; //Climber rotate arms down channel solenoid port Retract
+    public static final int CLIMBER_FORWARD_CHANNEL = 6; //Climber rotate arms up channel Solonoid Port Extend
+    public static final int CLIMBER_REVERSE_CHANNEL = 7; //Climber rotate arms down channel solenoid port Retract
     public static final double CLIMBING_SPEED_LOW = 0.2;
     // add motors for arm going up and down
     public static final int R_CLIMBER_MOTOR_ID = 29; //Climber Motor right
@@ -57,6 +57,8 @@ public class Parameters{
     public static double MAX_HEIGHT_COUNT = 10;//NICE
     public static final double CLIMBER_MOTOR_SPEED_DPAD = 0.2; //need the actual speed. This is for the Dpad when both poles retract at the same time
     public static final double CLIMBER_MOTOR_SPEED_INDIVIDUAL = 0.2;//This is for when the joysticks are controlling individual motors
+    public static final int CLIMBER_LEFT_RETRACT_LIMIT_SWITCH_ID = 0;
+    public static final int CLIMBER_RIGHT_RETRACT_LIMIT_SWITCH_ID = 1;
 
     //INTAKE
     public static final int SUCCMOTOR_ID = 16; //Intake Motor

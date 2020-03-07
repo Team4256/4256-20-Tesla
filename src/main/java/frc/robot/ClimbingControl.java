@@ -13,7 +13,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;	
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;			
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.DigitalInput;			
 
 public class ClimbingControl {
     
@@ -25,6 +26,9 @@ public class ClimbingControl {
     private double targetHeight;
     public double retractingSpeedMotorLeft;
     public double retractingSpeedMotorRight;
+    public DigitalInput limitSwitchLeft;
+    public DigitalInput limitSwitchRight;
+
     private static ClimbingControl instance = null;
     
     public enum ClimbingStates{
@@ -75,8 +79,10 @@ public class ClimbingControl {
         retractingSpeedMotorLeft = leftMotorSpeed*Parameters.CLIMBER_MOTOR_SPEED_INDIVIDUAL;
         retractingSpeedMotorRight = rightMotorSpeed*Parameters.CLIMBER_MOTOR_SPEED_INDIVIDUAL; 
     }
-    public void stop(){
+    public void stopClimb(){
         currentState = ClimbingStates.STOP;
+        climbMotorLeft.set(0.0);
+        climbMotorRight.set(0.0);
     }
 
 
@@ -90,10 +96,12 @@ public class ClimbingControl {
               retractPoles();
             break;
             case STOP:
-              stop();
+              stopClimb();
             break;
-
         }
+        
+        SmartDashboard.putBoolean("limit switch left", limitSwitchLeft.get());
+        SmartDashboard.putBoolean("limit switch right", limitSwitchRight.get());
 
     }
 
@@ -109,6 +117,9 @@ public class ClimbingControl {
         armRotationSolenoid = new DoubleSolenoid(Parameters.CLIMBER_FORWARD_CHANNEL, Parameters.CLIMBER_REVERSE_CHANNEL);
         climberLock = new DoubleSolenoid(Parameters.CLIMBER_LOCK_FORWARD_CHANNEL, Parameters.CLIMBER_LOCK_REVERSE_CHANNEL);
         climbMotorRight.getSensorCollection().setIntegratedSensorPosition(0,0);
+        limitSwitchLeft = new DigitalInput(Parameters.CLIMBER_LEFT_RETRACT_LIMIT_SWITCH_ID);
+        limitSwitchRight = new DigitalInput(Parameters.CLIMBER_RIGHT_RETRACT_LIMIT_SWITCH_ID);
+
     }
 
     public synchronized static ClimbingControl getInstance() {
@@ -148,10 +159,16 @@ public class ClimbingControl {
 
     public void retractPoles() {
         
-        climbMotorRight.set(Parameters.CLIMBER_MOTOR_SPEED_DPAD);
-        climbMotorLeft.set(-Parameters.CLIMBER_MOTOR_SPEED_DPAD); //might need to switch sign
-    
+        if(!limitSwitchLeft.get()){ // when the boolean is false, it senses
+            retractingSpeedMotorLeft = 0.0; //might need to switch sign
+        }
        
+        if(!limitSwitchRight.get()){
+            retractingSpeedMotorRight = 0.0;
+        }
+        climbMotorLeft.set(-retractingSpeedMotorLeft); //might need to switch sign
+        climbMotorRight.set(retractingSpeedMotorRight);
+        
     }
     
 

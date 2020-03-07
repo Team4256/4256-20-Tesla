@@ -58,6 +58,17 @@ public class Limelight {
         return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0.0);
     }
 
+    public synchronized double getDistanceToTarget() {
+        double a2 = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0.0);
+        double a1 = 78;
+        double h1 = 22;
+        double h2 = 98.25;
+        double angle = a1+a2;
+        double d = (h2-h1) / Math.tan(angle);
+        return d;
+
+    }
+
     public synchronized double putTxToDashboard() {
         return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0.0);
     }
