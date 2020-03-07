@@ -57,6 +57,8 @@ public class Parameters{
     public static double MAX_HEIGHT_COUNT = 10;//NICE
     public static final double CLIMBER_MOTOR_SPEED_DPAD = 0.2; //need the actual speed. This is for the Dpad when both poles retract at the same time
     public static final double CLIMBER_MOTOR_SPEED_INDIVIDUAL = 0.2;//This is for when the joysticks are controlling individual motors
+    public static final int CLIMBER_LEFT_RETRACT_LIMIT_SWITCH_ID = 0;
+    public static final int CLIMBER_RIGHT_RETRACT_LIMIT_SWITCH_ID = 1;
 
     //INTAKE
     public static final int SUCCMOTOR_ID = 16; //Intake Motor

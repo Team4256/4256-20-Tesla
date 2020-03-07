@@ -144,6 +144,10 @@ public class JoystickControl {
             isShooting = true;
             cellShooter.ShootNoAlign();
         }
+        if (driver.getRawButtonReleased(Xbox.BUTTON_STICK_RIGHT)) {
+            cellShooter.stopHopper();
+        
+        }
         // if (driver.getRawButtonReleased(Xbox.BUTTON_RB)) {
         //     cellShooter.shootUnAligned();
         // }
@@ -159,7 +163,7 @@ public class JoystickControl {
         }
         
 
-        if (gunner.getAxisPress(Xbox.AXIS_RT, 0.5)) {
+        if (gunner.getRawButtonPressed(Xbox.BUTTON_RB)) {
             cellShooter.shroudToggle();
         }
         cellShooter.periodic();
