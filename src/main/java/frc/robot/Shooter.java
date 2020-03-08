@@ -49,15 +49,24 @@ public class Shooter {
 
   // Constructor
   public void ShootNoAlign() {
-    currentHopperStates = HopperStates.SHOOTUNALIGNED; 
-    currentShootingState = ShootingWheelStates.SPINUP;
+    currentHopperStates = HopperStates.SHOOTUNALIGNED;
+    // if (currentHopperStates == HopperStates.SHOOTUNALIGNED) {
+    //   currentHopperStates = HopperStates.OFF;
+    // } else {
+    //   currentHopperStates = HopperStates.SHOOTUNALIGNED;
+    //   SmartDashboard.putNumber("isNoAlign", 1000);
+
+    // }
+    
+    // currentHopperStates = HopperStates.SHOOTUNALIGNED; 
+    // //currentShootingState = ShootingWheelStates.SPINUP;
   }
 
   public void stopHOPPER () {
     currentHopperStates = HopperStates.OFF;
   }
   public void ShootAlign() {
-    // currentShootingState = currentShootingState.SPINUP;
+     //currentShootingState = currentShootingState.SPINUP;
      currentHopperStates = currentHopperStates.SHOOTALIGN;
   }
 
@@ -112,10 +121,11 @@ public class Shooter {
   double shooterSpeedTest = SmartDashboard.getNumber("ShooterSpeed", 0.5);
   switch (currentHopperStates) {
   case SHOOTALIGN:
-    shootAlign();
+    shootAlign(shooterSpeedTest);
     break;
   case SHOOTUNALIGNED:
-    shootUnAligned();
+    spinHopperMotors();
+    break;
   case OFF:
     stopHopper();
     break;
@@ -145,30 +155,30 @@ public class Shooter {
 
 
   public void spinHopperMotors() {
-    stirrerMotor.set(ControlMode.PercentOutput, -Parameters.FEEDER_STIRRER_MOTOR_SPEED);
+    stirrerMotor.set(ControlMode.PercentOutput, Parameters.STIRRER_MOTOR_SPEED);
     feederMotor.set(ControlMode.PercentOutput, Parameters.FEEDER_STIRRER_MOTOR_SPEED);
   }
 
-  public void stopStirrerMotors() {
-    stirrerMotor.quickSet(0.0);
-  }
+  // public void stopStirrerMotors() {
+  //   stirrerMotor.quickSet(0.0);
+  // }
 
-  public void shootAlign() {
+  public void shootAlign( double shooterSpeed) {
       shooterAligner.alignRobotToTarget();
-      if (shooterAligner.getIsAtTarget(3)) {
-        spinShooterMotors(-Parameters.SHOOTER_MOTOR_SPEED);
-        spinHopperMotors();
-      }
+      // if (shooterAligner.getIsAtTarget(3)) {
+      //   spinShooterMotors(shooterSpeed);
+      //   spinHopperMotors();
+      // }
   }
 
   public void shootUnAligned() {
     // spinShooterMotors(-Parameters.SHOOTER_MOTOR_SPEED);
-    stirrerMotor.set(ControlMode.PercentOutput, -Parameters.FEEDER_STIRRER_MOTOR_SPEED);
+    stirrerMotor.quickSet(Parameters.STIRRER_MOTOR_SPEED);
     feederMotor.set(ControlMode.PercentOutput, Parameters.FEEDER_STIRRER_MOTOR_SPEED);
-    SmartDashboard.putString("Alive", "Is alive");
-    SmartDashboard.putNumber("shooterSpeed(RPM)",
-        shooterMotor1.getSensorCollection().getIntegratedSensorVelocity() / 2048 * 600);
-    shooterMotor2.set(TalonFXControlMode.Follower, shooterMotor1.getDeviceID());
+    // SmartDashboard.putString("Alive", "Is alive");
+    // SmartDashboard.putNumber("shooterSpeed(RPM)",
+    //     shooterMotor1.getSensorCollection().getIntegratedSensorVelocity() / 2048 * 600);
+    // shooterMotor2.set(TalonFXControlMode.Follower, shooterMotor1.getDeviceID());
   }
 
   public void range() {

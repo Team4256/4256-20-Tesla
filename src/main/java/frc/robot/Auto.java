@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import com.fasterxml.jackson.databind.deser.impl.CreatorCandidate.Param;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -115,8 +117,8 @@ public class Auto {
   }
 
 
-    private void alignAndShoot(){
-      shooter.shootAlign();
+    private void alignAndShoot(double shooterSpeed){
+      shooter.shootAlign(shooterSpeed);
     }
 
 
@@ -161,7 +163,7 @@ public class Auto {
       //SmartDashboard.putString("Autonomus phase","Phase 0");
       if(phase1 == PhaseStates.NOT_SARTED){ // Starts the shooter motors
         phase1 = PhaseStates.STARTED;
-        shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED);
+        shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED_CLOSE);
       }
       if(phase1 == PhaseStates.STARTED){
         if(shooter.isSpunUp()){//need to be changed 
@@ -177,8 +179,8 @@ public class Auto {
         stopWatch.resetTimer();
       }
       if(phase2 == PhaseStates.STARTED){
-        alignAndShoot();
-        if(stopWatch.getElapsedTime() > 2){ //make sure the time is right
+        alignAndShoot(Parameters.SHOOTER_MOTOR_SPEED_CLOSE);
+        if(stopWatch.getElapsedTime() > 5){ //make sure the time is right
           phase2 = PhaseStates.ENDED;
         }
         else {
@@ -192,6 +194,7 @@ public class Auto {
         }
         if(phase3 == PhaseStates.STARTED){
           swerve.faceTo(0.0); //make sure this is right 
+          shooter.stopHopper();
           if(stopWatch.getElapsedTime() > 2){
             phase3 = PhaseStates.ENDED;
           }
@@ -214,7 +217,7 @@ public class Auto {
         else {
           swerve.faceTo(0.0);
           swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
-          swerve.setSpin(0.0);
+          //swerve.setSpin(0.0);
           swerve.travelTowards(180);
           SmartDashboard.putString("Autonomus phase","Phase 4");
           return;
@@ -229,10 +232,11 @@ public class Auto {
 
       if(phase5 == PhaseStates.STARTED){
         
-        alignAndShoot();
-        if(stopWatch.getElapsedTime() > 3){
+        alignAndShoot(Parameters.SHOOTER_MOTOR_SPEED_FAR);
+        if(stopWatch.getElapsedTime() > 5){
           phase5 = PhaseStates.ENDED;
-          shooter.stopStirrerMotors();
+          shooter.stopHopper();
+          shooter.stopShooterWheel();
           limelight.turnLEDOff();
         }
         else {
@@ -274,8 +278,8 @@ public class Auto {
       if(phase2 == PhaseStates.NOT_SARTED){ // Aligns and shoots pre loaded power cells
         phase2 = PhaseStates.STARTED;
         stopWatch.resetTimer();
-        shooter.spinStirrerMotors();
-        shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED);
+        //shooter.spinStirrerMotors();
+        shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED_CLOSE);
       }
       if(phase2 == PhaseStates.STARTED){
     
@@ -299,7 +303,7 @@ public class Auto {
           stopWatch.resetTimer();
         }
         if(phase3 == PhaseStates.STARTED){
-          alignAndShoot();
+          alignAndShoot(Parameters.SHOOTER_MOTOR_SPEED_CLOSE);
           if(stopWatch.getElapsedTime() > 3){
             phase3 = PhaseStates.ENDED;
           }
@@ -356,7 +360,7 @@ public class Auto {
     
 
     // mode3: start from the left
-    public void mode3(){
+    /*public void mode3(){
       if(phase1 == PhaseStates.NOT_SARTED){ // Starts the shooter motors
         phase1 = PhaseStates.STARTED;
         shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED);
@@ -433,6 +437,7 @@ public class Auto {
         }
       }
     }
+    */
       // if(getBallsFromTrench(Parameters.DRIVE_TO_TRENCH_DISTANCE_IN_INCHES)){
       //   //if(drivingToPorts(Parameters.STARTING_DISTANCE_FROM_LEFT)){
       //     alignAndShoot();
@@ -457,20 +462,20 @@ public class Auto {
       // else{
       //   alignAndShoot();
       // }
-      elapsedTime +=0.02;
+    //   elapsedTime +=0.02;
 
-      //spin shooter motors --> align and shoot
-      alignAndShoot();
-      if(!stageOneFinished){
-        crossWhiteLine();
-      }
-      else if(!stageTwoFinished){
-        drivingToPorts(Parameters.MOVE_BACK_RIGHT_TRENCH_DISTANCE_IN_INCHES);
-      }
-      else{
-        alignAndShoot();
-      }
+    //   //spin shooter motors --> align and shoot
+    //   alignAndShoot();
+    //   if(!stageOneFinished){
+    //     crossWhiteLine();
+    //   }
+    //   else if(!stageTwoFinished){
+    //     drivingToPorts(Parameters.MOVE_BACK_RIGHT_TRENCH_DISTANCE_IN_INCHES);
+    //   }
+    //   else{
+    //     alignAndShoot();
+    //   }
       
-    }
+     }
 
 }

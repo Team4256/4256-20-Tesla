@@ -99,13 +99,13 @@ public class JoystickControl {
             }
 
             aligner.camera.turnLEDOn();
-            if (driver.getRawButtonPressed(Xbox.BUTTON_X)) {
-                cellShooter.ShootAlign();
-            }
-            if (driver.getRawButtonReleased(Xbox.BUTTON_X)) {
-                cellShooter.stopHopper();
-                cellShooter.stopShooterWheel();
-            }
+            // if (driver.getRawButtonPressed(Xbox.BUTTON_X)) {
+            //     cellShooter.ShootAlign();
+            // }
+            // if (driver.getRawButtonReleased(Xbox.BUTTON_X)) {
+            //     cellShooter.stopHopper();
+            //     cellShooter.stopShooterWheel();
+            // }
             if (aligner.camera.hasTarget()) {
                 SmartDashboard.putNumber("TargetOffset", aligner.camera.getTargetOffsetDegrees());
             }
@@ -143,24 +143,18 @@ public class JoystickControl {
         if (driver.getRawButtonPressed(Xbox.BUTTON_RB)) {
             cellShooter.ShootNoAlign();
         }
-
-        if (driver.getAxisActivity(Xbox.AXIS_RT)) {
-            cellShooter.ShootAlign();
-        }
-
-        if (driver.getAxisActivity(Xbox.AXIS_RT)) {
-            cellShooter.stopHopper();
-            cellShooter.stopShooterWheel();
-        } else {
+        if (driver.getRawButtonReleased(Xbox.BUTTON_RB)) {
             cellShooter.stopHOPPER();
         }
 
+        if (driver.getDeadbandedAxis(Xbox.AXIS_RT) > .5 ) {
+            // cellShooter.ShootAlign();
+            aligner.alignRobotToTarget();
+        } 
+
         if (gunner.getRawButtonPressed(Xbox.BUTTON_LB)) {
             cellShooter.SpinShooterPrep();
-        } else {
-            cellShooter.stopHopper();
-            cellShooter.stopShooterWheel();
-        }
+         } 
 
         if (gunner.getRawButtonPressed(Xbox.BUTTON_RB)) {
             cellShooter.shroudToggle();
@@ -226,7 +220,7 @@ public class JoystickControl {
             climber.retractClimberPoles(); // both poles at the same time
 
         } else {
-            climber.retractIndividualClimberPole(gunner.getDeadbandedAxis(Xbox.AXIS_LEFT_Y),
+            climber.retractIndividualClimberPoleRight(gunner.getDeadbandedAxis(Xbox.AXIS_LEFT_Y),
                     gunner.getDeadbandedAxis(Xbox.AXIS_RIGHT_Y));
 
         }

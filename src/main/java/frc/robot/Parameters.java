@@ -11,7 +11,7 @@ public class Parameters{
     public static final double AUTO_SWERVE_TRACTION_SPEED = 0.2; //TODO get the actual speed
     public static final double FALCON_PERCENT_TO_ENCODER_SPEED = 18000; //TODO get the actual speed
     public static final double CROSS_WHITE_LINE_DISTANCE_IN_INCHES = 120; //TODO get the actual DISTANCE
-    public static final double MOVE_BACK_RIGHT_TRENCH_DISTANCE_IN_INCHES = 130; //TODO get the actual DISTANCE
+    public static final double MOVE_BACK_RIGHT_TRENCH_DISTANCE_IN_INCHES = 120; //TODO get the actual DISTANCE
     public static final double MOVE_BACK_LEFT_TRENCH_DISTANCE_IN_INCHES = 100; //TODO get the actual DISTANCE mode 4 only after crossing the white line
     public static final double STARTING_DISTANCE_FROM_RIGHT_IN_INCHES = 8; //TODO get the actual DISTANCE
     //public static final double STARTING_DISTANCE_FROM_MIDDLE_IN_INCHES = 5; //TODO get the actual DISTANCE
@@ -54,7 +54,7 @@ public class Parameters{
     public static final int L_CLIMBER_MOTOR_ID = 28; //Climber Motor RIGHT
     //need actual encoder values, from engineering team
     public static double MED_HEIGHT_COUNT = 10;
-    public static double MAX_HEIGHT_COUNT = 10;//NICE
+    public static double MAX_HEIGHT_COUNT = 10;
     public static final double CLIMBER_MOTOR_SPEED_DPAD = 0.2; //need the actual speed. This is for the Dpad when both poles retract at the same time
     public static final double CLIMBER_MOTOR_SPEED_INDIVIDUAL = 0.2;//This is for when the joysticks are controlling individual motors
     public static final int CLIMBER_LEFT_RETRACT_LIMIT_SWITCH_ID = 0;
@@ -64,7 +64,7 @@ public class Parameters{
     public static final int SUCCMOTOR_ID = 16; //Intake Motor
     public static final int INTAKE_FORWARD_CHANNEL = 0;//TODO need to get the real channel ID
     public static final double INTAKE_SUCC_MOTOR = 0.4;//TODO need to get the actual channel ID
-    public static final double INTAKE_MOTOR_SPEED = 0.2;
+    public static final double INTAKE_MOTOR_SPEED = 0.4;
     public static final int INTAKE_REVERSE_CHANNEL = 1; //TODO get the actual intake motor speed 
 
     //shooter
@@ -74,9 +74,11 @@ public class Parameters{
     public static final int FEEDERMOTOR_ID = 17;
     public static final int SHROUD_DOWN_CHANNEL = 3;
     public static final int SHROUD_UP_CHANNEL = 2;
-    public static double SHOOTER_MOTOR_SPEED = -1.0;
-    public static double FEEDER_STIRRER_MOTOR_SPEED = -0.5; 
-    public static double STIRRER_MOTOR_SPEED = 0.3;
+    public static double SHOOTER_MOTOR_SPEED_CLOSE = 1.0;
+    public static double SHOOTER_MOTOR_SPEED_FAR = 0.85;
+
+    public static double FEEDER_STIRRER_MOTOR_SPEED = -0.6; // was 0.5 on march 6
+    public static double STIRRER_MOTOR_SPEED = 0.3; // was .4 on march 6
     public static double STIRRER_MOTOR_DELAY = 0.75;
     //public static double MOTORSPEEDHIGH = 0.3;// we don't know yet what the engineers are going to do
     public static double DISTANCE_LOW_MIN = 4.5;
@@ -102,9 +104,9 @@ public class Parameters{
     //  * B (Swerve Number XX) MIN. VOL. = 0.01099, MAX. VOL. = 4.9255, TARE VOL. = 1.752
     //  * C (Swerve Number XX) MIN. VOL. = 0.009766, MAX. VOL. = 4.9219, TARE VOL. = 1.297
     //  * D (Swerve Number XX) MIN. VOL. = 0.01343, MAX. VOL. = 4.9243, TARE VOL. = 4.234
-            public static final double angleEncoderMinVoltage[] = {0.00366, 0.01099, 0.009766, 0.01343};
-            public static final double angleEncoderMaxVoltage[] = {4.9133, 4.9255, 4.9219, 4.9243};
-            public static final double angleEncoderTareVoltage[] = {4.155,1.752,1.297,4.234};
+            public static final double angleEncoderMinVoltage[] = {0.0183, 0.0292, 0.0073, 0.0170};
+            public static final double angleEncoderMaxVoltage[] = {4.9243, 4.9218, 4.9145, 4.9194};
+            public static final double angleEncoderTareVoltage[] = {3.527,2.863,2.382,1.335};
      
     // Aligner tolerances
 

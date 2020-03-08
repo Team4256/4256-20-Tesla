@@ -64,7 +64,7 @@ public class Limelight {
         double a1 = 12;
         double h1 = 22;
         double h2 = 98.25;
-        double angle = a1+a2;
+        double angle =  Math.toRadians(a1+a2);
         double d = (h2-h1) / Math.tan(angle);
         return d;
 

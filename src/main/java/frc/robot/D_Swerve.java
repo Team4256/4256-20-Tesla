@@ -170,7 +170,7 @@ public final class D_Swerve implements Drivetrain {
 			gyroHeading -= 360;
 		}
 		double faceSpeed = pid.calculate(gyroHeading, direction);
-		faceSpeed = Math.abs(faceSpeed) <=0.4 ? faceSpeed: Math.signum(faceSpeed )*0.4;
+		//faceSpeed = Math.abs(faceSpeed) <=0.4 *? faceSpeed: Math.signum(faceSpeed )*0.4;
 
 		setSpin(faceSpeed);
 		SmartDashboard.putNumber("FaceTo", faceSpeed);

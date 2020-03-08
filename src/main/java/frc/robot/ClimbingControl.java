@@ -72,7 +72,7 @@ public class ClimbingControl {
     public void disngageLock() {
         lockDisengage();
     }
-    public void retractIndividualClimberPole(double leftMotorSpeed, double rightMotorSpeed){
+    public void retractIndividualClimberPoleRight(double leftMotorSpeed, double rightMotorSpeed){
         if(leftMotorSpeed !=0.0 || rightMotorSpeed != 0.0){
             currentState = ClimbingStates.RETRACTPOLES;
         } 
@@ -155,6 +155,7 @@ public class ClimbingControl {
     
     
     }  
+    
 
 
     public void retractPoles() {
