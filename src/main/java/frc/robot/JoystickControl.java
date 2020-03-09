@@ -120,6 +120,7 @@ public class JoystickControl {
                 if (!turbo) {
                     speed *= 0.6;
                 }
+                
 
                 spin *= spin * Math.signum(spin);
                 swerve.setSpeed(speed);
@@ -140,23 +141,33 @@ public class JoystickControl {
 
     public void shooterPeriodic() {
 
-        if (driver.getRawButtonPressed(Xbox.BUTTON_RB)) {
+        if (gunner.getRawButtonPressed(Xbox.BUTTON_RB)) {  //Hold and release
             cellShooter.ShootNoAlign();
         }
-        if (driver.getRawButtonReleased(Xbox.BUTTON_RB)) {
+        if (gunner.getRawButtonReleased(Xbox.BUTTON_RB)) {
             cellShooter.stopHOPPER();
         }
 
-        if (driver.getDeadbandedAxis(Xbox.AXIS_RT) > .5 ) {
-            // cellShooter.ShootAlign();
-            aligner.alignRobotToTarget();
-        } 
+        if (gunner.getDeadbandedAxis(Xbox.AXIS_RT) > .5 ) {  //Hold and release
+            cellShooter.ShootAlign();
+            //aligner.alignRobotToTarget();
+        } else {
+            cellShooter.stopHOPPER();
+        }
 
-        if (gunner.getRawButtonPressed(Xbox.BUTTON_LB)) {
+        if (gunner.getDeadbandedAxis(Xbox.AXIS_LT) > .5 ) {  // Toggle
             cellShooter.SpinShooterPrep();
-         } 
+            //aligner.alignRobotToTarget();
+        } 
+        
+        if (gunner.getRawButtonPressed(Xbox.BUTTON_LB)) {  //Hold and release
+            cellShooter.ReverseHopper();
+        }
+        if (gunner.getRawButtonReleased(Xbox.BUTTON_LB)) {
+            cellShooter.stopHOPPER();
+        }
 
-        if (gunner.getRawButtonPressed(Xbox.BUTTON_RB)) {
+        if (driver.getRawButtonPressed(Xbox.BUTTON_RB)) {  //Toggle
             cellShooter.shroudToggle();
         }
         cellShooter.periodic();
