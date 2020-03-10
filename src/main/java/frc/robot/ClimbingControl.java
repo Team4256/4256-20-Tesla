@@ -28,6 +28,7 @@ public class ClimbingControl {
     public double retractingSpeedMotorRight;
     public DigitalInput limitSwitchLeft;
     public DigitalInput limitSwitchRight;
+    public static final int kTimeoutMS = 10;
 
     private static ClimbingControl instance = null;
     
@@ -122,6 +123,11 @@ public class ClimbingControl {
 
     }
 
+    public void climberInit(){ //resets both encoder position
+        climbMotorLeft.getSensorCollection().setIntegratedSensorPosition(0.0, kTimeoutMS);
+        climbMotorRight.getSensorCollection().setIntegratedSensorPosition(0.0, kTimeoutMS);
+    }
+
     public synchronized static ClimbingControl getInstance() {
         if (instance == null) {
           instance = new ClimbingControl();
@@ -143,7 +149,7 @@ public class ClimbingControl {
 
     public void extendPoles(){
         if  (true || climbMotorRight.getSensorCollection().getIntegratedSensorPosition() < targetHeight){
-
+            lockDisengage();
             climbMotorRight.set(Parameters.CLIMBER_MOTOR_SPEED_DPAD);
             climbMotorLeft.set(-Parameters.CLIMBER_MOTOR_SPEED_DPAD);
         } 
@@ -159,14 +165,24 @@ public class ClimbingControl {
 
 
     public void retractPoles() {
-        
-        if(!limitSwitchLeft.get()){ // when the boolean is false, it senses
-            retractingSpeedMotorLeft = 0.0; //might need to switch sign
+        double leftEncoderPosition = climbMotorLeft.getSensorCollection().getIntegratedSensorPosition();
+        double rightEncoderPosition = climbMotorRight.getSensorCollection().getIntegratedSensorPosition(); 
+        if(leftEncoderPosition <= 0){
+            retractingSpeedMotorLeft = 0.0;
         }
-       
-        if(!limitSwitchRight.get()){
+        if(rightEncoderPosition <= 0){
             retractingSpeedMotorRight = 0.0;
         }
+        SmartDashboard.putNumber("leftEncoderPosition", leftEncoderPosition);
+        SmartDashboard.putNumber("RightEncoderPosition", rightEncoderPosition);
+        // if(!limitSwitchLeft.get()){ // when the boolean is false, it senses
+        //     retractingSpeedMotorLeft = 0.0; //might need to switch sign
+        // }
+       
+        // if(!limitSwitchRight.get()){
+        //     retractingSpeedMotorRight = 0.0;
+        // }
+        lockDisengage();
         climbMotorLeft.set(retractingSpeedMotorLeft); //might need to switch sign
         climbMotorRight.set(-retractingSpeedMotorRight);
         

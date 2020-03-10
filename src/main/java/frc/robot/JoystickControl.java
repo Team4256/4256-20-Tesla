@@ -202,7 +202,8 @@ public class JoystickControl {
     public void ClimbingPeriodic() {
         climber.stopClimb();
         if (gunner.getRawButtonPressed(Xbox.BUTTON_Y)) {
-            climber.climberArmUp();
+            climber.climberArmUp(); 
+            climber.disngageLock(); 
         }
 
         if (gunner.getRawButtonPressed(Xbox.BUTTON_A)) {

@@ -56,6 +56,7 @@ public class Robot extends TimedRobot {
     gyro.reset();
     subsystems.setSwerveToZero();
     SmartDashboard.putNumber("ShooterSpeed", 0.0 );
+    climber.climberInit();
     
    // compress.start();
   }
