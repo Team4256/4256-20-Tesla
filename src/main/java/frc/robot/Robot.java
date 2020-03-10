@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
   private static final String port = "port";
   private static final String leftTrench = "left trench";
   private static final String rightTrench = "right trench";
-  private static final String crossLine = "cross white line";
+  private static final String middle = "middle";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static double gyroHeading = 0.0;
@@ -47,9 +47,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("cross white line", crossLine);
+    m_chooser.setDefaultOption("right trench", rightTrench);
     m_chooser.addOption("left trench", leftTrench);
-    m_chooser.addOption("right trench", rightTrench);
+    m_chooser.addOption("middle", middle);
     m_chooser.addOption("port", port);
     SmartDashboard.putData("Auto choices", m_chooser);
     gyro.setAngleAdjustment(Parameters.GYRO_OFFSET);
@@ -99,7 +99,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     
     m_autoSelected = m_chooser.getSelected();
-    m_autoSelected = SmartDashboard.getString("Auto Selector", crossLine );
+    m_autoSelected = SmartDashboard.getString("Auto Selector", rightTrench );
     System.out.println("Auto selected: " + m_autoSelected);
     auto.autoInit();
   }
@@ -110,22 +110,21 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     
-  //   switch (m_autoSelected) {
-  //   case port:
-  //     auto.mode2();
-  //     break;
-  //   case leftTrench:
-  //  // default:
-  //     auto.mode3();
-  //     break;
-  //     case rightTrench:
-  //     auto.mode1();
-  //     break;
-  //     case crossLine:
-  //     auto.mode4();
-  //     break;
-  // }  
+    switch (m_autoSelected) {
+    case rightTrench:
       auto.mode1();
+      break;
+    case leftTrench:
+      auto.mode2();
+      break;
+      case middle:
+      auto.mode3();
+      break;
+      case port:
+      auto.mode4();
+      break;
+  }  
+  
   swerve.completeLoopUpdate();
   }
 

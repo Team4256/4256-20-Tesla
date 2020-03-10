@@ -78,12 +78,11 @@ public class Auto {
 
     //for mode4 only 
     private boolean moveBack(double distance){
-      double distanceTravelled = swerve.getAverageIntegratedSensorPosition();
+      double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
       
       if(distanceTravelled < distance){
         swerve.faceTo(0.0);
         swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
-        swerve.setSpin(0.0);
         swerve.travelTowards(180.0);
         return false;
       }
@@ -157,7 +156,7 @@ public class Auto {
     // mode1: start from the right 
     //might take out the driving to ports function
     public void mode1(){
-      SmartDashboard.putNumber("distance travelled", swerve.getAverageIntegratedSensorPosition());
+      SmartDashboard.putNumber("distance travelled", Math.abs(swerve.getAverageIntegratedSensorPosition()));
       SmartDashboard.putNumber("timer", stopWatch.getElapsedTime());
       SmartDashboard.putNumber("distance to target" , limelight.getDistanceToTarget());
       //SmartDashboard.putString("Autonomus phase","Phase 0");
@@ -166,7 +165,7 @@ public class Auto {
         shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED_CLOSE);
       }
       if(phase1 == PhaseStates.STARTED){
-        if(shooter.isSpunUp()){//need to be changed 
+        if(true||shooter.isSpunUp()){//need to be changed 
           phase1 = PhaseStates.ENDED; 
         }
        else{
@@ -195,7 +194,7 @@ public class Auto {
         if(phase3 == PhaseStates.STARTED){
           swerve.faceTo(0.0); //make sure this is right 
           shooter.stopHopper();
-          if(stopWatch.getElapsedTime() > 2){
+          if(stopWatch.getElapsedTime() > 0.5){
             phase3 = PhaseStates.ENDED;
           }
           else {
@@ -217,7 +216,6 @@ public class Auto {
         else {
           swerve.faceTo(0.0);
           swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
-          //swerve.setSpin(0.0);
           swerve.travelTowards(180);
           SmartDashboard.putString("Autonomus phase","Phase 4");
           return;
@@ -265,35 +263,45 @@ public class Auto {
     
     // mode2: start in front of the ports
     public void mode2(){
+      SmartDashboard.putNumber("distance travelled", Math.abs(swerve.getAverageIntegratedSensorPosition()));
+      SmartDashboard.putNumber("timer", stopWatch.getElapsedTime());
+      SmartDashboard.putNumber("distance to target" , limelight.getDistanceToTarget());
       if(phase1 == PhaseStates.NOT_SARTED){ // Starts the shooter motors
         phase1 = PhaseStates.STARTED;
-        intake.succ();
+        //intake.succ();
       }
       if(phase1 == PhaseStates.STARTED){
-        moveBack(Parameters.MOVE_BACK_LEFT_TRENCH_DISTANCE_IN_INCHES);
-        phase1 = PhaseStates.ENDED; 
-        SmartDashboard.putString("Autonomus phase","Phase 1");
+        double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
+        if(distanceTravelled> Parameters.MOVE_BACK_LEFT_TRENCH_DISTANCE_IN_INCHES){
+          swerve.setSpeed(0.0);
+          phase1 = PhaseStates.ENDED; 
+        }
+        else{
+          moveBack(Parameters.MOVE_BACK_LEFT_TRENCH_DISTANCE_IN_INCHES);
+          SmartDashboard.putString("Autonomus phase","Phase 1");
+          return;
+        }
+       
       }
       
       if(phase2 == PhaseStates.NOT_SARTED){ // Aligns and shoots pre loaded power cells
         phase2 = PhaseStates.STARTED;
         stopWatch.resetTimer();
-        //shooter.spinStirrerMotors();
-        shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED_CLOSE);
+        swerve.resetEncoderPosition();
+        // shooter.spinHopperMotors();
+        // shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED_CLOSE);
       }
       if(phase2 == PhaseStates.STARTED){
     
         double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
-        if(distanceTravelled < Parameters.MOVE_BACK_RIGHT_TRENCH_DISTANCE_IN_INCHES){
-          swerve.faceTo(45.0);
-          swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
-          swerve.setSpin(0.0);
+        if(distanceTravelled > Parameters.DRIVE_FROM_TRENCH_TO_PORT_MODE2){
+          swerve.setSpeed(0.0);
+          phase2 = PhaseStates.ENDED;
           
         }
         else {
-          swerve.setSpeed(0.0);
-          swerve.setSpin(0.0);
-          phase2 = PhaseStates.ENDED;
+          swerve.travelTowards(75.0);//make sure the angle is right
+          swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
           SmartDashboard.putString("Autonomus phase","Phase 2");
           return;
         }
@@ -301,6 +309,9 @@ public class Auto {
         if(phase3 == PhaseStates.NOT_SARTED){ // Turns towards target
           phase3 = PhaseStates.STARTED;
           stopWatch.resetTimer();
+          //swerve.faceTo(45.0);
+
+
         }
         if(phase3 == PhaseStates.STARTED){
           alignAndShoot(Parameters.SHOOTER_MOTOR_SPEED_CLOSE);
@@ -360,84 +371,67 @@ public class Auto {
     
 
     // mode3: start from the left
-    /*public void mode3(){
-      if(phase1 == PhaseStates.NOT_SARTED){ // Starts the shooter motors
-        phase1 = PhaseStates.STARTED;
-        shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED);
-      }
-      if(phase1 == PhaseStates.STARTED){
-        if(shooter.isSpunUp() == false){//need to be changed 
-          phase1 = PhaseStates.ENDED; 
+    public void mode3(){
+        SmartDashboard.putNumber("distance travelled", Math.abs(swerve.getAverageIntegratedSensorPosition()));
+        SmartDashboard.putNumber("timer", stopWatch.getElapsedTime());
+        SmartDashboard.putNumber("distance to target" , limelight.getDistanceToTarget());
+        if(phase1 == PhaseStates.NOT_SARTED){ // Starts the shooter motors
+          phase1 = PhaseStates.STARTED;
+          intake.succ();
         }
-       else{
-        SmartDashboard.putString("Autonomus phase","Phase 1");
-          return;
+        if(phase1 == PhaseStates.STARTED){
+          double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
+          if(distanceTravelled> Parameters.MOVE_BACK_LEFT_TRENCH_DISTANCE_IN_INCHES){
+            swerve.setSpeed(0.0);
+            phase1 = PhaseStates.ENDED; 
+          }
+          else{
+            moveBack(Parameters.MOVE_BACK_LEFT_TRENCH_DISTANCE_IN_INCHES);
+            SmartDashboard.putString("Autonomus phase","Phase 1");
+            return;
+          }
+         
         }
-      }
-      if(phase2 == PhaseStates.NOT_SARTED){ // Aligns and shoots pre loaded power cells
-        phase2 = PhaseStates.STARTED;
-        stopWatch.resetTimer();
-      }
-      if(phase2 == PhaseStates.STARTED){
-        alignAndShoot();
-        if(stopWatch.getElapsedTime() > 2){
-          phase2 = PhaseStates.ENDED;
-        }
-        else {
-          SmartDashboard.putString("Autonomus phase","Phase 2");
-          return;
-        }
-      }
-        if(phase3 == PhaseStates.NOT_SARTED){ // Turns towards target
-          phase3 = PhaseStates.STARTED;
+        
+        if(phase2 == PhaseStates.NOT_SARTED){ // Aligns and shoots pre loaded power cells
+          phase2 = PhaseStates.STARTED;
           stopWatch.resetTimer();
+          swerve.resetEncoderPosition();
+          //shooter.spinStirrerMotors();
+          //shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED_CLOSE);
         }
-        if(phase3 == PhaseStates.STARTED){
-          swerve.faceTo(0);
-          if(stopWatch.getElapsedTime() > .5){
-            phase3 = PhaseStates.ENDED;
+        if(phase2 == PhaseStates.STARTED){
+      
+          double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
+          if(distanceTravelled > Parameters.DRIVE_FROM_TRENCH_TO_PORT_MODE2){
+            swerve.setSpeed(0.0);
+            phase2 = PhaseStates.ENDED;
+            
           }
           else {
-            SmartDashboard.putString("Autonomus phase","Phase 3");
+            swerve.travelTowards(45.0); //angle might be different
+            swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
+            SmartDashboard.putString("Autonomus phase","Phase 2");
             return;
-      }
-    }
-      if(phase4 == PhaseStates.NOT_SARTED){ // Drives to trench and intakes power cells
-        swerve.resetEncoderPosition();
-        phase4 = PhaseStates.STARTED;
-      }
-      if(phase4 == PhaseStates.STARTED){
-        intakae.succ();
-        double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
-      if(distanceTravelled >= 186){
-          phase4 = PhaseStates.ENDED;
-          swerve.setSpeed(0.0);
+          }
         }
-        else {
-          swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
-          swerve.setSpin(0.0);
-          swerve.travelTowards(180);
-          SmartDashboard.putString("Autonomus phase","Phase 4");
-          return;
-       } 
-      }
-       if(phase5 == PhaseStates.NOT_SARTED){ //Shoots previously gathered power cells
-        phase5 = PhaseStates.STARTED;
-        stopWatch.resetTimer();
-      }
-      if(phase5 == PhaseStates.STARTED){
-        alignAndShoot();
-        if(stopWatch.getElapsedTime() > 3){
-          phase5 = PhaseStates.ENDED;
-          shooter.stopShooterWheel();
-        }
-        else {
-          SmartDashboard.putString("Autonomus phase","Phase 5" );
-          return;
+          if(phase3 == PhaseStates.NOT_SARTED){ // Turns towards target
+            phase3 = PhaseStates.STARTED;
+            stopWatch.resetTimer();
+  
+          }
+          if(phase3 == PhaseStates.STARTED){
+            alignAndShoot(Parameters.SHOOTER_MOTOR_SPEED_CLOSE);
+            if(stopWatch.getElapsedTime() > 3){
+              phase3 = PhaseStates.ENDED;
+            }
+            else {
+              SmartDashboard.putString("Autonomus phase","Phase 3");
+              return;
         }
       }
-    }
-    */
+      }
+    
       // if(getBallsFromTrench(Parameters.DRIVE_TO_TRENCH_DISTANCE_IN_INCHES)){
       //   //if(drivingToPorts(Parameters.STARTING_DISTANCE_FROM_LEFT)){
       //     alignAndShoot();
@@ -445,8 +439,66 @@ public class Auto {
     //   }
     // }
 
-    // mode4: start 
+    // mode4: start right in front of the ports 
     public void mode4(){
+        SmartDashboard.putNumber("distance travelled", Math.abs(swerve.getAverageIntegratedSensorPosition()));
+        SmartDashboard.putNumber("timer", stopWatch.getElapsedTime());
+        SmartDashboard.putNumber("distance to target" , limelight.getDistanceToTarget());
+        if(phase1 == PhaseStates.NOT_SARTED){ // Starts the shooter motors
+          phase1 = PhaseStates.STARTED;
+          //intake.succ();
+        }
+        if(phase1 == PhaseStates.STARTED){
+          double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
+          if(distanceTravelled> Parameters.MOVE_BACK_LEFT_TRENCH_DISTANCE_IN_INCHES){
+            swerve.setSpeed(0.0);
+            phase1 = PhaseStates.ENDED; 
+          }
+          else{
+            moveBack(Parameters.MOVE_BACK_LEFT_TRENCH_DISTANCE_IN_INCHES);
+            SmartDashboard.putString("Autonomus phase","Phase 1");
+            return;
+          }
+         
+        }
+        
+        if(phase2 == PhaseStates.NOT_SARTED){ // Aligns and shoots pre loaded power cells
+          phase2 = PhaseStates.STARTED;
+          stopWatch.resetTimer();
+          swerve.resetEncoderPosition();
+          //shooter.spinStirrerMotors();
+          //shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED_CLOSE);
+        }
+        if(phase2 == PhaseStates.STARTED){
+      
+          double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
+          if(distanceTravelled > Parameters.DRIVE_FROM_TRENCH_TO_PORT_MODE2){
+            swerve.setSpeed(0.0);
+            phase2 = PhaseStates.ENDED;
+            
+          }
+          else {
+            swerve.travelTowards(45.0);
+            swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
+            SmartDashboard.putString("Autonomus phase","Phase 2");
+            return;
+          }
+        }
+          if(phase3 == PhaseStates.NOT_SARTED){ // Turns towards target
+            phase3 = PhaseStates.STARTED;
+            stopWatch.resetTimer();
+  
+          }
+          if(phase3 == PhaseStates.STARTED){
+            alignAndShoot(Parameters.SHOOTER_MOTOR_SPEED_CLOSE);
+            if(stopWatch.getElapsedTime() > 3){
+              phase3 = PhaseStates.ENDED;
+            }
+            else {
+              SmartDashboard.putString("Autonomus phase","Phase 3");
+              return;
+        }
+      }
       // if(crossWhiteLine()){
       //   moveBack();
        
@@ -476,6 +528,10 @@ public class Auto {
     //     alignAndShoot();
     //   }
       
+     }
+     public void mode5(){
+       swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
+       swerve.travelTowards(180.0);
      }
 
 }
