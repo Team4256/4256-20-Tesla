@@ -104,9 +104,9 @@ public class Parameters{
     //  * B (Swerve Number XX) MIN. VOL. = 0.01099, MAX. VOL. = 4.9255, TARE VOL. = 1.752
     //  * C (Swerve Number XX) MIN. VOL. = 0.009766, MAX. VOL. = 4.9219, TARE VOL. = 1.297
     //  * D (Swerve Number XX) MIN. VOL. = 0.01343, MAX. VOL. = 4.9243, TARE VOL. = 4.234
-            public static final double angleEncoderMinVoltage[] = {0.0183, 0.0292, 0.0073, 0.0170};
-            public static final double angleEncoderMaxVoltage[] = {4.9243, 4.9218, 4.9145, 4.9194};
-            public static final double angleEncoderTareVoltage[] = {3.527,2.863,2.382,1.335};
+            public static final double angleEncoderMinVoltage[] = {.008544921, .020751951, 0.01220703, 0.026855466};
+            public static final double angleEncoderMaxVoltage[] = {4.921874496, 4.921874496, 4.913329475000001, 4.887694812};
+            public static final double angleEncoderTareVoltage[] = {3.4790035500000003,2.34374976,2.3742673350000003,1.3415525970000002};
      
     // Aligner tolerances
 

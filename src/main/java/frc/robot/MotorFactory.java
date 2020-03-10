@@ -31,7 +31,7 @@ public class MotorFactory {
         if (rotationMotorType == MotorType.TALON) {
             boolean isDevIDLegal = deviceID > 14;
             
-            SmartDashboard.putBoolean("isDevIDLegal", isDevIDLegal);
+           // SmartDashboard.putBoolean("isDevIDLegal", isDevIDLegal);
             return new TalonFXFalcon(deviceID, NeutralMode.Brake, true, analogEncoderID);
 
         } else if (tractionMotorType == MotorType.NEO) {

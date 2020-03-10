@@ -17,6 +17,7 @@ public class JoystickControl {
     private Intake intake = Intake.getInstance();
     private Aligner aligner = Aligner.getInstance();
     private Shooter cellShooter = Shooter.getInstance();
+    
     // private Shooter cellShooter = new Shooter(aligner,
     // Parameters.SHOOTERMOTOR_L_ID, Parameters.SHOOTERMOTOR_R_ID,
     // Parameters.STIRRERMOTOR_ID, Parameters.FEEDERMOTOR_ID,

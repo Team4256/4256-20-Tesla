@@ -66,7 +66,7 @@ public class Shooter {
     currentHopperStates = HopperStates.OFF;
   }
   public void ShootAlign() {
-     currentShootingState = currentShootingState.SPINUP;
+     //currentShootingState = currentShootingState.SPINUP;
      currentHopperStates = currentHopperStates.SHOOTALIGN;
   }
   
@@ -152,7 +152,20 @@ currentHopperStates = currentHopperStates.ALIGN;
    * above a certain speed.
    * 
    */
+  public double getShooterRPM() {
+    double rpm = shooterMotor1.getSensorCollection().getIntegratedSensorVelocity();  
+    return rpm;
+  }
 
+  public boolean isAtTargetRPM(double targetRPM) {
+    double currentRPM = getShooterRPM();
+    if (currentRPM >= targetRPM) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
   public void spinShooterMotors(double speed) {
     
     if(previousShootingState != ShootingWheelStates.SPINUP){
