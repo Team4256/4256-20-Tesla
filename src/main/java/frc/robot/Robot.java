@@ -57,6 +57,10 @@ public class Robot extends TimedRobot {
     subsystems.setSwerveToZero();
     SmartDashboard.putNumber("ShooterSpeed", 0.0 );
     climber.climberInit();
+    climber.climberArmDown();
+    climber.engageLock();
+    
+
     
    // compress.start();
   }
@@ -78,6 +82,9 @@ public class Robot extends TimedRobot {
       SmartDashboard.putNumber("Gyro Heading", Robot.gyroHeading);
       swerve.completeLoopUpdate();
       StopWatch.getInstance().updateTimer(); 
+      
+      camera.setSplitView();
+
         // apollo.getEntry("Selected Starting Position").setString(autoModeChooser.getRawSelections()[0]);
         // apollo.getEntry("Desired Auto Mode").setString(autoModeChooser.getRawSelections()[1]);
         // apollo.getEntry("Has Ball Test").setBoolean(ballIntake.hasBall());
