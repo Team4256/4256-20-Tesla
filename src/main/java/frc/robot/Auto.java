@@ -483,9 +483,25 @@ public class Auto {
     //   }
       
      }
+
+     //moving back, not doing anything 
      public void mode5(){
-       swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
-       swerve.travelTowards(180.0);
+      if(phase1 == PhaseStates.STARTED){
+        
+        double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
+        if(distanceTravelled > Parameters.CROSS_WHITE_LINE_DISTANCE_IN_INCHES){
+          swerve.setSpeed(0.0);
+          phase2 = PhaseStates.ENDED;
+          
+        }
+        else {
+          swerve.faceTo(0.0);
+          swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
+          swerve.travelTowards(180.0);
+          SmartDashboard.putString("Autonomus phase","Phase 2");
+          return;
+        }
      }
+    }
 
 }
