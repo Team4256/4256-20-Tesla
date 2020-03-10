@@ -51,7 +51,7 @@ public class Parameters{
     public static final double CLIMBING_SPEED_LOW = 0.2;
     // add motors for arm going up and down
     public static final int R_CLIMBER_MOTOR_ID = 29; //Climber Motor right
-    public static final int L_CLIMBER_MOTOR_ID = 28; //Climber Motor RIGHT
+    public static final int L_CLIMBER_MOTOR_ID = 28; //Climber Motor left
     //need actual encoder values, from engineering team
     public static double MED_HEIGHT_COUNT = 10;
     public static double MAX_HEIGHT_COUNT = 10;
