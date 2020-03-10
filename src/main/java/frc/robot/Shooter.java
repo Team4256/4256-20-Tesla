@@ -40,7 +40,7 @@ public class Shooter {
     SPINUP, OFF
   }
   public enum HopperStates {
-    SHOOTALIGN, SHOOTUNALIGNED, OFF
+    ALIGN, SHOOTALIGN, SHOOTUNALIGNED, REVERSE, OFF
   }
 
   private ShootingWheelStates currentShootingState = ShootingWheelStates.OFF;
@@ -66,8 +66,15 @@ public class Shooter {
     currentHopperStates = HopperStates.OFF;
   }
   public void ShootAlign() {
-     //currentShootingState = currentShootingState.SPINUP;
+     currentShootingState = currentShootingState.SPINUP;
      currentHopperStates = currentHopperStates.SHOOTALIGN;
+  }
+  
+  public void ReverseHopper() {
+    currentHopperStates = currentHopperStates.REVERSE;
+  }
+  public void Align(){
+currentHopperStates = currentHopperStates.ALIGN;
   }
 
   public void shroudToggle() {
@@ -126,6 +133,11 @@ public class Shooter {
   case SHOOTUNALIGNED:
     spinHopperMotors();
     break;
+    case ALIGN:
+    shooterAligner.alignRobotToTarget();
+    break;
+    case REVERSE:
+    reverseHopper();
   case OFF:
     stopHopper();
     break;
@@ -159,16 +171,21 @@ public class Shooter {
     feederMotor.set(ControlMode.PercentOutput, Parameters.FEEDER_STIRRER_MOTOR_SPEED);
   }
 
+  public void reverseHopper () {
+    stirrerMotor.set(ControlMode.PercentOutput, -Parameters.STIRRER_MOTOR_SPEED);
+    feederMotor.set(ControlMode.PercentOutput, -Parameters.FEEDER_STIRRER_MOTOR_SPEED);
+  }
+
   // public void stopStirrerMotors() {
   //   stirrerMotor.quickSet(0.0);
   // }
 
-  public void shootAlign( double shooterSpeed) {
+  public void shootAlign(double shooterSpeed) {
       shooterAligner.alignRobotToTarget();
-      // if (shooterAligner.getIsAtTarget(3)) {
-      //   spinShooterMotors(shooterSpeed);
-      //   spinHopperMotors();
-      // }
+      if (shooterAligner.getIsAtTarget(3)) {
+        spinShooterMotors(shooterSpeed);
+        spinHopperMotors();
+      }
   }
 
   public void shootUnAligned() {
