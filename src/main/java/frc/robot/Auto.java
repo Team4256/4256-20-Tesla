@@ -54,9 +54,9 @@ public class Auto {
     private boolean crossWhiteLine(){
       double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
       
-      SmartDashboard.putNumber("distance travelled", distanceTravelled);
+      //SmartDashboard.putNumber("distance travelled", distanceTravelled);
       
-      if(distanceTravelled < Parameters.CROSS_WHITE_LINE_DISTANCE_IN_INCHES) {
+      if(distanceTravelled < Parameters.CROSS_WHITE_LINE_DISTANCE_IN_INCHES_MODE_6) {
         swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
         swerve.travelTowards(180);
         return false;
@@ -416,7 +416,7 @@ public class Auto {
         }
         if(phase1 == PhaseStates.STARTED){
          
-          if(stopWatch.getElapsedTime() > 3){
+          if(stopWatch.getElapsedTime() > 5){
             swerve.setSpeed(0.0);
             shooter.stopHopper();
             shooter.stopShooterWheel();
@@ -439,7 +439,7 @@ public class Auto {
         if(phase2 == PhaseStates.STARTED){
           
           double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
-          if(distanceTravelled > Parameters.CROSS_WHITE_LINE_DISTANCE_IN_INCHES){
+          if(distanceTravelled > Parameters.DRIVE_BACK_MODE_4_AND_5){
             swerve.setSpeed(0.0);
             phase2 = PhaseStates.ENDED;
             
@@ -487,21 +487,27 @@ public class Auto {
      //moving back, not doing anything 
      public void mode5(){
       if(phase1 == PhaseStates.STARTED){
-        
+        swerve.resetEncoderPosition();
         double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
-        if(distanceTravelled > Parameters.CROSS_WHITE_LINE_DISTANCE_IN_INCHES){
+        SmartDashboard.putNumber("distance travelled", distanceTravelled);
+        if(distanceTravelled > Parameters.DRIVE_BACK_MODE_4_AND_5){
           swerve.setSpeed(0.0);
           phase2 = PhaseStates.ENDED;
           
         }
         else {
-          swerve.faceTo(0.0);
+          
           swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
           swerve.travelTowards(180.0);
-          SmartDashboard.putString("Autonomus phase","Phase 2");
+          SmartDashboard.putString("Autonomus phase","Phase 1");
           return;
         }
      }
+    }
+
+    public void mode6(){
+      swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
+      swerve.travelTowards(180.0);
     }
 
 }
