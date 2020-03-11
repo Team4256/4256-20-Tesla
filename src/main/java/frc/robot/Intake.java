@@ -20,7 +20,8 @@ public class Intake {
 		}
 			return instance;
 		
-	}
+    }
+    
     public void succ() {
         intakeMotor.set(ControlMode.PercentOutput, -Parameters.INTAKE_SUCC_MOTOR );
     }
