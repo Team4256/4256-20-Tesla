@@ -101,8 +101,8 @@ public class ClimbingControl {
             break;
         }
         
-        SmartDashboard.putBoolean("limit switch left", limitSwitchLeft.get());
-        SmartDashboard.putBoolean("limit switch right", limitSwitchRight.get());
+        // SmartDashboard.putBoolean("limit switch left", limitSwitchLeft.get());
+        // SmartDashboard.putBoolean("limit switch right", limitSwitchRight.get());
 
     }
 

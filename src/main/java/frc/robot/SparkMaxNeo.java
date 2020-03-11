@@ -171,7 +171,7 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
         while (encoderPosition < -180) {
             encoderPosition += 360;
         }
-        SmartDashboard.putNumber("encoder position", encoderPosition);
+        //SmartDashboard.putNumber("encoder position", encoderPosition);
 
         if (Math.abs(targetAngle - encoderPosition) < 2) {
             super.set(0.);
@@ -187,7 +187,7 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
         }
 
         super.set(percentSpeed);
-        SmartDashboard.putNumber("Percent Output", percentSpeed);
+        //SmartDashboard.putNumber("Percent Output", percentSpeed);
     }
     public void completeLoopUpdate() {
         if (!updated) {

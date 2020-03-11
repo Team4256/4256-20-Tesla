@@ -53,7 +53,7 @@ public class Aligner {
     public void alignRobotToTarget(){
         //camera.turnLEDOn();
             swerveSystem.setSpin(getOrientationCommand());
-        SmartDashboard.putNumber("Offset", camera.putTxToDashboard());
+        //SmartDashboard.putNumber("Offset", camera.putTxToDashboard());
         
     }
 
