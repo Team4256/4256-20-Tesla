@@ -4,7 +4,9 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -91,7 +93,12 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
         angleEncoder.setDistancePerRotation(360);
 
+        SupplyCurrentLimitConfiguration limit = new SupplyCurrentLimitConfiguration(true, 30, 45, 100);
         
+        configSupplyCurrentLimit(limit);
+        // enableVoltageCompensation(true);
+
+        // configVoltageCompSaturation(40);
 
     }
 
@@ -177,25 +184,25 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     public void setSpeed(final double inputPercentageSpeed) {
 
        
-        double motorSpeed = getSensorCollection().getIntegratedSensorVelocity();
-        double expectedSpeed = inputPercentageSpeed*Parameters.FALCON_PERCENT_TO_ENCODER_SPEED;
-        double adjustmentToSpeedAdjustment = falconVelocityPID.calculate(motorSpeed, expectedSpeed);
+        // double motorSpeed = getSensorCollection().getIntegratedSensorVelocity();
+        // double expectedSpeed = inputPercentageSpeed*Parameters.FALCON_PERCENT_TO_ENCODER_SPEED;
+        // double adjustmentToSpeedAdjustment = falconVelocityPID.calculate(motorSpeed, expectedSpeed);
 
-        adjustmentToSpeedAdjustment = Math.abs(adjustmentToSpeedAdjustment) <=0.01 ? adjustmentToSpeedAdjustment: Math.signum(adjustmentToSpeedAdjustment )*0.01;
-        tractionSppeedAdjustment += adjustmentToSpeedAdjustment;
+        // adjustmentToSpeedAdjustment = Math.abs(adjustmentToSpeedAdjustment) <=0.01 ? adjustmentToSpeedAdjustment: Math.signum(adjustmentToSpeedAdjustment )*0.01;
+        // tractionSppeedAdjustment += adjustmentToSpeedAdjustment;
 
-        tractionSppeedAdjustment = Math.abs(tractionSppeedAdjustment) <=0.01 ? tractionSppeedAdjustment: Math.signum(tractionSppeedAdjustment )*0.01;
+        // tractionSppeedAdjustment = Math.abs(tractionSppeedAdjustment) <=0.01 ? tractionSppeedAdjustment: Math.signum(tractionSppeedAdjustment )*0.01;
 
-        if(getDeviceID() == 21){
-            SmartDashboard.putNumber("Speed adjustment", tractionSppeedAdjustment);
-            SmartDashboard.putNumber("Adjustment to Speed adjustment", adjustmentToSpeedAdjustment);
-            SmartDashboard.putNumber("input percentage speed", inputPercentageSpeed);
-            SmartDashboard.putNumber("motor speed", motorSpeed);
-            SmartDashboard.putNumber("expected speed", expectedSpeed);
-        }
+        // if(getDeviceID() == 21){
+        //     SmartDashboard.putNumber("Speed adjustment", tractionSppeedAdjustment);
+        //     SmartDashboard.putNumber("Adjustment to Speed adjustment", adjustmentToSpeedAdjustment);
+        //     SmartDashboard.putNumber("input percentage speed", inputPercentageSpeed);
+        //     SmartDashboard.putNumber("motor speed", motorSpeed);
+        //     SmartDashboard.putNumber("expected speed", expectedSpeed);
+        // }
 
-        double adjustedPercentageSpeed = inputPercentageSpeed + tractionSppeedAdjustment;
-       // adjustedPercentageSpeed = inputPercentageSpeed;
+        double adjustedPercentageSpeed = inputPercentageSpeed;
+        //adjustedPercentageSpeed = inputPercentageSpeed;
         
         super.set(adjustedPercentageSpeed);
         lastSetpoint = adjustedPercentageSpeed;

@@ -88,6 +88,10 @@ public class ClimbingControl {
 
 
     public void periodic(){
+        double leftEncoderPosition = climbMotorLeft.getSensorCollection().getIntegratedSensorPosition();
+        double rightEncoderPosition = climbMotorRight.getSensorCollection().getIntegratedSensorPosition(); 
+        SmartDashboard.putNumber("leftEncoderPosition", leftEncoderPosition);
+        SmartDashboard.putNumber("RightEncoderPosition", rightEncoderPosition);
         switch(currentState){
     
             case EXTENDPOLES:
@@ -101,8 +105,7 @@ public class ClimbingControl {
             break;
         }
         
-        // SmartDashboard.putBoolean("limit switch left", limitSwitchLeft.get());
-        // SmartDashboard.putBoolean("limit switch right", limitSwitchRight.get());
+        
 
     }
 
@@ -167,18 +170,18 @@ public class ClimbingControl {
     public void retractPoles() {
         double leftEncoderPosition = climbMotorLeft.getSensorCollection().getIntegratedSensorPosition();
         double rightEncoderPosition = climbMotorRight.getSensorCollection().getIntegratedSensorPosition(); 
+       
         if(leftEncoderPosition <= 0){
             retractingSpeedMotorLeft = 0.0;
         }
         if(rightEncoderPosition <= 0){
             retractingSpeedMotorRight = 0.0;
         }
-        SmartDashboard.putNumber("leftEncoderPosition", leftEncoderPosition);
-        SmartDashboard.putNumber("RightEncoderPosition", rightEncoderPosition);
+        
         // if(!limitSwitchLeft.get()){ // when the boolean is false, it senses
         //     retractingSpeedMotorLeft = 0.0; //might need to switch sign
         // }
-       
+        
         // if(!limitSwitchRight.get()){
         //     retractingSpeedMotorRight = 0.0;
         // }
@@ -188,7 +191,6 @@ public class ClimbingControl {
         
     }
     
-
     public void lockEngage() {
         climberLock.set(DoubleSolenoid.Value.kForward);
     }

@@ -30,6 +30,8 @@ public class Xbox extends XboxController {
 	DPAD_SOUTH_WEST = 225,
 	DPAD_WEST = 270,
 	DPAD_NORTH_WEST = 315;
+	boolean wasTriggerPressed[] ={false, false}; 
+	
 
 	public static final int[]
 	STICK_LEFT = new int[] {AXIS_LEFT_X, AXIS_LEFT_Y},
@@ -106,7 +108,20 @@ public class Xbox extends XboxController {
 		}return recent;
 	}
 	
-	
+	public boolean isTriggerPressed (final int axis) {
+		if (getDeadbandedAxis(axis) > .5) {
+			if (wasTriggerPressed[axis - 2]) {
+				return false;
+			} else {
+				wasTriggerPressed[axis -2] = true;
+				return true;
+			}
+		} else {
+			wasTriggerPressed[axis - 2] = false;
+			return false;
+		}
+
+	}
 	/**
 	 * This function returns the time at which the specified button was last pressed.
 	**/

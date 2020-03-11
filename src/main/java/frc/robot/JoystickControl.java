@@ -17,6 +17,7 @@ public class JoystickControl {
     private Intake intake = Intake.getInstance();
     private Aligner aligner = Aligner.getInstance();
     private Shooter cellShooter = Shooter.getInstance();
+    private Limelight camera = Limelight.getInstance();
     
     // private Shooter cellShooter = new Shooter(aligner,
     // Parameters.SHOOTERMOTOR_L_ID, Parameters.SHOOTERMOTOR_R_ID,
@@ -98,7 +99,7 @@ public class JoystickControl {
             if (driver.getRawButtonPressed(Xbox.BUTTON_START)) {
                 swerve.faceTo(90); // gyro align to a position set in the parameters of this method
             }
-
+            SmartDashboard.putNumber("dist. to target", camera.getDistanceToTarget());
             aligner.camera.turnLEDOn();
             // if (driver.getRawButtonPressed(Xbox.BUTTON_X)) {
             //     cellShooter.ShootAlign();
@@ -158,7 +159,7 @@ public class JoystickControl {
             
         }
 
-        if (gunner.getDeadbandedAxis(Xbox.AXIS_LT) > .5 ) {  // Toggle
+        if (gunner.isTriggerPressed(Xbox.AXIS_LT) ) {  // Toggle
             cellShooter.SpinShooterPrep();
             //aligner.alignRobotToTarget();
         } 
