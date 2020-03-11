@@ -59,6 +59,7 @@ public class Robot extends TimedRobot {
     climber.climberInit();
     climber.climberArmDown();
     climber.engageLock();
+    climber.climberInit();
     
 
     
@@ -84,6 +85,7 @@ public class Robot extends TimedRobot {
       StopWatch.getInstance().updateTimer(); 
       
       camera.setSplitView();
+      
 
         // apollo.getEntry("Selected Starting Position").setString(autoModeChooser.getRawSelections()[0]);
         // apollo.getEntry("Desired Auto Mode").setString(autoModeChooser.getRawSelections()[1]);
