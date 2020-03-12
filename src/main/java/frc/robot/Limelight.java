@@ -103,7 +103,9 @@ public class Limelight {
      * Forces the LED off.
      */
     public synchronized void turnLEDOff() {
-        setLEDMode(LedMode.FORCE_OFF);
+        //setLEDMode(LedMode.FORCE_OFF);
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+        
     }
 
     /**

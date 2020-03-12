@@ -83,7 +83,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-      camera.turnLEDOn();
       subsystems.displaySwerveAngles();
       updateGyroHeading();
       SmartDashboard.putNumber("Gyro Heading", Robot.gyroHeading);
@@ -153,7 +152,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    camera.turnLEDOn();
     table.getEntry("pipeline").setNumber(1);
     NetworkTableEntry tx = table.getEntry("tx");
     NetworkTableEntry ty = table.getEntry("ty");
@@ -176,8 +174,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-    
-    camera.turnLEDOn();
     // camera.updateVisionTracking2();
     // camera.setCamMode(CamMode.VISION);
   }

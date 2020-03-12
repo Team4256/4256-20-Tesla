@@ -47,6 +47,7 @@ public class Shooter {
   private ShootingWheelStates currentShootingState = ShootingWheelStates.OFF;
   private HopperStates currentHopperStates = HopperStates.OFF;
   private Aligner shooterAligner;
+  private Limelight limelight;
 
   // Constructor
   public void ShootNoAlign() {
@@ -87,8 +88,10 @@ currentHopperStates = currentHopperStates.ALIGN;
   
   public void SpinShooterPrep() {
     if (currentShootingState == ShootingWheelStates.SPINUP) {
+      //limelight.turnLEDOff();
       currentShootingState = ShootingWheelStates.OFF;
     } else {
+     // limelight.turnLEDOn();
       currentShootingState = ShootingWheelStates.SPINUP;
     }
   }
@@ -101,6 +104,7 @@ currentHopperStates = currentHopperStates.ALIGN;
     feederMotor = new TalonSRX(feederMotorID);
     shroudSolenoid = new DoubleSolenoid(shroudReverseChannel, shroudForwardChannel);
     shooterAligner = Aligner.getInstance();
+    limelight = Limelight.getInstance();
       }
 
   // shooterMotorEncoder1 = new CANEncoder(shooterMotor1);
@@ -173,8 +177,12 @@ currentHopperStates = currentHopperStates.ALIGN;
   public void spinShooterMotors(double speed) {
     
     if(previousShootingState != ShootingWheelStates.SPINUP){
+      limelight.turnLEDOff();
       previousEncoderVelocity = 0.0;
       currentEncoderVelocity = 0.0;
+    }
+    else{
+      limelight.turnLEDOn();
     }
     shooterMotor1.set(TalonFXControlMode.PercentOutput, speed);
     shooterMotor2.set(TalonFXControlMode.PercentOutput, speed);
@@ -259,6 +267,7 @@ currentHopperStates = currentHopperStates.ALIGN;
   // }
   // }
   public void stopShooterWheel() {
+    limelight.turnLEDOff();
     shooterMotor1.set(0.0);
     shooterMotor2.set(0.0);
   }
