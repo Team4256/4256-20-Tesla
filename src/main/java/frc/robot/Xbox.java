@@ -117,11 +117,24 @@ public class Xbox extends XboxController {
 				return true;
 			}
 		} else {
-			wasTriggerPressed[axis - 2] = false;
 			return false;
 		}
-
 	}
+
+		public boolean isTriggerReleased(final int axis) {
+			if (getDeadbandedAxis(axis) > .5) {
+				if (!wasTriggerPressed[axis - 2]) {
+					return false;
+				} else {
+					wasTriggerPressed[axis -2] = false;
+					return true;
+				}
+			} else {
+				return false;
+			}
+	
+		}
+	
 	/**
 	 * This function returns the time at which the specified button was last pressed.
 	**/
