@@ -181,9 +181,10 @@ public class JoystickControl {
 
     // Intake Periodic
     public void intakePeriodic() {
-        if (driver.getAxisPress(Xbox.AXIS_LT, .5)) {
+        if (driver.isTriggerPressed(Xbox.AXIS_LT)) {
             intake.succ();
-        } else {
+        }
+        if(driver.isTriggerReleased(Xbox.AXIS_LT)){
             intake.stop(); 
         }
         // if (!driver.getAxisPress(Xbox.AXIS_LT, 5)) {
@@ -197,7 +198,7 @@ public class JoystickControl {
         }
         if (driver.getRawButtonPressed(Xbox.BUTTON_A)) {
             intake.intakeDown();
-            
+        
         }
         if (driver.getRawButtonReleased(Xbox.BUTTON_Y)) {
             intake.intakeUp();
