@@ -154,7 +154,9 @@ public class JoystickControl {
             cellShooter.ShootAlign();
             //aligner.alignRobotToTarget();
         } else {
+            if(cellShooter.getcurrentHopperStates() == Shooter.HopperStates.SHOOTALIGN)            
             cellShooter.stopHOPPER();
+            
         }
 
         if (gunner.isTriggerPressed(Xbox.AXIS_LT) ) {  // Toggle
@@ -163,6 +165,7 @@ public class JoystickControl {
         } 
         
         if (gunner.getRawButtonPressed(Xbox.BUTTON_LB)) {  //Hold and release
+    
             cellShooter.ReverseHopper();
         }
         if (gunner.getRawButtonReleased(Xbox.BUTTON_LB)) {
@@ -206,6 +209,7 @@ public class JoystickControl {
         if (gunner.getRawButtonPressed(Xbox.BUTTON_Y)) {
             climber.climberArmUp(); 
             climber.disngageLock(); 
+
         }
 
         if (gunner.getRawButtonPressed(Xbox.BUTTON_A)) {

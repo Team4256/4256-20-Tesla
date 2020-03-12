@@ -26,6 +26,7 @@ public class Robot extends TimedRobot {
   private static final String leftTrench = "left trench";
   private static final String rightTrench = "right trench";
   private static final String middle = "middle";
+  private static final String backUp = "backUp";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static double gyroHeading = 0.0;
@@ -53,6 +54,7 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("left trench", leftTrench);
     m_chooser.addOption("middle", middle);
     m_chooser.addOption("port", port);
+    m_chooser.addOption("backUp", backUp);
     SmartDashboard.putData("Auto choices", m_chooser);
     gyro.setAngleAdjustment(Parameters.GYRO_OFFSET);
     gyro.reset();
@@ -112,8 +114,8 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     SmartDashboard.updateValues();
     m_autoSelected = m_chooser.getSelected();
-    m_autoSelected = SmartDashboard.getString("Auto Selector", rightTrench );
-    System.out.println("Auto selected: " + m_autoSelected);
+    //m_autoSelected = SmartDashboard.getString("Auto Selector", rightTrench );
+    SmartDashboard.putString("Auto selected: ", m_autoSelected);
     auto.autoInit();
   }
 
@@ -136,8 +138,12 @@ public class Robot extends TimedRobot {
       case port:
       auto.mode4();
       break;
+      case backUp:
+      auto.mode5();
+      break;
   }  
   //auto.mode1();
+  //auto.mode6();
   
   swerve.completeLoopUpdate();
   }

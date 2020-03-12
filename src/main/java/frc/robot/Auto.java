@@ -54,9 +54,9 @@ public class Auto {
     private boolean crossWhiteLine(){
       double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
       
-      SmartDashboard.putNumber("distance travelled", distanceTravelled);
+      //SmartDashboard.putNumber("distance travelled", distanceTravelled);
       
-      if(distanceTravelled < Parameters.CROSS_WHITE_LINE_DISTANCE_IN_INCHES) {
+      if(distanceTravelled < Parameters.CROSS_WHITE_LINE_DISTANCE_IN_INCHES_MODE_6) {
         swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
         swerve.travelTowards(180);
         return false;
@@ -452,7 +452,7 @@ public class Auto {
         if(phase3 == PhaseStates.STARTED){
           
           double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
-          if(distanceTravelled > Parameters.CROSS_WHITE_LINE_DISTANCE_IN_INCHES){
+          if(distanceTravelled > Parameters.DRIVE_BACK_MODE_4_AND_5){
             swerve.setSpeed(0.0);
             phase3 = PhaseStates.ENDED;
             
@@ -539,5 +539,10 @@ public class Auto {
     }
   }
 }
+
+    public void mode6(){
+      swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
+      swerve.travelTowards(180.0);
+    }
 
 }

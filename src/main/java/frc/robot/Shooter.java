@@ -33,6 +33,7 @@ public class Shooter {
   private HopperStates previousHopperState = HopperStates.OFF;
   private double previousEncoderVelocity;
   private double currentEncoderVelocity;
+  
 
   
 
@@ -60,6 +61,9 @@ public class Shooter {
     
     // currentHopperStates = HopperStates.SHOOTUNALIGNED; 
     // //currentShootingState = ShootingWheelStates.SPINUP;
+  }
+  public HopperStates getcurrentHopperStates(){
+    return currentHopperStates;
   }
 
   public void stopHOPPER () {

@@ -124,10 +124,10 @@ public final class D_Swerve implements Drivetrain {
 
 		if (!bad && isThere(10.0)) {
 			final double[] speeds_final = computeSpeeds(comps_desired);
-			SmartDashboard.putNumber("speedCommand A", speeds_final[0]);
-			SmartDashboard.putNumber("speedCommandB", speeds_final[1]);
-			SmartDashboard.putNumber("speedCommandC", speeds_final[2]);
-			SmartDashboard.putNumber("speedCommandD", speeds_final[3]);
+			// SmartDashboard.putNumber("speedCommand A", speeds_final[0]);
+			// SmartDashboard.putNumber("speedCommandB", speeds_final[1]);
+			// SmartDashboard.putNumber("speedCommandC", speeds_final[2]);
+			// SmartDashboard.putNumber("speedCommandD", speeds_final[3]);
 			for (int i = 0; i < 4; i++)
 				modules[i].set(speeds_final[i]);// control traction if good and there
 		} else

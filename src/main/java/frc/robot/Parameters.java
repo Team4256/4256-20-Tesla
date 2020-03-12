@@ -14,7 +14,7 @@ public class Parameters{
     public static final double MOVE_BACK_RIGHT_TRENCH_DISTANCE_IN_INCHES = 136; //TODO get the actual DISTANCE
     public static final double MOVE_BACK_LEFT_TRENCH_DISTANCE_IN_INCHES = 80; //TODO get the actual DISTANCE mode 4 only after crossing the white line
     public static final double DRIVE_FROM_TRENCH_TO_PORT_MODE2 = 100; //TODO get the actual DISTANCE
-    public static final double DRIVE_BACK_MODE_5 = 30; //TODO get the actual DISTANCE
+    public static final double DRIVE_BACK_MODE_4_AND_5 = 70; //TODO get the actual DISTANCE
     //public static final double STARTING_DISTANCE_FROM_LEFT_IN_INCHES = 0; //TODO get the actual DISTANCE
 
     
@@ -95,9 +95,9 @@ public class Parameters{
     // public static final double angleEncoderTareVoltage[] = {3.5864,2.8491,2.3742,1.3354};//Swerve Number(A,B,C,D): PRACTICE 
     
     // PRACTICE ROBOT
-    // public static final double angleEncoderMinVoltage[] = { 0.00366, 0.01099, 0.009766,  0.01343};
-    // public static final double angleEncoderMaxVoltage[] = {4.9133, 4.9255, 4.9219, 4.9243};
-    // public static final double angleEncoderTareVoltage[] = {4.155,1.752,1.297, 4.234};//Swerve Number(A,B,C,D): PRACTICE 
+    public static final double angleEncoderMinVoltage[] = { 0.00366, 0.01099, 0.009766,  0.01343};
+    public static final double angleEncoderMaxVoltage[] = {4.9133, 4.9255, 4.9219, 4.9243};
+    public static final double angleEncoderTareVoltage[] = {4.155,1.752,1.297, 4.234};//Swerve Number(A,B,C,D): PRACTICE 
     // PRACTICE BOT
     //  * A (Swerve Number XX) MIN. VOL. = 0.00366, MAX. VOL. = 4.9133, TARE VOL. = 4.155
     //  * B (Swerve Number XX) MIN. VOL. = 0.01099, MAX. VOL. = 4.9255, TARE VOL. = 1.752
@@ -110,9 +110,9 @@ public class Parameters{
             // public static final double angleEncoderTareVoltage[] = {3.527,2.863,2.382,1.335};
 
             //COMPETITION ROBOT
-            public static final double angleEncoderMinVoltage[] = {.008544921, .020751951, 0.01220703, 0.026855466};
-            public static final double angleEncoderMaxVoltage[] = {4.921874496, 4.921874496, 4.913329475000001, 4.887694812};
-            public static final double angleEncoderTareVoltage[] = {3.4790035500000003,2.34374976,2.3742673350000003,1.3415525970000002};
+            // public static final double angleEncoderMinVoltage[] = {.008544921, .020751951, 0.01220703, 0.026855466};
+            // public static final double angleEncoderMaxVoltage[] = {4.921874496, 4.921874496, 4.913329475000001, 4.887694812};
+            // public static final double angleEncoderTareVoltage[] = {3.4790035500000003,2.34374976,2.3742673350000003,1.3415525970000002};
      
     // Aligner tolerances
 
