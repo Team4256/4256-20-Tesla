@@ -56,7 +56,7 @@ public class Auto {
       
       //SmartDashboard.putNumber("distance travelled", distanceTravelled);
       
-      if(distanceTravelled < Parameters.CROSS_WHITE_LINE_DISTANCE_IN_INCHES_MODE_6) {
+      if(distanceTravelled < Parameters.CROSS_WHITE_LINE_DISTANCE_IN_INCHES) {
         swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
         swerve.travelTowards(180);
         return false;
