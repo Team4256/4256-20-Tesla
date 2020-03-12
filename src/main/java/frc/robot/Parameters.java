@@ -10,8 +10,8 @@ public class Parameters{
     //Automomous
     public static final double AUTO_SWERVE_TRACTION_SPEED = 0.2; //TODO get the actual speed
     public static final double FALCON_PERCENT_TO_ENCODER_SPEED = 18000; //TODO get the actual speed
-    public static final double CROSS_WHITE_LINE_DISTANCE_IN_INCHES_MODE_6 = 200; //TODO get the actual DISTANCE
-    public static final double MOVE_BACK_RIGHT_TRENCH_DISTANCE_IN_INCHES = 140; //TODO get the actual DISTANCE
+    public static final double CROSS_WHITE_LINE_DISTANCE_IN_INCHES = 15; //TODO get the actual DISTANCE
+    public static final double MOVE_BACK_RIGHT_TRENCH_DISTANCE_IN_INCHES = 136; //TODO get the actual DISTANCE
     public static final double MOVE_BACK_LEFT_TRENCH_DISTANCE_IN_INCHES = 80; //TODO get the actual DISTANCE mode 4 only after crossing the white line
     public static final double DRIVE_FROM_TRENCH_TO_PORT_MODE2 = 100; //TODO get the actual DISTANCE
     public static final double DRIVE_BACK_MODE_4_AND_5 = 70; //TODO get the actual DISTANCE
@@ -64,7 +64,7 @@ public class Parameters{
     public static final int SUCCMOTOR_ID = 16; //Intake Motor
     public static final int INTAKE_FORWARD_CHANNEL = 0;//TODO need to get the real channel ID
     public static final double INTAKE_SUCC_MOTOR = 0.4;//TODO need to get the actual channel ID
-    public static final double INTAKE_MOTOR_SPEED = 0.4;
+    public static final double INTAKE_OUTAKE_SPEED = 0.4;
     public static final int INTAKE_REVERSE_CHANNEL = 1; //TODO get the actual intake motor speed 
 
     //shooter
@@ -74,8 +74,8 @@ public class Parameters{
     public static final int FEEDERMOTOR_ID = 17;
     public static final int SHROUD_DOWN_CHANNEL = 3;
     public static final int SHROUD_UP_CHANNEL = 2;
-    public static double SHOOTER_MOTOR_SPEED_CLOSE = 1.0;
-    public static double SHOOTER_MOTOR_SPEED_FAR = 0.85;
+    public static double SHOOTER_MOTOR_SPEED_CLOSE = 0.9;
+    public static double SHOOTER_MOTOR_SPEED_FAR = 0.80;
 
     public static double FEEDER_STIRRER_MOTOR_SPEED = -0.6; // was 0.5 on march 6
     public static double STIRRER_MOTOR_SPEED = 0.3; // was .4 on march 6

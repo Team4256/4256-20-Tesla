@@ -223,12 +223,15 @@ currentHopperStates = currentHopperStates.ALIGN;
     }
   }
 
+  public void shroudDown () {
+    shroudSolenoid.set(Value.kReverse);
+  }
 
 
   public boolean isSpunUp(){
     currentEncoderVelocity = shooterMotor1.getSensorCollection().getIntegratedSensorVelocity();
 
-    if(currentEncoderVelocity !=0 && previousEncoderVelocity/currentEncoderVelocity > 0.95){
+    if(currentEncoderVelocity !=0 && previousEncoderVelocity/currentEncoderVelocity > 0.98){
       return true;
     }
     else{

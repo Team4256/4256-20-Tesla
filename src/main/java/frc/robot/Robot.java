@@ -35,6 +35,8 @@ public class Robot extends TimedRobot {
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   Limelight camera = Limelight.getInstance();
   D_Swerve swerve = D_Swerve.getInstance();
+  Shooter shooter = Shooter.getInstance();
+  Intake intake = Intake.getInstance();
   private ClimbingControl climber = ClimbingControl.getInstance();
   private static Auto auto = new Auto();
   public synchronized static void updateGyroHeading() {
@@ -62,6 +64,8 @@ public class Robot extends TimedRobot {
     climber.climberArmDown();
     climber.engageLock();
     climber.climberInit();
+    shooter.shroudDown();
+    intake.intakeUp();
     
 
     
@@ -85,7 +89,6 @@ public class Robot extends TimedRobot {
       SmartDashboard.putNumber("Gyro Heading", Robot.gyroHeading);
       swerve.completeLoopUpdate();
       StopWatch.getInstance().updateTimer(); 
-      
       camera.setSplitView();
       
 
@@ -109,7 +112,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    
+    SmartDashboard.updateValues();
     m_autoSelected = m_chooser.getSelected();
     //m_autoSelected = SmartDashboard.getString("Auto Selector", rightTrench );
     SmartDashboard.putString("Auto selected: ", m_autoSelected);
@@ -139,6 +142,7 @@ public class Robot extends TimedRobot {
       auto.mode5();
       break;
   }  
+  //auto.mode1();
   //auto.mode6();
   
   swerve.completeLoopUpdate();

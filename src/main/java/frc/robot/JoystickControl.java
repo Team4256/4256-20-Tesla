@@ -195,11 +195,11 @@ public class JoystickControl {
         if (driver.getRawButtonReleased(Xbox.BUTTON_LB)) {
             intake.stop();
         }
-        if (driver.getRawButtonPressed(Xbox.BUTTON_Y)) {
+        if (driver.getRawButtonPressed(Xbox.BUTTON_A)) {
             intake.intakeDown();
-        
+            
         }
-        if (driver.getRawButtonReleased(Xbox.BUTTON_A)) {
+        if (driver.getRawButtonReleased(Xbox.BUTTON_Y)) {
             intake.intakeUp();
         }
     }

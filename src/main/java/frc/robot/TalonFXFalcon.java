@@ -93,7 +93,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
         angleEncoder.setDistancePerRotation(360);
 
-        SupplyCurrentLimitConfiguration limit = new SupplyCurrentLimitConfiguration(true, 30, 45, 100);
+        SupplyCurrentLimitConfiguration limit = new SupplyCurrentLimitConfiguration(true, 30, 45, .25);
         
         configSupplyCurrentLimit(limit);
         // enableVoltageCompensation(true);
