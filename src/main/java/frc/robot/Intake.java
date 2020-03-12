@@ -25,15 +25,15 @@ public class Intake {
         intakeMotor.set(ControlMode.PercentOutput, -Parameters.INTAKE_SUCC_MOTOR );
     }
     public void spew(){
-        intakeMotor.set(ControlMode.PercentOutput, Parameters.INTAKE_MOTOR_SPEED);
+        intakeMotor.set(ControlMode.PercentOutput, Parameters.INTAKE_OUTAKE_SPEED);
     }
     public void stop() {
         intakeMotor.set(ControlMode.PercentOutput, 0.0);
     }
     public void intakeUp(){
-        intakeSolenoid.set(Value.kReverse);
+        intakeSolenoid.set(Value.kForward);
     }
     public void intakeDown(){
-        intakeSolenoid.set(Value.kForward);
+        intakeSolenoid.set(Value.kReverse);
     }
 }
