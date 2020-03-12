@@ -173,7 +173,7 @@ public final class D_Swerve implements Drivetrain {
 		//faceSpeed = Math.abs(faceSpeed) <=0.4 *? faceSpeed: Math.signum(faceSpeed )*0.4;
 
 		setSpin(faceSpeed);
-		SmartDashboard.putNumber("FaceTo", faceSpeed);
+		//SmartDashboard.putNumber("FaceTo", faceSpeed);
 	}
 	
 	
@@ -191,7 +191,7 @@ public final class D_Swerve implements Drivetrain {
 	@Override
 	public void completeLoopUpdate() {
 		holonomic_encoderIgnorant(direction, speed, spin);
-		SmartDashboard.putNumber("holoCommand", spin);
+		//SmartDashboard.putNumber("holoCommand", spin);
 		for (SwerveModule module : modules)
 			module.completeLoopUpdate();
 		// for (SwerveModule module : modules) module.swivelTo(0.0);
@@ -216,7 +216,7 @@ public final class D_Swerve implements Drivetrain {
 		double[] angles = new double[4];
 		for (int i = 0; i < 4; i++)
 			angles[i] = Math.toDegrees(Math.atan2(moduleComponents[i * 2], moduleComponents[i * 2 + 1]));
-			SmartDashboard.putNumber("AngleCommand", angles[1]);
+			//SmartDashboard.putNumber("AngleCommand", angles[1]);
 		return angles;
 	}
 

@@ -97,7 +97,7 @@ public class Auto {
 
     private boolean drivingToPorts(double distance){
       double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
-      SmartDashboard.putNumber("To Ports Distance", distanceTravelled);
+      //SmartDashboard.putNumber("To Ports Distance", distanceTravelled);
       if(distanceTravelled < distance){
       // swerve.setSpin(.30);
       swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
@@ -154,8 +154,8 @@ public class Auto {
     // mode1: start from the right 
     //might take out the driving to ports function
     public void mode1(){
-      SmartDashboard.putNumber("distance travelled", Math.abs(swerve.getAverageIntegratedSensorPosition()));
-      SmartDashboard.putNumber("timer", stopWatch.getElapsedTime());
+     // SmartDashboard.putNumber("distance travelled", Math.abs(swerve.getAverageIntegratedSensorPosition()));
+      //SmartDashboard.putNumber("timer", stopWatch.getElapsedTime());
       //SmartDashboard.putNumber("distance to target" , limelight.getDistanceToTarget());
       //SmartDashboard.putString("Autonomus phase","Phase 0");
       if(phase1 == PhaseStates.NOT_SARTED){ // Starts the shooter motors

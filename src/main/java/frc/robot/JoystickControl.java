@@ -142,7 +142,19 @@ public class JoystickControl {
     Shooter Periodic;
 
     public void shooterPeriodic() {
-
+        if (driver.getPOV() == (Xbox.DPAD_EAST)) {
+            cellShooter.setShooterSpeed(.9);
+            
+        }
+        if (gunner.getPOV() == (Xbox.DPAD_NORTH)) {
+            cellShooter.setShooterSpeed(.8);
+        }
+        if (gunner.getPOV() == (Xbox.DPAD_WEST)) {
+            cellShooter.setShooterSpeed(.7);
+        }
+        if (gunner.getPOV() == (Xbox.DPAD_SOUTH)) {
+            cellShooter.setShooterSpeed(1);
+        }
         if (gunner.getRawButtonPressed(Xbox.BUTTON_RB)) {  //Hold and release
             cellShooter.ShootNoAlign();
         }

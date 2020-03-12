@@ -74,8 +74,10 @@ public class Parameters{
     public static final int FEEDERMOTOR_ID = 17;
     public static final int SHROUD_DOWN_CHANNEL = 3;
     public static final int SHROUD_UP_CHANNEL = 2;
-    public static double SHOOTER_MOTOR_SPEED_CLOSE = 0.9;
-    public static double SHOOTER_MOTOR_SPEED_FAR = 0.80;
+    public static double SHOOTER_MOTOR_SPEED_LINE = 0.9;
+    public static double SHOOTER_MOTOR_SPEED_TRENCH_CLOSE = 0.70;
+    public static double SHOOTER_MOTOR_SPEED_TRENCH_FAR = 0.80;
+
 
     public static double FEEDER_STIRRER_MOTOR_SPEED = -0.6; // was 0.5 on march 6
     public static double STIRRER_MOTOR_SPEED = 0.3; // was .4 on march 6
