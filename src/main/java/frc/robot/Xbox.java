@@ -122,7 +122,7 @@ public class Xbox extends XboxController {
 	}
 
 		public boolean isTriggerReleased(final int axis) {
-			if (getDeadbandedAxis(axis) > .5) {
+			if (getDeadbandedAxis(axis) < .5) {
 				if (!wasTriggerPressed[axis - 2]) {
 					return false;
 				} else {

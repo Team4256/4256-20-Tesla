@@ -163,10 +163,10 @@ public class ClimbingControl {
         double leftEncoderPosition = -climbMotorLeft.getSensorCollection().getIntegratedSensorPosition();
         double rightEncoderPosition = climbMotorRight.getSensorCollection().getIntegratedSensorPosition();
 
-        if (leftEncoderPosition <= 0) {
+        if (leftEncoderPosition <= 13500) {
             retractingSpeedMotorLeft = 0.0;
         }
-        if (rightEncoderPosition <= 0) {
+        if (rightEncoderPosition <= 13500) {
             retractingSpeedMotorRight = 0.0;
         }
 

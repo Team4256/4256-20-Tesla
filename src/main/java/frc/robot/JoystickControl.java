@@ -144,15 +144,14 @@ public class JoystickControl {
     public void shooterPeriodic() {
         if (driver.getPOV() == (Xbox.DPAD_EAST)) {
             cellShooter.setShooterSpeed(.9);
-            
         }
-        if (gunner.getPOV() == (Xbox.DPAD_NORTH)) {
+        if (driver.getPOV() == (Xbox.DPAD_NORTH)) {
             cellShooter.setShooterSpeed(.8);
         }
-        if (gunner.getPOV() == (Xbox.DPAD_WEST)) {
+        if (driver.getPOV() == (Xbox.DPAD_WEST)) {
             cellShooter.setShooterSpeed(.7);
         }
-        if (gunner.getPOV() == (Xbox.DPAD_SOUTH)) {
+        if (driver.getPOV() == (Xbox.DPAD_SOUTH)) {
             cellShooter.setShooterSpeed(1);
         }
         if (gunner.getRawButtonPressed(Xbox.BUTTON_RB)) {  //Hold and release
@@ -161,6 +160,7 @@ public class JoystickControl {
         if (gunner.getRawButtonReleased(Xbox.BUTTON_RB)) {
             cellShooter.stopHOPPER();
         }
+        
 
         if (gunner.getDeadbandedAxis(Xbox.AXIS_RT) > .5 ) {  //Hold and release
             cellShooter.ShootAlign();
@@ -175,7 +175,7 @@ public class JoystickControl {
             cellShooter.SpinShooterPrep();
             //aligner.alignRobotToTarget();
         } 
-        
+        gunner.isTriggerReleased(Xbox.AXIS_LT); // clears for next time above is called
         if (gunner.getRawButtonPressed(Xbox.BUTTON_LB)) {  //Hold and release
     
             cellShooter.ReverseHopper();

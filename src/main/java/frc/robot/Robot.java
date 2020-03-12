@@ -89,7 +89,7 @@ public class Robot extends TimedRobot {
       swerve.completeLoopUpdate();
       StopWatch.getInstance().updateTimer(); 
       camera.setSplitView();
-      
+      camera.turnLEDOn();
 
         // apollo.getEntry("Selected Starting Position").setString(autoModeChooser.getRawSelections()[0]);
         // apollo.getEntry("Desired Auto Mode").setString(autoModeChooser.getRawSelections()[1]);
@@ -115,6 +115,7 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     //m_autoSelected = SmartDashboard.getString("Auto Selector", rightTrench );
     SmartDashboard.putString("Auto selected: ", m_autoSelected);
+    m_autoSelected = port;
     auto.autoInit();
   }
 

@@ -136,6 +136,7 @@ currentHopperStates = currentHopperStates.ALIGN;
   switch (currentHopperStates) {
   case SHOOTALIGN:
     shootAlign(shooterSpeed);
+    SmartDashboard.putNumber("shooterSpeed", shooterSpeed);
     break;
   case SHOOTUNALIGNED:
     spinHopperMotors();
@@ -145,6 +146,7 @@ currentHopperStates = currentHopperStates.ALIGN;
     break;
     case REVERSE:
     reverseHopper();
+    break;
   case OFF:
     stopHopper();
     break;
@@ -180,19 +182,16 @@ currentHopperStates = currentHopperStates.ALIGN;
   public void spinShooterMotors(double speed) {
     
     if(previousShootingState != ShootingWheelStates.SPINUP){
-      limelight.turnLEDOff();
+      //limelight.turnLEDOff();
       previousEncoderVelocity = 0.0;
       currentEncoderVelocity = 0.0;
     }
-    else{
-      limelight.turnLEDOn();
-    }
+
     shooterMotor1.set(TalonFXControlMode.PercentOutput, speed);
     shooterMotor2.set(TalonFXControlMode.PercentOutput, speed);
     SpinUp = true;
+    SmartDashboard.putNumber("Shoot Speed", speed);
   }
-
-
 
   public void spinHopperMotors() {
     stirrerMotor.set(ControlMode.PercentOutput, Parameters.STIRRER_MOTOR_SPEED);
@@ -211,7 +210,7 @@ currentHopperStates = currentHopperStates.ALIGN;
   public void shootAlign(double shooterSpeed) {
       shooterAligner.alignRobotToTarget();
       if (shooterAligner.getIsAtTarget(3)) {
-        spinShooterMotors(shooterSpeed);
+        //spinShooterMotors(shooterSpeed);
         spinHopperMotors();
       }
   }
