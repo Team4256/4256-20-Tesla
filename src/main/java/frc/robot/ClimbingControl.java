@@ -88,7 +88,7 @@ public class ClimbingControl {
 
 
     public void periodic(){
-        double leftEncoderPosition = climbMotorLeft.getSensorCollection().getIntegratedSensorPosition();
+        double leftEncoderPosition = -climbMotorLeft.getSensorCollection().getIntegratedSensorPosition();
         double rightEncoderPosition = climbMotorRight.getSensorCollection().getIntegratedSensorPosition(); 
         SmartDashboard.putNumber("leftEncoderPosition", leftEncoderPosition);
         SmartDashboard.putNumber("RightEncoderPosition", rightEncoderPosition);
@@ -168,7 +168,7 @@ public class ClimbingControl {
 
 
     public void retractPoles() {
-        double leftEncoderPosition = climbMotorLeft.getSensorCollection().getIntegratedSensorPosition();
+        double leftEncoderPosition = -climbMotorLeft.getSensorCollection().getIntegratedSensorPosition();
         double rightEncoderPosition = climbMotorRight.getSensorCollection().getIntegratedSensorPosition(); 
        
         if(leftEncoderPosition <= 0){
