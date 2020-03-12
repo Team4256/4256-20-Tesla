@@ -33,8 +33,7 @@ public class Shooter {
   private HopperStates previousHopperState = HopperStates.OFF;
   private double previousEncoderVelocity;
   private double currentEncoderVelocity;
-  
-
+  private double shooterSpeed = Parameters.SHOOTER_MOTOR_SPEED_LINE;
   
 
   public enum ShootingWheelStates {
@@ -119,10 +118,10 @@ currentHopperStates = currentHopperStates.ALIGN;
   }
 
   public void periodic() {
-    double shooterSpeedTest = SmartDashboard.getNumber("ShooterSpeed", 0.5);
+    //double shooterSpeedTest = SmartDashboard.getNumber("ShooterSpeed", 0.5);
     switch (currentShootingState) {
     case SPINUP:
-      spinShooterMotors(shooterSpeedTest);
+      spinShooterMotors(shooterSpeed);
       break;
     case OFF:
       stopShooterWheel();
@@ -133,10 +132,10 @@ currentHopperStates = currentHopperStates.ALIGN;
   }
 
   public void hopperPeriodic() {  
-  double shooterSpeedTest = SmartDashboard.getNumber("ShooterSpeed", 0.5);
+  //double shooterSpeedTest = SmartDashboard.getNumber("ShooterSpeed", 0.5);
   switch (currentHopperStates) {
   case SHOOTALIGN:
-    shootAlign(shooterSpeedTest);
+    shootAlign(shooterSpeed);
     break;
   case SHOOTUNALIGNED:
     spinHopperMotors();
@@ -173,6 +172,10 @@ currentHopperStates = currentHopperStates.ALIGN;
       return false;
     }
 
+  }
+
+  public void setShooterSpeed(double speed) {
+      shooterSpeed = speed;
   }
   public void spinShooterMotors(double speed) {
     

@@ -97,7 +97,7 @@ public class Auto {
 
     private boolean drivingToPorts(double distance){
       double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
-      SmartDashboard.putNumber("To Ports Distance", distanceTravelled);
+      //SmartDashboard.putNumber("To Ports Distance", distanceTravelled);
       if(distanceTravelled < distance){
       // swerve.setSpin(.30);
       swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
@@ -154,13 +154,13 @@ public class Auto {
     // mode1: start from the right 
     //might take out the driving to ports function
     public void mode1(){
-      SmartDashboard.putNumber("distance travelled", Math.abs(swerve.getAverageIntegratedSensorPosition()));
-      SmartDashboard.putNumber("timer", stopWatch.getElapsedTime());
+     // SmartDashboard.putNumber("distance travelled", Math.abs(swerve.getAverageIntegratedSensorPosition()));
+      //SmartDashboard.putNumber("timer", stopWatch.getElapsedTime());
       //SmartDashboard.putNumber("distance to target" , limelight.getDistanceToTarget());
       //SmartDashboard.putString("Autonomus phase","Phase 0");
       if(phase1 == PhaseStates.NOT_SARTED){ // Starts the shooter motors
         phase1 = PhaseStates.STARTED;
-        shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED_CLOSE);
+        shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED_LINE);
         
       }
       if(phase1 == PhaseStates.STARTED){
@@ -177,7 +177,7 @@ public class Auto {
         stopWatch.resetTimer();
       }
       if(phase2 == PhaseStates.STARTED){
-        alignAndShoot(Parameters.SHOOTER_MOTOR_SPEED_CLOSE);
+        alignAndShoot(Parameters.SHOOTER_MOTOR_SPEED_LINE);
         if(stopWatch.getElapsedTime() > 3){ //make sure the time is right
           phase2 = PhaseStates.ENDED;
         }
@@ -233,7 +233,7 @@ public class Auto {
 
       if(phase5 == PhaseStates.STARTED){
         
-        alignAndShoot(Parameters.SHOOTER_MOTOR_SPEED_FAR);
+        alignAndShoot(Parameters.SHOOTER_MOTOR_SPEED_TRENCH_FAR);
         if(stopWatch.getElapsedTime() > 5){
           phase5 = PhaseStates.ENDED;
           shooter.stopHopper();
@@ -317,12 +317,12 @@ public class Auto {
 
         }
         if(phase3 == PhaseStates.STARTED){
-          alignAndShoot(Parameters.SHOOTER_MOTOR_SPEED_CLOSE);
+          alignAndShoot(Parameters.SHOOTER_MOTOR_SPEED_LINE);
           if(stopWatch.getElapsedTime() > 3){
             phase3 = PhaseStates.ENDED;
           }
           else {
-            SmartDashboard.putString("Autonomus phase","Phase 3");
+            //SmartDashboard.putString("Autonomus phase","Phase 3");
             return;
       }
     }
@@ -391,7 +391,7 @@ public class Auto {
   
           }
           if(phase3 == PhaseStates.STARTED){
-            alignAndShoot(Parameters.SHOOTER_MOTOR_SPEED_CLOSE);
+            alignAndShoot(Parameters.SHOOTER_MOTOR_SPEED_LINE);
             if(stopWatch.getElapsedTime() > 3){
               phase3 = PhaseStates.ENDED;
             }
@@ -416,7 +416,7 @@ public class Auto {
         SmartDashboard.putNumber("distance to target" , limelight.getDistanceToTarget());
         if(phase1 == PhaseStates.NOT_SARTED){ // Starts the shooter motors
           phase1 = PhaseStates.STARTED;
-          shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED_CLOSE);
+          shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED_LINE);
         }
         if(phase1 == PhaseStates.STARTED){
           if(shooter.isSpunUp()){//need to be changed 
@@ -432,7 +432,7 @@ public class Auto {
           stopWatch.resetTimer();
         }
         if(phase2 == PhaseStates.STARTED){
-          alignAndShoot(Parameters.SHOOTER_MOTOR_SPEED_CLOSE);
+          alignAndShoot(Parameters.SHOOTER_MOTOR_SPEED_LINE);
           if(stopWatch.getElapsedTime() > 3){ //make sure the time is right
             phase2 = PhaseStates.ENDED;
           }
