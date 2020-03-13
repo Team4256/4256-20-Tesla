@@ -91,10 +91,10 @@ public class ClimbingControl {
     }
 
     public void periodic() {
-        double leftEncoderPosition = -climbMotorLeft.getSensorCollection().getIntegratedSensorPosition();
-        double rightEncoderPosition = climbMotorRight.getSensorCollection().getIntegratedSensorPosition();
-        SmartDashboard.putNumber("leftEncoderPosition", leftEncoderPosition);
-        SmartDashboard.putNumber("RightEncoderPosition", rightEncoderPosition);
+        // double leftEncoderPosition = -climbMotorLeft.getSensorCollection().getIntegratedSensorPosition();
+        // double rightEncoderPosition = climbMotorRight.getSensorCollection().getIntegratedSensorPosition();
+        // SmartDashboard.putNumber("leftEncoderPosition", leftEncoderPosition);
+        // SmartDashboard.putNumber("RightEncoderPosition", rightEncoderPosition);
         switch (currentState) {
 
             case EXTENDPOLES:

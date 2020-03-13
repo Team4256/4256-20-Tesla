@@ -115,7 +115,7 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     //m_autoSelected = SmartDashboard.getString("Auto Selector", rightTrench );
     SmartDashboard.putString("Auto selected: ", m_autoSelected);
-    m_autoSelected = port;
+    m_autoSelected = rightTrench;
     auto.autoInit();
   }
 

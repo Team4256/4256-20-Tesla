@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -66,6 +67,11 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         this.isInverted = isInverted;
 
         logger = Logger.getLogger("SparkMax " + Integer.toString(deviceID));
+       
+        StatorCurrentLimitConfiguration statorLimit = new StatorCurrentLimitConfiguration(true, 40, 45, 1);
+        SupplyCurrentLimitConfiguration limit = new SupplyCurrentLimitConfiguration(true, 30, 30, .1);
+        configSupplyCurrentLimit(limit);
+        configStatorCurrentLimit(statorLimit);
 
     }
 
@@ -93,8 +99,9 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
         angleEncoder.setDistancePerRotation(360);
 
-        SupplyCurrentLimitConfiguration limit = new SupplyCurrentLimitConfiguration(true, 30, 45, .25);
-        
+        StatorCurrentLimitConfiguration statorLimit = new StatorCurrentLimitConfiguration(true, 40, 45, 1);
+        SupplyCurrentLimitConfiguration limit = new SupplyCurrentLimitConfiguration(true, 30, 30, .1);
+        configStatorCurrentLimit(statorLimit);
         configSupplyCurrentLimit(limit);
         // enableVoltageCompensation(true);
 
@@ -236,11 +243,12 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         }
 
         double percentSpeed = anglePIDController.calculate(encoderPosition, targetAngle);
+        
 
         if (Math.abs(percentSpeed) > .5) {
             percentSpeed = Math.signum(percentSpeed) * .5;
         }
-
+        SmartDashboard.putNumber("PID period", anglePIDController.getPeriod());
         super.set(percentSpeed);
         updated = true;
         lastSetpoint = percentSpeed; 

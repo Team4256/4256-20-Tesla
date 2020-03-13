@@ -146,7 +146,7 @@ public class JoystickControl {
             cellShooter.setShooterSpeed(.9);
         }
         if (driver.getPOV() == (Xbox.DPAD_NORTH)) {
-            cellShooter.setShooterSpeed(.8);
+            cellShooter.setShooterSpeed(.79);
         }
         if (driver.getPOV() == (Xbox.DPAD_WEST)) {
             cellShooter.setShooterSpeed(.7);

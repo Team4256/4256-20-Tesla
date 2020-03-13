@@ -76,7 +76,7 @@ public class Parameters{
     public static final int SHROUD_UP_CHANNEL = 2;
     public static double SHOOTER_MOTOR_SPEED_LINE = 0.9;
     public static double SHOOTER_MOTOR_SPEED_TRENCH_CLOSE = 0.70;
-    public static double SHOOTER_MOTOR_SPEED_TRENCH_FAR = 0.80;
+    public static double SHOOTER_MOTOR_SPEED_TRENCH_FAR = 0.77;
 
 
     public static double FEEDER_STIRRER_MOTOR_SPEED = -0.6; // was 0.5 on march 6
@@ -112,9 +112,9 @@ public class Parameters{
             // public static final double angleEncoderTareVoltage[] = {3.527,2.863,2.382,1.335};
 
             //COMPETITION ROBOT
-            public static final double angleEncoderMinVoltage[] = {.008544921, .020751951, 0.01220703, 0.026855466};
-            public static final double angleEncoderMaxVoltage[] = {4.921874496, 4.921874496, 4.913329475000001, 4.887694812};
-            public static final double angleEncoderTareVoltage[] = {3.4790035500000003,2.34374976,2.3742673350000003,1.3415525970000002};
+            public static final double angleEncoderMinVoltage[] = {0.0085, 0.0122, 0.0073, 0.0122};
+            public static final double angleEncoderMaxVoltage[] = {4.9243, 4.9243, 4.9157, 4.9218};
+            public static final double angleEncoderTareVoltage[] = {3.4912,2.3522,2.3596,1.3464};
      
     // Aligner tolerances
 
