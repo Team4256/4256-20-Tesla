@@ -24,7 +24,7 @@ public final class D_Swerve implements Drivetrain {
 	private double moduleD_maxSpeed = 70.0;// always put max slightly higher than max observed
 	private double moduleD_previousAngle = 0.0;
 	private double previousSpin = 0.0;
-	private PIDController pid = new PIDController(0.008, 0.0, 0.0); 
+	private PIDController pid = new PIDController(0.008, 0.0, 0.0);
 	private Gyro gyro = Gyro.getInstance();
 	private double direction = 0.0, speed = 0.0, spin = 0.0;
 
@@ -58,7 +58,7 @@ public final class D_Swerve implements Drivetrain {
 		moduleD.init();
 	}
 
-	public void resetEncoderPosition(){
+	public void resetEncoderPosition() {
 		moduleA.resetEncoderValue();
 		moduleB.resetEncoderValue();
 		moduleC.resetEncoderValue();
@@ -66,16 +66,14 @@ public final class D_Swerve implements Drivetrain {
 
 	}
 
-
-
-	public double getAverageIntegratedSensorPosition(){
-		double encoderCountsA = Math.abs(moduleA.getIntegratedSensorENcoderCounts());   
+	public double getAverageIntegratedSensorPosition() {
+		double encoderCountsA = Math.abs(moduleA.getIntegratedSensorENcoderCounts());
 		double encoderCountsB = Math.abs(moduleB.getIntegratedSensorENcoderCounts());
 		double encoderCountsC = Math.abs(moduleC.getIntegratedSensorENcoderCounts());
 		double encoderCountsD = Math.abs(moduleD.getIntegratedSensorENcoderCounts());
 
-		double averageEncoderCounts = (encoderCountsA + encoderCountsB + encoderCountsC + encoderCountsD)/4;
-		double averageDistanceTraveled = ((averageEncoderCounts/2048)/8.3121)*12.56637;
+		double averageEncoderCounts = (encoderCountsA + encoderCountsB + encoderCountsC + encoderCountsD) / 4;
+		double averageDistanceTraveled = ((averageEncoderCounts / 2048) / 8.3121) * 12.56637;
 
 		return averageDistanceTraveled;
 	}
@@ -85,16 +83,13 @@ public final class D_Swerve implements Drivetrain {
 		double encoderVelocityB = moduleB.getRPM();
 		double encoderVelocityC = moduleC.getRPM();
 		double encoderVelocityD = moduleD.getRPM();
-		
+
 		// SmartDashboard.putNumber("encoderVelocityA", encoderVelocityA);
 		// SmartDashboard.putNumber("encoderVelocityB", encoderVelocityB);
 		// SmartDashboard.putNumber("encoderVelocityC", encoderVelocityC);
 		// SmartDashboard.putNumber("encoderVelocityD", encoderVelocityD);
 
-		
 	}
-
-
 
 	private void holonomic_encoderIgnorant(final double direction, double speed, final double spin) {
 		// {PREPARE VARIABLES}
@@ -160,23 +155,22 @@ public final class D_Swerve implements Drivetrain {
 		moduleD.swivelTo(45.0);
 	}
 
-
 	public void faceTo(double direction) {
 		double gyroHeading = Robot.gyroHeading;
-		while(direction-gyroHeading > 180){
+		while (direction - gyroHeading > 180) {
 			gyroHeading += 360;
 		}
-		while(direction - gyroHeading < -180){
+		while (direction - gyroHeading < -180) {
 			gyroHeading -= 360;
 		}
 		double faceSpeed = pid.calculate(gyroHeading, direction);
-		//faceSpeed = Math.abs(faceSpeed) <=0.4 *? faceSpeed: Math.signum(faceSpeed )*0.4;
+		// faceSpeed = Math.abs(faceSpeed) <=0.4 *? faceSpeed: Math.signum(faceSpeed
+		// )*0.4;
 
 		setSpin(faceSpeed);
-		//SmartDashboard.putNumber("FaceTo", faceSpeed);
+		// SmartDashboard.putNumber("FaceTo", faceSpeed);
 	}
-	
-	
+
 	public boolean isThere(final double threshold) {
 		return true;
 		// return moduleA.isThere(threshold) && moduleB.isThere(threshold) &&
@@ -191,11 +185,11 @@ public final class D_Swerve implements Drivetrain {
 	@Override
 	public void completeLoopUpdate() {
 		holonomic_encoderIgnorant(direction, speed, spin);
-		//SmartDashboard.putNumber("holoCommand", spin);
+		// SmartDashboard.putNumber("holoCommand", spin);
 		for (SwerveModule module : modules)
 			module.completeLoopUpdate();
 		// for (SwerveModule module : modules) module.swivelTo(0.0);
-		//getRPM();
+		// getRPM();
 	}
 
 	// -------------------------------------------------COMPUTATION
@@ -216,7 +210,7 @@ public final class D_Swerve implements Drivetrain {
 		double[] angles = new double[4];
 		for (int i = 0; i < 4; i++)
 			angles[i] = Math.toDegrees(Math.atan2(moduleComponents[i * 2], moduleComponents[i * 2 + 1]));
-			//SmartDashboard.putNumber("AngleCommand", angles[1]);
+		// SmartDashboard.putNumber("AngleCommand", angles[1]);
 		return angles;
 	}
 
@@ -291,8 +285,9 @@ public final class D_Swerve implements Drivetrain {
 	public void correctFor(final double errorDirection, final double errorMagnitude) {
 		travelTowards(errorDirection);
 
-		//double speed = PID.get("leash", errorMagnitude);// DO NOT use I gain with this because errorMagnitude is always
-														// positive
+		// double speed = PID.get("leash", errorMagnitude);// DO NOT use I gain with
+		// this because errorMagnitude is always
+		// positive
 		if (speed > 0.6)
 			speed = 0.6;
 
@@ -302,7 +297,7 @@ public final class D_Swerve implements Drivetrain {
 	@Override
 	public double face(final double orientation, double maximumOutput) {
 		final double error = Compass.path(Robot.gyroHeading, orientation);
-		//final double spin = PID.get("spin", error);
+		// final double spin = PID.get("spin", error);
 		setSpin(Math.max(-maximumOutput, Math.min(spin, maximumOutput)));
 		return error;
 	}

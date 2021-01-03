@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Limelight.CamMode;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -37,13 +38,16 @@ public class Robot extends TimedRobot {
   D_Swerve swerve = D_Swerve.getInstance();
   Shooter shooter = Shooter.getInstance();
   Intake intake = Intake.getInstance();
+  Shroud shroud = Shroud.getInstance();
   private ClimbingControl climber = ClimbingControl.getInstance();
   private static Auto auto = new Auto();
+
   public synchronized static void updateGyroHeading() {
     gyroHeading = gyro.getCurrentAngle();
-   
-}
-  //private Compressor compress = new Compressor();
+
+  }
+
+  // private Compressor compress = new Compressor();
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -59,17 +63,15 @@ public class Robot extends TimedRobot {
     gyro.setAngleAdjustment(Parameters.GYRO_OFFSET);
     gyro.reset();
     subsystems.setSwerveToZero();
-    SmartDashboard.putNumber("ShooterSpeed", 0.0 );
+    SmartDashboard.putNumber("ShooterSpeed", 0.0);
     climber.climberInit();
-    climber.climberArmDown();
-    climber.engageLock();
+    climber.rotateArmDown();
+    climber.lockEngage();
     climber.climberInit();
-    shooter.shroudDown();
+    shroud.shroudDown();
     intake.intakeUp();
-    
 
-    
-   // compress.start();
+    // compress.start();
   }
 
   /**
@@ -83,18 +85,20 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-      subsystems.displaySwerveAngles();
-      updateGyroHeading();
-      SmartDashboard.putNumber("Gyro Heading", Robot.gyroHeading);
-      swerve.completeLoopUpdate();
-      StopWatch.getInstance().updateTimer(); 
-      camera.setSplitView();
-      camera.turnLEDOn();
+    subsystems.displaySwerveAngles();
+    updateGyroHeading();
+    SmartDashboard.putNumber("Gyro Heading", Robot.gyroHeading);
+    swerve.completeLoopUpdate();
+    StopWatch.getInstance().updateTimer();
+    camera.setSplitView();
+    camera.turnLEDOn();
 
-        // apollo.getEntry("Selected Starting Position").setString(autoModeChooser.getRawSelections()[0]);
-        // apollo.getEntry("Desired Auto Mode").setString(autoModeChooser.getRawSelections()[1]);
-        // apollo.getEntry("Has Ball Test").setBoolean(ballIntake.hasBall());
-        // apollo.getEntry("Is Autonomous").setBoolean(autoModeExecutor != null);
+    // apollo.getEntry("Selected Starting
+    // Position").setString(autoModeChooser.getRawSelections()[0]);
+    // apollo.getEntry("Desired Auto
+    // Mode").setString(autoModeChooser.getRawSelections()[1]);
+    // apollo.getEntry("Has Ball Test").setBoolean(ballIntake.hasBall());
+    // apollo.getEntry("Is Autonomous").setBoolean(autoModeExecutor != null);
   }
 
   /**
@@ -113,7 +117,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     SmartDashboard.updateValues();
     m_autoSelected = m_chooser.getSelected();
-    //m_autoSelected = SmartDashboard.getString("Auto Selector", rightTrench );
+    // m_autoSelected = SmartDashboard.getString("Auto Selector", rightTrench );
     SmartDashboard.putString("Auto selected: ", m_autoSelected);
     m_autoSelected = rightTrench;
     auto.autoInit();
@@ -124,7 +128,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    
+
     switch (m_autoSelected) {
     case rightTrench:
       auto.mode1();
@@ -132,20 +136,20 @@ public class Robot extends TimedRobot {
     case leftTrench:
       auto.mode2();
       break;
-      case middle:
+    case middle:
       auto.mode3();
       break;
-      case port:
+    case port:
       auto.mode4();
       break;
-      case backUp:
+    case backUp:
       auto.mode5();
       break;
-  }  
-  //auto.mode1();
-  //auto.mode6();
-  
-  swerve.completeLoopUpdate();
+    }
+    // auto.mode1();
+    // auto.mode6();
+
+    swerve.completeLoopUpdate();
   }
 
   /**
@@ -157,7 +161,7 @@ public class Robot extends TimedRobot {
     NetworkTableEntry tx = table.getEntry("tx");
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableEntry ta = table.getEntry("ta");
-    
+
     double x = tx.getDouble(0.0);
     double y = ty.getDouble(0.0);
     double area = ta.getDouble(0.0);
@@ -166,8 +170,7 @@ public class Robot extends TimedRobot {
     subsystems.shooterPeriodic();
     subsystems.ClimbingPeriodic();
     SmartDashboard.putNumber("gyroOffset", Parameters.GYRO_OFFSET);
-    
-    
+
   }
 
   /**

@@ -32,20 +32,35 @@ public class ClimbingControl {
 
     private static ClimbingControl instance = null;
 
+    // Climbing states enum
     public enum ClimbingStates {
         EXTENDPOLES, RETRACTPOLES, STOP;
     }
 
+    // Set default climbing state
     public ClimbingStates currentState = ClimbingStates.STOP;
 
-    public void climberArmUp() {
-        rotateArmUp();
+    // engage climber saftey lock
+    public void lockEngage() {
+        climberLock.set(DoubleSolenoid.Value.kForward);
     }
 
-    public void climberArmDown() {
-        rotateArmDown();
+    // disengage climber saftey lock
+    public void lockDisengage() {
+        climberLock.set(DoubleSolenoid.Value.kReverse);
     }
 
+    // Move climber arm to up position
+    public void rotateArmUp() {
+        armRotationSolenoid.set(Value.kForward);
+    }
+
+    // Move climber arm to down position
+    public void rotateArmDown() {
+        armRotationSolenoid.set(Value.kReverse);
+    }
+
+    // Move climber poles to max height for climbing
     public void extendClimberPolesHigh() {
 
         currentState = ClimbingStates.EXTENDPOLES;
@@ -54,6 +69,7 @@ public class ClimbingControl {
 
     }
 
+    // Move climber poles to medium height
     public void extendClimberPolesMedium() {
 
         currentState = ClimbingStates.EXTENDPOLES;
@@ -62,20 +78,14 @@ public class ClimbingControl {
 
     }
 
+    // Move climber poles according to D-Pad input
     public void retractClimberPoles() {
         currentState = ClimbingStates.RETRACTPOLES;
         retractingSpeedMotorLeft = Parameters.CLIMBER_MOTOR_SPEED_DPAD;
         retractingSpeedMotorRight = Parameters.CLIMBER_MOTOR_SPEED_DPAD;
     }
 
-    public void engageLock() {
-        lockEngage();
-    }
-
-    public void disngageLock() {
-        lockDisengage();
-    }
-
+    // Retract right climber pole
     public void retractIndividualClimberPoleRight(double leftMotorSpeed, double rightMotorSpeed) {
         if (leftMotorSpeed != 0.0 || rightMotorSpeed != 0.0) {
             currentState = ClimbingStates.RETRACTPOLES;
@@ -84,6 +94,7 @@ public class ClimbingControl {
         retractingSpeedMotorRight = rightMotorSpeed * Parameters.CLIMBER_MOTOR_SPEED_INDIVIDUAL;
     }
 
+    // Set climber to stop
     public void stopClimb() {
         currentState = ClimbingStates.STOP;
         climbMotorLeft.set(0.0);
@@ -91,26 +102,27 @@ public class ClimbingControl {
     }
 
     public void periodic() {
-        // double leftEncoderPosition = -climbMotorLeft.getSensorCollection().getIntegratedSensorPosition();
-        // double rightEncoderPosition = climbMotorRight.getSensorCollection().getIntegratedSensorPosition();
+        // double leftEncoderPosition =
+        // -climbMotorLeft.getSensorCollection().getIntegratedSensorPosition();
+        // double rightEncoderPosition =
+        // climbMotorRight.getSensorCollection().getIntegratedSensorPosition();
         // SmartDashboard.putNumber("leftEncoderPosition", leftEncoderPosition);
         // SmartDashboard.putNumber("RightEncoderPosition", rightEncoderPosition);
         switch (currentState) {
 
-            case EXTENDPOLES:
-                extendPoles();
-                break;
-            case RETRACTPOLES:
-                retractPoles();
-                break;
-            case STOP:
-                stopClimb();
-                break;
+        case EXTENDPOLES:
+            extendPoles();
+            break;
+        case RETRACTPOLES:
+            retractPoles();
+            break;
+        case STOP:
+            stopClimb();
+            break;
         }
 
     }
 
-    // need to add device numbers based on excel sheet
     private ClimbingControl() {
         climbMotorRight = new WPI_TalonFX(Parameters.R_CLIMBER_MOTOR_ID);
         climbMotorLeft = new WPI_TalonFX(Parameters.L_CLIMBER_MOTOR_ID);
@@ -139,14 +151,6 @@ public class ClimbingControl {
 
     }
 
-    public void rotateArmUp() {
-        armRotationSolenoid.set(Value.kForward);
-    }
-
-    public void rotateArmDown() {
-        armRotationSolenoid.set(Value.kReverse);
-    }
-
     public void extendPoles() {
         if (true || climbMotorRight.getSensorCollection().getIntegratedSensorPosition() < targetHeight) {
             lockDisengage();
@@ -169,25 +173,11 @@ public class ClimbingControl {
         if (rightEncoderPosition <= 13500) {
             retractingSpeedMotorRight = 0.0;
         }
+        // TODO Possibly add else statement
 
-        // if(!limitSwitchLeft.get()){ // when the boolean is false, it senses
-        // retractingSpeedMotorLeft = 0.0; //might need to switch sign
-        // }
-
-        // if(!limitSwitchRight.get()){
-        // retractingSpeedMotorRight = 0.0;
-        // }
         lockDisengage();
         climbMotorLeft.set(retractingSpeedMotorLeft); // might need to switch sign
         climbMotorRight.set(-retractingSpeedMotorRight);
 
-    }
-
-    public void lockEngage() {
-        climberLock.set(DoubleSolenoid.Value.kForward);
-    }
-
-    public void lockDisengage() {
-        climberLock.set(DoubleSolenoid.Value.kReverse);
     }
 }

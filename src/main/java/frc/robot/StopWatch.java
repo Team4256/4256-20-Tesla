@@ -14,32 +14,26 @@ public class StopWatch {
     private double elapsedTime;
     public static StopWatch instance = null;
 
-
-    private StopWatch(){
+    private StopWatch() {
         elapsedTime = 0.0;
     }
-
 
     public synchronized static StopWatch getInstance() {
-      if (instance == null) {
-        instance = new StopWatch();
-      }
-      return instance;
+        if (instance == null) {
+            instance = new StopWatch();
+        }
+        return instance;
     }
 
-
-
-    public void resetTimer(){
+    public void resetTimer() {
         elapsedTime = 0.0;
     }
 
-
-    public void updateTimer(){
+    public void updateTimer() {
         elapsedTime += 0.02;
     }
-    
 
-    public double getElapsedTime(){
+    public double getElapsedTime() {
         return elapsedTime;
 
     }

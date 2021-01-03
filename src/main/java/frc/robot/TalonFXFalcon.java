@@ -27,7 +27,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     private final int deviceID;
     public final NeutralMode idleMode;
     private final boolean isInverted;
-    
+
     private boolean updated = false;
     private double lastSetpoint = 0.0;
     private Logger logger;
@@ -44,9 +44,6 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     double maxAngle = 0;
     double minAngle = 360;
     public static final int kTimeoutMS = 10;
-   
-    
-    
 
     /**
      * Offers a simple way of initializing and using NEO Brushless motors with a
@@ -67,7 +64,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         this.isInverted = isInverted;
 
         logger = Logger.getLogger("SparkMax " + Integer.toString(deviceID));
-       
+
         StatorCurrentLimitConfiguration statorLimit = new StatorCurrentLimitConfiguration(true, 40, 45, 1);
         SupplyCurrentLimitConfiguration limit = new SupplyCurrentLimitConfiguration(true, 30, 30, .1);
         configSupplyCurrentLimit(limit);
@@ -75,9 +72,8 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     }
 
-
-
-    public TalonFXFalcon(final int deviceID, final NeutralMode neutralMode, final boolean isInverted, int analogEncoderID) {
+    public TalonFXFalcon(final int deviceID, final NeutralMode neutralMode, final boolean isInverted,
+            int analogEncoderID) {
 
         super(deviceID);
 
@@ -119,7 +115,6 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
      * @param deviceID   CAN ID of the SparkMax
      * @param isInverted Indication of whether the SparkMax's motor is inverted
      */
-    
 
     /**
      * Performs necessary initialization
@@ -128,7 +123,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
         setInverted(isInverted);
         set(0.0);
-        //anglePIDController.enableContinuousInput(-180.0, 180.0);
+        // anglePIDController.enableContinuousInput(-180.0, 180.0);
     }
 
     /**
@@ -137,17 +132,16 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     @Override
     public void resetEncoder() {
-       getSensorCollection().setIntegratedSensorPosition(0.0, kTimeoutMS);
+        getSensorCollection().setIntegratedSensorPosition(0.0, kTimeoutMS);
 
     }
 
     /*
-    returns the rotations of the motor from the integrated sensor
-    */
-    public double getPositionFromIntegratedSensor(){
-       return getSensorCollection().getIntegratedSensorPosition();
+     * returns the rotations of the motor from the integrated sensor
+     */
+    public double getPositionFromIntegratedSensor() {
+        return getSensorCollection().getIntegratedSensorPosition();
     }
-
 
     /**
      * @return Rotations of the motor
@@ -168,13 +162,13 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
      */
     public double getRPS() {
         return (getRPM() / 60.0);
-        
+
     }
 
     // get angle
     public double getCurrentAngle() {
 
-        return 360 - (encoderPort.getVoltage() - encoderTareVoltage)/(encoderMaxVoltage - encoderMinVoltage) * 360;
+        return 360 - (encoderPort.getVoltage() - encoderTareVoltage) / (encoderMaxVoltage - encoderMinVoltage) * 360;
 
     }
 
@@ -184,41 +178,41 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     }
 
-
-
     // Set Speed
     @Override
     public void setSpeed(final double inputPercentageSpeed) {
 
-       
         // double motorSpeed = getSensorCollection().getIntegratedSensorVelocity();
-        // double expectedSpeed = inputPercentageSpeed*Parameters.FALCON_PERCENT_TO_ENCODER_SPEED;
-        // double adjustmentToSpeedAdjustment = falconVelocityPID.calculate(motorSpeed, expectedSpeed);
+        // double expectedSpeed =
+        // inputPercentageSpeed*Parameters.FALCON_PERCENT_TO_ENCODER_SPEED;
+        // double adjustmentToSpeedAdjustment = falconVelocityPID.calculate(motorSpeed,
+        // expectedSpeed);
 
-        // adjustmentToSpeedAdjustment = Math.abs(adjustmentToSpeedAdjustment) <=0.01 ? adjustmentToSpeedAdjustment: Math.signum(adjustmentToSpeedAdjustment )*0.01;
+        // adjustmentToSpeedAdjustment = Math.abs(adjustmentToSpeedAdjustment) <=0.01 ?
+        // adjustmentToSpeedAdjustment: Math.signum(adjustmentToSpeedAdjustment )*0.01;
         // tractionSppeedAdjustment += adjustmentToSpeedAdjustment;
 
-        // tractionSppeedAdjustment = Math.abs(tractionSppeedAdjustment) <=0.01 ? tractionSppeedAdjustment: Math.signum(tractionSppeedAdjustment )*0.01;
+        // tractionSppeedAdjustment = Math.abs(tractionSppeedAdjustment) <=0.01 ?
+        // tractionSppeedAdjustment: Math.signum(tractionSppeedAdjustment )*0.01;
 
         // if(getDeviceID() == 21){
-        //     SmartDashboard.putNumber("Speed adjustment", tractionSppeedAdjustment);
-        //     SmartDashboard.putNumber("Adjustment to Speed adjustment", adjustmentToSpeedAdjustment);
-        //     SmartDashboard.putNumber("input percentage speed", inputPercentageSpeed);
-        //     SmartDashboard.putNumber("motor speed", motorSpeed);
-        //     SmartDashboard.putNumber("expected speed", expectedSpeed);
+        // SmartDashboard.putNumber("Speed adjustment", tractionSppeedAdjustment);
+        // SmartDashboard.putNumber("Adjustment to Speed adjustment",
+        // adjustmentToSpeedAdjustment);
+        // SmartDashboard.putNumber("input percentage speed", inputPercentageSpeed);
+        // SmartDashboard.putNumber("motor speed", motorSpeed);
+        // SmartDashboard.putNumber("expected speed", expectedSpeed);
         // }
 
         double adjustedPercentageSpeed = inputPercentageSpeed;
-        //adjustedPercentageSpeed = inputPercentageSpeed;
-        
+        // adjustedPercentageSpeed = inputPercentageSpeed;
+
         super.set(adjustedPercentageSpeed);
         lastSetpoint = adjustedPercentageSpeed;
         updated = true;
         logger.log(Level.FINE, Double.toString(adjustedPercentageSpeed));
-        
+
     }
-
-
 
     // Set Angle
     public void setAngle(double targetAngle) {
@@ -227,7 +221,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         double encoderPosition = getCurrentAngle();
         while (targetAngle <= -180) {
             targetAngle += 360;
-        } 
+        }
 
         while (targetAngle > 180) {
             targetAngle -= 360;
@@ -243,7 +237,6 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         }
 
         double percentSpeed = anglePIDController.calculate(encoderPosition, targetAngle);
-        
 
         if (Math.abs(percentSpeed) > .5) {
             percentSpeed = Math.signum(percentSpeed) * .5;
@@ -251,18 +244,13 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         SmartDashboard.putNumber("PID period", anglePIDController.getPeriod());
         super.set(percentSpeed);
         updated = true;
-        lastSetpoint = percentSpeed; 
-        
+        lastSetpoint = percentSpeed;
 
     }
-
-
 
     public double getPIDError() {
         return anglePIDController.getPositionError();
     }
-
-      
 
     public double pathTo(double target) {// ANGLE
         final double current = getCurrentAngle();
@@ -290,10 +278,4 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     }
 
-    
-
-    
-    
-
-    
 }

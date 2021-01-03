@@ -8,58 +8,55 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
- * Add your docs here.
- */
 public class Aligner {
-    private PIDController orientationPID = new PIDController(-.0242, 0, 0);
-    private PIDController positionPID = new PIDController(0, 0, 0);
-    private static D_Swerve swerveSystem;
-    public static Aligner instance = null;
+
     Limelight camera = Limelight.getInstance();
     Gyro gyro = Gyro.getInstance();
-    private Aligner () {
+    private final PIDController orientationPID = new PIDController(-.0242, 0, 0);
+    private static D_Swerve swerveSystem;
+    public static Aligner instance = null;
+
+    private Aligner() {
         orientationPID.setTolerance(Parameters.POSITION_TOLERANCE, Parameters.VELOCITY_TOLERANCE);
         swerveSystem = D_Swerve.getInstance();
     }
 
-
-
     public synchronized static Aligner getInstance() {
         if (instance == null) {
-          instance = new Aligner();
+            instance = new Aligner();
         }
         return instance;
     }
 
-    
-
-    public boolean getIsAtTarget(double threshold) {
+    // Check if crosshair is at the target
+    public boolean getIsAtTarget(final double threshold) {
         return camera.getTargetOffsetDegrees() <= threshold;
-        
+
     }
-    public double getDistanceToTarget(){
+
+    // Get distance from crosshair to target
+    public double getDistanceToTarget() {
         return camera.getTargetOffsetDegrees();
     }
 
+    // Get the amount to move to align to target
     public double getOrientationCommand() {
-         double spinningSpeed =  orientationPID.calculate(camera.getTargetOffsetDegrees(), 0);
-         spinningSpeed = Math.max(-.2, Math.min(spinningSpeed, .2));
-         return spinningSpeed;
+        double spinningSpeed = orientationPID.calculate(camera.getTargetOffsetDegrees(), 0);
+        spinningSpeed = Math.max(-.2, Math.min(spinningSpeed, .2));
+        return spinningSpeed;
     }
 
-    public void alignRobotToTarget(){
-        //camera.turnLEDOn();
-            swerveSystem.setSpin(getOrientationCommand());
-        //SmartDashboard.putNumber("Offset", camera.putTxToDashboard());
-        
+    // Set the robot to face the limelight target
+    public void alignRobotToTarget() {
+        // camera.turnLEDOn();
+        swerveSystem.setSpin(getOrientationCommand());
+
     }
 
+    // Turn limelight LED off
     public void turnLEDOff() {
         camera.turnLEDOff();
     }
-    
-}   
-    
+
+}

@@ -1,7 +1,7 @@
 package frc.robot;//COMPLETE 2016
 
 public class Compass {
-		
+
 	/**
 	 * Wraps values around a circle
 	 * 
@@ -38,13 +38,11 @@ public class Compass {
 	 *         this denotes angles in [0, 360) but outside (zone start, zone end)
 	 * @see #validate(angle)
 	 */
-	public  static double legalize(double angle) {
-	
+	public static double legalize(double angle) {
+
 		return validate(angle);
 	}
-	
-	
-	
+
 	/**
 	 * This function finds the shortest legal path from the start angle to the end
 	 * angle and returns the size of that path in degrees. Positive means clockwise
@@ -67,7 +65,7 @@ public class Compass {
 		final double start_legal = legalize(start);
 		final double path_escape = 0;
 		double path_main = path(start_legal, legalize(end));
-		
+
 		return path_main + path_escape;
 	}
 

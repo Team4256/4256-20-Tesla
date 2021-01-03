@@ -16,14 +16,10 @@ public class JoystickControl {
 
     private Intake intake = Intake.getInstance();
     private Aligner aligner = Aligner.getInstance();
-    private Shooter cellShooter = Shooter.getInstance();
+    private Shooter shooter = Shooter.getInstance();
+    private Hopper hopper = Hopper.getInstance();
+    private Shroud shroud = Shroud.getInstance();
     private Limelight camera = Limelight.getInstance();
-    
-    // private Shooter cellShooter = new Shooter(aligner,
-    // Parameters.SHOOTERMOTOR_L_ID, Parameters.SHOOTERMOTOR_R_ID,
-    // Parameters.STIRRERMOTOR_ID, Parameters.FEEDERMOTOR_ID,
-    // Parameters.SHROUD_UP_CHANNEL,
-    // Parameters.SHROUD_DOWN_CHANNEL);
     private Gyro gyro = Gyro.getInstance();
     private double spin;
     private double direction;
@@ -101,13 +97,7 @@ public class JoystickControl {
             }
             SmartDashboard.putNumber("dist. to target", camera.getDistanceToTarget());
             aligner.camera.turnLEDOn();
-            // if (driver.getRawButtonPressed(Xbox.BUTTON_X)) {
-            //     cellShooter.ShootAlign();
-            // }
-            // if (driver.getRawButtonReleased(Xbox.BUTTON_X)) {
-            //     cellShooter.stopHopper();
-            //     cellShooter.stopShooterWheel();
-            // }
+
             if (aligner.camera.hasTarget()) {
                 SmartDashboard.putNumber("TargetOffset", aligner.camera.getTargetOffsetDegrees());
             }
@@ -116,13 +106,10 @@ public class JoystickControl {
                 gyro.reset();
             }
 
-            // if (driver.getRawButtonPressed(driver.BUTTON_X)) {
-            // swerve.setAllModulesToZero();
             else {
                 if (!turbo) {
                     speed *= 0.6;
                 }
-                
 
                 spin *= spin * Math.signum(spin);
                 swerve.setSpeed(speed);
@@ -132,9 +119,6 @@ public class JoystickControl {
                 speed *= speed;
             }
         }
-        // SmartDashboard.putNumber("Xposition", gyro.getDisplacementX());
-        // SmartDashboard.putNumber("Yposition", gyro.getDisplacementY());
-        // SmartDashboard.putNumber("Zposition", gyro.getDisplacementZ());
 
     }
 
@@ -143,51 +127,50 @@ public class JoystickControl {
 
     public void shooterPeriodic() {
         if (driver.getPOV() == (Xbox.DPAD_EAST)) {
-            cellShooter.setShooterSpeed(.9);
+            shooter.setShooterSpeed(.9);
         }
         if (driver.getPOV() == (Xbox.DPAD_NORTH)) {
-            cellShooter.setShooterSpeed(.79);
+            shooter.setShooterSpeed(.79);
         }
         if (driver.getPOV() == (Xbox.DPAD_WEST)) {
-            cellShooter.setShooterSpeed(.7);
+            shooter.setShooterSpeed(.7);
         }
         if (driver.getPOV() == (Xbox.DPAD_SOUTH)) {
-            cellShooter.setShooterSpeed(1);
+            shooter.setShooterSpeed(1);
         }
-        if (gunner.getRawButtonPressed(Xbox.BUTTON_RB)) {  //Hold and release
-            cellShooter.ShootNoAlign();
+        if (gunner.getRawButtonPressed(Xbox.BUTTON_RB)) { // Hold and release
+            hopper.ShootNoAlign();
         }
         if (gunner.getRawButtonReleased(Xbox.BUTTON_RB)) {
-            cellShooter.stopHOPPER();
+            hopper.StopHopper();
         }
-        
 
-        if (gunner.getDeadbandedAxis(Xbox.AXIS_RT) > .5 ) {  //Hold and release
-            cellShooter.ShootAlign();
-            //aligner.alignRobotToTarget();
+        if (gunner.getDeadbandedAxis(Xbox.AXIS_RT) > .5) { // Hold and release
+            hopper.ShootAlign();
+
         } else {
-            if(cellShooter.getcurrentHopperStates() == Shooter.HopperStates.SHOOTALIGN)            
-            cellShooter.stopHOPPER();
-            
+            if (hopper.getcurrentHopperStates() == Hopper.HopperStates.SHOOTALIGN)
+                hopper.StopHopper();
+
         }
 
-        if (gunner.isTriggerPressed(Xbox.AXIS_LT) ) {  // Toggle
-            cellShooter.SpinShooterPrep();
-            //aligner.alignRobotToTarget();
-        } 
+        if (gunner.isTriggerPressed(Xbox.AXIS_LT)) { // Toggle
+            shooter.SpinShooterPrep();
+            // aligner.alignRobotToTarget();
+        }
         gunner.isTriggerReleased(Xbox.AXIS_LT); // clears for next time above is called
-        if (gunner.getRawButtonPressed(Xbox.BUTTON_LB)) {  //Hold and release
-    
-            cellShooter.ReverseHopper();
+        if (gunner.getRawButtonPressed(Xbox.BUTTON_LB)) { // Hold and release
+
+            hopper.ReverseHopper();
         }
         if (gunner.getRawButtonReleased(Xbox.BUTTON_LB)) {
-            cellShooter.stopHOPPER();
+            hopper.StopHopper();
         }
 
-        if (driver.getRawButtonPressed(Xbox.BUTTON_RB)) {  //Toggle
-            cellShooter.shroudToggle();
+        if (driver.getRawButtonPressed(Xbox.BUTTON_RB)) { // Toggle
+            shroud.shroudToggle();
         }
-        cellShooter.periodic();
+        shooter.periodic();
 
     }
 
@@ -196,12 +179,10 @@ public class JoystickControl {
         if (driver.isTriggerPressed(Xbox.AXIS_LT)) {
             intake.succ();
         }
-        if(driver.isTriggerReleased(Xbox.AXIS_LT)){
-            intake.stop(); 
+        if (driver.isTriggerReleased(Xbox.AXIS_LT)) {
+            intake.stop();
         }
-        // if (!driver.getAxisPress(Xbox.AXIS_LT, 5)) {
-        //     intake.stop();
-        // }
+
         if (driver.getRawButtonPressed(Xbox.BUTTON_LB)) {
             intake.spew();
         }
@@ -210,7 +191,7 @@ public class JoystickControl {
         }
         if (driver.getRawButtonPressed(Xbox.BUTTON_A)) {
             intake.intakeDown();
-        
+
         }
         if (driver.getRawButtonReleased(Xbox.BUTTON_Y)) {
             intake.intakeUp();
@@ -220,21 +201,21 @@ public class JoystickControl {
     public void ClimbingPeriodic() {
         climber.stopClimb();
         if (gunner.getRawButtonPressed(Xbox.BUTTON_Y)) {
-            climber.climberArmUp(); 
-            climber.disngageLock(); 
+            climber.rotateArmUp();
+            climber.lockDisengage();
 
         }
 
         if (gunner.getRawButtonPressed(Xbox.BUTTON_A)) {
-            climber.climberArmDown();
+            climber.rotateArmDown();
         }
 
         if (gunner.getRawButtonPressed(Xbox.BUTTON_X)) {
-            climber.engageLock();
+            climber.lockEngage();
         }
 
         if (gunner.getRawButtonPressed(Xbox.BUTTON_B)) {
-            climber.disngageLock();
+            climber.lockDisengage();
         }
 
         if (gunner.getPOV() == (Xbox.DPAD_WEST)) {
@@ -243,10 +224,7 @@ public class JoystickControl {
         if (gunner.getPOV() == (Xbox.DPAD_NORTH)) {
             climber.extendClimberPolesHigh();
         }
-        // if ((gunner.getPOV() != (Xbox.DPAD_EAST)) && (gunner.getPOV() !=
-        // (Xbox.DPAD_WEST))) {
-        // climber.stop();
-        // }
+
         if (gunner.getPOV() == (Xbox.DPAD_SOUTH)) {
             climber.retractClimberPoles(); // both poles at the same time
 
@@ -258,21 +236,4 @@ public class JoystickControl {
 
         climber.periodic();
     }
-
-    // public void colorPeriodic(){
-    // if (gunner.getRawButtonPressed(Xbox.BUTTON_Y)){
-    // controlPanel.ArmDown();
-    // }
-
-    // if (gunner.getRawButtonPressed(Xbox.BUTTON_A)){
-    // controlPanel.ArmUp();
-    // }
-    // if(gunner.getRawButtonPressed(Xbox.BUTTON_X)){
-    // controlPanel.spin3Revs();
-    // }
-    // if( gunner.getRawButtonPressed(Xbox.BUTTON_B)){
-    // controlPanel.spinToAColor();
-    // }
-    // controlPanel.periodic();
-    // }
 }

@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * 
  * @author Ian Woodard
  */
-public class SparkMaxNeo extends CANSparkMax implements Motor{
+public class SparkMaxNeo extends CANSparkMax implements Motor {
     private static final int TIMEOUT_MS = 10;
     private static final double RAMP_RATE = 1.0;
     private static final int STALL_CURRENT_LIMIT = 90;
@@ -35,11 +35,9 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
     private double lastSetpoint = 0.0;
     private Logger logger;
     private PIDController anglePIDController = new PIDController(.02, 0.0, 0);
-    //private CANEncoder angleEncoder = new CANEncoder(this);
+    // private CANEncoder angleEncoder = new CANEncoder(this);
     private AnalogInput encoderPort;
     private AnalogEncoder angleEncoder;
-
-
 
     /**
      * Offers a simple way of initializing and using NEO Brushless motors with a
@@ -54,7 +52,6 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
 
     }
 
-
     public SparkMaxNeo(final int deviceID, final IdleMode idleMode, final boolean isInverted, int analogEncoderID) {
         super(deviceID, MotorType.kBrushless);
         encoder = getEncoder();
@@ -65,8 +62,8 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
         if (analogEncoderID >= 0 && analogEncoderID <= 3) {
             encoderPort = new AnalogInput(analogEncoderID);
             angleEncoder = new AnalogEncoder(encoderPort);
-            
-    }
+
+        }
 
     }
 
@@ -132,6 +129,7 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
     public double getEncoderVoltage() {
         return 0.0;
     }
+
     /**
      * @return Revolutions per minute of the motor
      */
@@ -148,8 +146,8 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
 
     // get angle
     public double getCurrentAngle() {
-       // return Math.toDegrees(this.angleEncoder.getDistance());
-        return this.angleEncoder.get()*360;
+        // return Math.toDegrees(this.angleEncoder.getDistance());
+        return this.angleEncoder.get() * 360;
     }
 
     // Set Speed
@@ -171,7 +169,7 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
         while (encoderPosition < -180) {
             encoderPosition += 360;
         }
-        //SmartDashboard.putNumber("encoder position", encoderPosition);
+        // SmartDashboard.putNumber("encoder position", encoderPosition);
 
         if (Math.abs(targetAngle - encoderPosition) < 2) {
             super.set(0.);
@@ -187,8 +185,9 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
         }
 
         super.set(percentSpeed);
-        //SmartDashboard.putNumber("Percent Output", percentSpeed);
+        // SmartDashboard.putNumber("Percent Output", percentSpeed);
     }
+
     public void completeLoopUpdate() {
         if (!updated) {
             super.set(lastSetpoint);
@@ -208,8 +207,8 @@ public class SparkMaxNeo extends CANSparkMax implements Motor{
         angleEncoder.reset();
     }
 
-    public double getPositionFromIntegratedSensor(){
+    public double getPositionFromIntegratedSensor() {
         return 0.0;
-       
-     }
+
+    }
 }

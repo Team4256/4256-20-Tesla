@@ -190,19 +190,17 @@ public final class SwerveModule {
 	public static double convertToRobot(final double wheel_fieldAngle, final double chassis_fieldAngle) {
 		return Compass.validate(wheel_fieldAngle - chassis_fieldAngle);
 	}
-	
-	
-	public void resetEncoderValue(){
+
+	public void resetEncoderValue() {
 		tractionControl.resetEncoder();
 	}
 
-
-    public double getIntegratedSensorENcoderCounts(){
+	public double getIntegratedSensorENcoderCounts() {
 		return tractionControl.getPositionFromIntegratedSensor();
 	}
 
 	public double getRPM() {
 		return tractionControl.getRPM();
 	}
-    
+
 }
