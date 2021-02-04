@@ -66,10 +66,8 @@ public final class D_Swerve implements Drivetrain {
 
 	}
 
-
-
 	public double getAverageIntegratedSensorPosition(){
-		double encoderCountsA = Math.abs(moduleA.getIntegratedSensorENcoderCounts());   
+		double encoderCountsA = Math.abs(moduleA.getIntegratedSensorENcoderCounts());
 		double encoderCountsB = Math.abs(moduleB.getIntegratedSensorENcoderCounts());
 		double encoderCountsC = Math.abs(moduleC.getIntegratedSensorENcoderCounts());
 		double encoderCountsD = Math.abs(moduleD.getIntegratedSensorENcoderCounts());
@@ -80,20 +78,46 @@ public final class D_Swerve implements Drivetrain {
 		return averageDistanceTraveled;
 	}
 
+	public void getEncoderValues() {
+		double encoderValueA = moduleA.getIntegratedSensorENcoderCounts();
+		double encoderValueB = moduleB.getIntegratedSensorENcoderCounts();
+		double encoderValueC = moduleC.getIntegratedSensorENcoderCounts();
+		double encoderValueD = moduleD.getIntegratedSensorENcoderCounts();
+
+		SmartDashboard.putNumber("Swerve A Value", encoderValueA);
+		SmartDashboard.putNumber("Swerve B Value", encoderValueB);
+		SmartDashboard.putNumber("Swerve C Value", encoderValueC);
+		SmartDashboard.putNumber("Swerve D Value", encoderValueD);
+
+	}
 	public void getRPM() {
 		double encoderVelocityA = moduleA.getRPM();
 		double encoderVelocityB = moduleB.getRPM();
 		double encoderVelocityC = moduleC.getRPM();
 		double encoderVelocityD = moduleD.getRPM();
 		
-		// SmartDashboard.putNumber("encoderVelocityA", encoderVelocityA);
-		// SmartDashboard.putNumber("encoderVelocityB", encoderVelocityB);
-		// SmartDashboard.putNumber("encoderVelocityC", encoderVelocityC);
-		// SmartDashboard.putNumber("encoderVelocityD", encoderVelocityD);
+		SmartDashboard.putNumber("encoderVelocityA", encoderVelocityA);
+		SmartDashboard.putNumber("encoderVelocityB", encoderVelocityB);
+		SmartDashboard.putNumber("encoderVelocityC", encoderVelocityC);
+		SmartDashboard.putNumber("encoderVelocityD", encoderVelocityD);
 
 		
 	}
 
+	public void getCurrentSwerveAngles() {
+
+		double encoderAngleA = moduleA.getAngle();
+		double encoderAngleB = moduleB.getAngle();
+		double encoderAngleC = moduleC.getAngle();
+		double encoderAngleD = moduleD.getAngle();
+
+		SmartDashboard.putNumber("encoderAngleA", encoderAngleA);
+		SmartDashboard.putNumber("encoderAngleB", encoderAngleB);
+		SmartDashboard.putNumber("encoderAngleC", encoderAngleC);
+		SmartDashboard.putNumber("encoderAngleD", encoderAngleD);
+	}
+
+	
 
 
 	private void holonomic_encoderIgnorant(final double direction, double speed, final double spin) {
@@ -128,8 +152,14 @@ public final class D_Swerve implements Drivetrain {
 			// SmartDashboard.putNumber("speedCommandB", speeds_final[1]);
 			// SmartDashboard.putNumber("speedCommandC", speeds_final[2]);
 			// SmartDashboard.putNumber("speedCommandD", speeds_final[3]);
-			for (int i = 0; i < 4; i++)
+			for (int i = 0; i < 4; i++) {
 				modules[i].set(speeds_final[i]);// control traction if good and there
+			}
+			SmartDashboard.putNumber("Module A Input", speeds_final[0]);
+			SmartDashboard.putNumber("Module B Input", speeds_final[1]);
+			SmartDashboard.putNumber("Module C Input", speeds_final[2]);
+			SmartDashboard.putNumber("Module D Input", speeds_final[3]);
+
 		} else
 			stop();// otherwise, stop traction
 

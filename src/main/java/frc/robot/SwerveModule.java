@@ -204,5 +204,9 @@ public final class SwerveModule {
 	public double getRPM() {
 		return tractionControl.getRPM();
 	}
+
+	public double getAngle() {
+		return rotationControl.getCurrentAngle();
+	}
     
 }

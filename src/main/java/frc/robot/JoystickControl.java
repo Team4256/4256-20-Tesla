@@ -41,6 +41,7 @@ public class JoystickControl {
     private double modDMin = 10;
     private boolean leftTriggerTurnsMotorOn = true;
     private boolean leftTriggerPrevPressed = false;
+    private double previousSpinCommand = 1;
 
     public JoystickControl() {
         nt = NetworkTableInstance.getDefault();
@@ -91,8 +92,10 @@ public class JoystickControl {
 
     public void swervePeriodic() {
         speed = driver.getCurrentRadius(Xbox.STICK_LEFT, true);
+        SmartDashboard.putNumber("Swerve Speed", speed);
         direction = driver.getCurrentAngle((Xbox.STICK_LEFT), true);
-        spin = 0.8 * driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);// normal mode
+        spin = -0.8 * driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);// normal mode
+        
         final boolean turbo = driver.getRawButton(Xbox.BUTTON_STICK_LEFT);
 
         if (true) {
@@ -119,17 +122,25 @@ public class JoystickControl {
             // if (driver.getRawButtonPressed(driver.BUTTON_X)) {
             // swerve.setAllModulesToZero();
             else {
-                if (!turbo) {
-                    speed *= 0.6;
-                }
+                // if (!turbo) {
+                //     speed *= 0.6;
+                // }
                 
 
                 spin *= spin * Math.signum(spin);
                 swerve.setSpeed(speed);
+            if (spin == 0) {
+                if (previousSpinCommand != 0) {
+                    aligner.setGyroSnapshot();
+                }
+                spin = aligner.getSpinOrentationCommand();
+            }
+
                 swerve.setSpin(spin);
                 swerve.travelTowards(direction);
                 swerve.completeLoopUpdate();
                 speed *= speed;
+                SmartDashboard.putNumber("Swerve Speed", speed);
             }
         }
         // SmartDashboard.putNumber("Xposition", gyro.getDisplacementX());

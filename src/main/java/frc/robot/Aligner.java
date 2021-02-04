@@ -15,11 +15,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Aligner {
     private PIDController orientationPID = new PIDController(-.0242, 0, 0);
+    private PIDController gyroOrientationPID = new PIDController(-.0242, 0, 0);
     private PIDController positionPID = new PIDController(0, 0, 0);
     private static D_Swerve swerveSystem;
     public static Aligner instance = null;
     Limelight camera = Limelight.getInstance();
     Gyro gyro = Gyro.getInstance();
+    private double heading;
     private Aligner () {
         orientationPID.setTolerance(Parameters.POSITION_TOLERANCE, Parameters.VELOCITY_TOLERANCE);
         swerveSystem = D_Swerve.getInstance();
@@ -49,6 +51,27 @@ public class Aligner {
          spinningSpeed = Math.max(-.2, Math.min(spinningSpeed, .2));
          return spinningSpeed;
     }
+
+
+
+    public double getSpinOrentationCommand() {
+        double error = gyro.getCurrentAngle() - heading;
+         
+        while (error > 360) {
+            error -= 360;
+        }
+        while (error < -360) {
+           error += 360;
+        }
+
+        return gyroOrientationPID.calculate(error, 0);
+    }
+
+    public void setGyroSnapshot() {
+        gyroOrientationPID.reset();
+        heading = gyro.getCurrentAngle();
+    }
+
 
     public void alignRobotToTarget(){
         //camera.turnLEDOn();

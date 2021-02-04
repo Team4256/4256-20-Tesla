@@ -143,13 +143,13 @@ public class Auto {
     }
     
     public static enum PhaseStates {
-      NOT_SARTED, STARTED, ENDED
+      NOT_STARTED, STARTED, ENDED
     }
-  private PhaseStates phase1 = PhaseStates.NOT_SARTED;
-  private PhaseStates phase2 = PhaseStates.NOT_SARTED;
-  private PhaseStates phase3 = PhaseStates.NOT_SARTED;
-  private PhaseStates phase4 = PhaseStates.NOT_SARTED;
-  private PhaseStates phase5 = PhaseStates.NOT_SARTED;
+  private PhaseStates phase1 = PhaseStates.NOT_STARTED;
+  private PhaseStates phase2 = PhaseStates.NOT_STARTED;
+  private PhaseStates phase3 = PhaseStates.NOT_STARTED;
+  private PhaseStates phase4 = PhaseStates.NOT_STARTED;
+  private PhaseStates phase5 = PhaseStates.NOT_STARTED;
 
     // mode1: start from the right 
     //might take out the driving to ports function
@@ -158,7 +158,7 @@ public class Auto {
       //SmartDashboard.putNumber("timer", stopWatch.getElapsedTime());
       //SmartDashboard.putNumber("distance to target" , limelight.getDistanceToTarget());
       //SmartDashboard.putString("Autonomus phase","Phase 0");
-      if(phase1 == PhaseStates.NOT_SARTED){ // Starts the shooter motors
+      if(phase1 == PhaseStates.NOT_STARTED){ // Starts the shooter motors
         phase1 = PhaseStates.STARTED;
         shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED_LINE);
         
@@ -172,7 +172,7 @@ public class Auto {
           return;
         }
       }
-      if(phase2 == PhaseStates.NOT_SARTED){ // Aligns and shoots pre loaded power cells
+      if(phase2 == PhaseStates.NOT_STARTED){ // Aligns and shoots pre loaded power cells
         phase2 = PhaseStates.STARTED;
         stopWatch.resetTimer();
       }
@@ -186,7 +186,7 @@ public class Auto {
           return;
         }
       }
-        if(phase3 == PhaseStates.NOT_SARTED){ // Turns towards target
+        if(phase3 == PhaseStates.NOT_STARTED){ // Turns towards target
           phase3 = PhaseStates.STARTED;
           stopWatch.resetTimer();
         }
@@ -204,7 +204,7 @@ public class Auto {
             return;
       }
     }
-      if(phase4 == PhaseStates.NOT_SARTED){ // Drives to trench and intakes power cells
+      if(phase4 == PhaseStates.NOT_STARTED){ // Drives to trench and intakes power cells
         swerve.resetEncoderPosition();
         phase4 = PhaseStates.STARTED;
       }
@@ -224,7 +224,7 @@ public class Auto {
           return;
        } 
       }
-       if(phase5 == PhaseStates.NOT_SARTED){ //Shoots previously gathered power cells
+       if(phase5 == PhaseStates.NOT_STARTED){ //Shoots previously gathered power cells
         phase5 = PhaseStates.STARTED;
         stopWatch.resetTimer();
         limelight.setPipeline(2);
@@ -269,7 +269,7 @@ public class Auto {
       SmartDashboard.putNumber("distance travelled", Math.abs(swerve.getAverageIntegratedSensorPosition()));
       SmartDashboard.putNumber("timer", stopWatch.getElapsedTime());
       //SmartDashboard.putNumber("distance to target" , limelight.getDistanceToTarget());
-      if(phase1 == PhaseStates.NOT_SARTED){ // Starts the shooter motors
+      if(phase1 == PhaseStates.NOT_STARTED){ // Starts the shooter motors
         phase1 = PhaseStates.STARTED;
         //intake.succ();
       }
@@ -287,7 +287,7 @@ public class Auto {
        
       }
       
-      if(phase2 == PhaseStates.NOT_SARTED){ // Aligns and shoots pre loaded power cells
+      if(phase2 == PhaseStates.NOT_STARTED){ // Aligns and shoots pre loaded power cells
         phase2 = PhaseStates.STARTED;
         stopWatch.resetTimer();
         swerve.resetEncoderPosition();
@@ -309,7 +309,7 @@ public class Auto {
           return;
         }
       }
-        if(phase3 == PhaseStates.NOT_SARTED){ // Turns towards target
+        if(phase3 == PhaseStates.NOT_STARTED){ // Turns towards target
           phase3 = PhaseStates.STARTED;
           stopWatch.resetTimer();
           //swerve.faceTo(45.0);
@@ -345,7 +345,7 @@ public class Auto {
         SmartDashboard.putNumber("distance travelled", Math.abs(swerve.getAverageIntegratedSensorPosition()));
         SmartDashboard.putNumber("timer", stopWatch.getElapsedTime());
         SmartDashboard.putNumber("distance to target" , limelight.getDistanceToTarget());
-        if(phase1 == PhaseStates.NOT_SARTED){ // Starts the shooter motors
+        if(phase1 == PhaseStates.NOT_STARTED){ // Starts the shooter motors
           phase1 = PhaseStates.STARTED;
           intake.succ();
         }
@@ -363,7 +363,7 @@ public class Auto {
          
         }
         
-        if(phase2 == PhaseStates.NOT_SARTED){ // Aligns and shoots pre loaded power cells
+        if(phase2 == PhaseStates.NOT_STARTED){ // Aligns and shoots pre loaded power cells
           phase2 = PhaseStates.STARTED;
           stopWatch.resetTimer();
           swerve.resetEncoderPosition();
@@ -385,7 +385,7 @@ public class Auto {
             return;
           }
         }
-          if(phase3 == PhaseStates.NOT_SARTED){ // Turns towards target
+          if(phase3 == PhaseStates.NOT_STARTED){ // Turns towards target
             phase3 = PhaseStates.STARTED;
             stopWatch.resetTimer();
   
@@ -414,7 +414,7 @@ public class Auto {
         SmartDashboard.putNumber("distance travelled", Math.abs(swerve.getAverageIntegratedSensorPosition()));
         SmartDashboard.putNumber("timer", stopWatch.getElapsedTime());
         SmartDashboard.putNumber("distance to target" , limelight.getDistanceToTarget());
-        if(phase1 == PhaseStates.NOT_SARTED){ // Starts the shooter motors
+        if(phase1 == PhaseStates.NOT_STARTED){ // Starts the shooter motors
           phase1 = PhaseStates.STARTED;
           shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED_LINE);
         }
@@ -427,7 +427,7 @@ public class Auto {
             return;
           }
         }
-        if(phase2 == PhaseStates.NOT_SARTED){ // Aligns and shoots pre loaded power cells
+        if(phase2 == PhaseStates.NOT_STARTED){ // Aligns and shoots pre loaded power cells
           phase2 = PhaseStates.STARTED;
           stopWatch.resetTimer();
         }
@@ -442,7 +442,7 @@ public class Auto {
           }
         }
         
-        if(phase3 == PhaseStates.NOT_SARTED){ // Aligns and shoots pre loaded power cells
+        if(phase3 == PhaseStates.NOT_STARTED){ // Aligns and shoots pre loaded power cells
           phase3 = PhaseStates.STARTED;
           stopWatch.resetTimer();
           swerve.resetEncoderPosition();
@@ -515,7 +515,7 @@ public class Auto {
     //       return;
     //     }
     //  }
-    if(phase1 == PhaseStates.NOT_SARTED){ // Aligns and shoots pre loaded power cells
+    if(phase1 == PhaseStates.NOT_STARTED){ // Aligns and shoots pre loaded power cells
       phase1 = PhaseStates.STARTED;
       stopWatch.resetTimer();
       swerve.resetEncoderPosition();

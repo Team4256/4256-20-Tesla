@@ -56,8 +56,10 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("port", port);
     m_chooser.addOption("backUp", backUp);
     SmartDashboard.putData("Auto choices", m_chooser);
+    SmartDashboard.putNumber("SwerveSpeed", 0);
     gyro.setAngleAdjustment(Parameters.GYRO_OFFSET);
     gyro.reset();
+    
     subsystems.setSwerveToZero();
     SmartDashboard.putNumber("ShooterSpeed", 0.0 );
     climber.climberInit();
@@ -66,10 +68,9 @@ public class Robot extends TimedRobot {
     climber.climberInit();
     shooter.shroudDown();
     intake.intakeUp();
+    swerve.resetEncoderPosition();
     
-
-    
-   // compress.start();
+    // compress.start();
   }
 
   /**
@@ -161,16 +162,25 @@ public class Robot extends TimedRobot {
     double x = tx.getDouble(0.0);
     double y = ty.getDouble(0.0);
     double area = ta.getDouble(0.0);
-    subsystems.swervePeriodic();
-    subsystems.intakePeriodic();
-    subsystems.shooterPeriodic();
-    subsystems.ClimbingPeriodic();
+     subsystems.swervePeriodic();
+     subsystems.intakePeriodic();
+     subsystems.shooterPeriodic();
+     subsystems.ClimbingPeriodic();
+      swerve.getEncoderValues();
+     swerve.getRPM();
+     swerve.getCurrentSwerveAngles();
+      // swerve.travelTowards(180);
+      // swerve.setSpeed(.4);
+    double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
+    SmartDashboard.putNumber("distanceTravelled", distanceTravelled);
     SmartDashboard.putNumber("gyroOffset", Parameters.GYRO_OFFSET);
+    
     
     
   }
 
-  /**
+  /*
+   *
    * This function is called periodically during test mode.
    */
   @Override

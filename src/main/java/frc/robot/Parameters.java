@@ -30,6 +30,12 @@ public class Parameters{
     public static final int TRACTION_MOTOR_B_ID = 22; //Front Right
     public static final int TRACTION_MOTOR_C_ID = 23; // AFT Left
     public static final int TRACTION_MOTOR_D_ID = 24; // AFT Right
+    public static final double TRACTION_MOTORkP = 0.1;
+    public static final double TRACTION_MOTORkD = 0.;
+    public static final double TRACTION_MOTORkF = 0.04542; // kF value calculated by F-gain = (100% X 1023) / 22522
+    public static final int TRACTION_PID_ID = 0;
+    public static final int TRACTION_MOTOR_TIMEOUTMS = 30;
+    public static final double TRACTION_RPM_TO_COUNT_PER_100MS = 2000 * 2048.0 / 600.0;
    // Color Wheel
     public static final int WHEEL_ARM_MOTOR_ID = 15; // Main
     // public static final int WHEEL_ARM_UP_SOLENOID_CHANNEL = 4; //EXTEND
@@ -114,7 +120,7 @@ public class Parameters{
             //COMPETITION ROBOT
             public static final double angleEncoderMinVoltage[] = {0.0085, 0.0122, 0.0073, 0.0122};
             public static final double angleEncoderMaxVoltage[] = {4.9243, 4.9243, 4.9157, 4.9218};
-            public static final double angleEncoderTareVoltage[] = {3.4912,2.3522,2.3596,1.3464};
+            public static final double angleEncoderTareVoltage[] = {1.046142471, 4.826659662, 4.831542474, 3.804931251};
      
     // Aligner tolerances
 

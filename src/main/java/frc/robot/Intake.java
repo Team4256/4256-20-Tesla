@@ -31,10 +31,20 @@ public class Intake {
     public void stop() {
         intakeMotor.set(ControlMode.PercentOutput, 0.0);
     }
+    
     public void intakeUp(){
         intakeSolenoid.set(Value.kForward);
     }
     public void intakeDown(){
         intakeSolenoid.set(Value.kReverse);
     }
+    // public boolean isIntakeDown(){
+    //     if (intakeSolenoid.get(intakeSolenoid.Value) == Value.kForward) {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
+
+
 }

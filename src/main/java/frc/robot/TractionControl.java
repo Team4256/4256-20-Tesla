@@ -7,7 +7,8 @@ public class TractionControl{
     //constructor
    public TractionControl(int deviceID){
        tractionMotor = MotorFactory.createTractionMotor(deviceID);
-      
+
+       
     }
 
    public void set(double speed){

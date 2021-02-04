@@ -27,7 +27,6 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     private final int deviceID;
     public final NeutralMode idleMode;
     private final boolean isInverted;
-    
     private boolean updated = false;
     private double lastSetpoint = 0.0;
     private Logger logger;
@@ -190,34 +189,13 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     @Override
     public void setSpeed(final double inputPercentageSpeed) {
 
-       
-        // double motorSpeed = getSensorCollection().getIntegratedSensorVelocity();
-        // double expectedSpeed = inputPercentageSpeed*Parameters.FALCON_PERCENT_TO_ENCODER_SPEED;
-        // double adjustmentToSpeedAdjustment = falconVelocityPID.calculate(motorSpeed, expectedSpeed);
+        double targetVelocity_UnitsPer100ms = inputPercentageSpeed * Parameters.TRACTION_RPM_TO_COUNT_PER_100MS;
 
-        // adjustmentToSpeedAdjustment = Math.abs(adjustmentToSpeedAdjustment) <=0.01 ? adjustmentToSpeedAdjustment: Math.signum(adjustmentToSpeedAdjustment )*0.01;
-        // tractionSppeedAdjustment += adjustmentToSpeedAdjustment;
-
-        // tractionSppeedAdjustment = Math.abs(tractionSppeedAdjustment) <=0.01 ? tractionSppeedAdjustment: Math.signum(tractionSppeedAdjustment )*0.01;
-
-        // if(getDeviceID() == 21){
-        //     SmartDashboard.putNumber("Speed adjustment", tractionSppeedAdjustment);
-        //     SmartDashboard.putNumber("Adjustment to Speed adjustment", adjustmentToSpeedAdjustment);
-        //     SmartDashboard.putNumber("input percentage speed", inputPercentageSpeed);
-        //     SmartDashboard.putNumber("motor speed", motorSpeed);
-        //     SmartDashboard.putNumber("expected speed", expectedSpeed);
-        // }
-
-        double adjustedPercentageSpeed = inputPercentageSpeed;
-        //adjustedPercentageSpeed = inputPercentageSpeed;
-        
-        super.set(adjustedPercentageSpeed);
-        lastSetpoint = adjustedPercentageSpeed;
+        set(TalonFXControlMode.Velocity, targetVelocity_UnitsPer100ms);
+        lastSetpoint = targetVelocity_UnitsPer100ms; //TODO Might interfere
         updated = true;
-        logger.log(Level.FINE, Double.toString(adjustedPercentageSpeed));
         
     }
-
 
 
     // Set Angle
