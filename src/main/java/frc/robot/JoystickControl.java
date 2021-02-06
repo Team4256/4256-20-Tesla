@@ -126,7 +126,7 @@ public class JoystickControl {
                 //     speed *= 0.6;
                 // }
                 
-
+                speed *= speed;
                 spin *= spin * Math.signum(spin);
                 swerve.setSpeed(speed);
             if (spin == 0) {
@@ -135,11 +135,12 @@ public class JoystickControl {
                 }
                 spin = aligner.getSpinOrentationCommand();
             }
-
+                previousSpinCommand = driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);
+                SmartDashboard.putNumber("spinCommand", spin);
                 swerve.setSpin(spin);
                 swerve.travelTowards(direction);
                 swerve.completeLoopUpdate();
-                speed *= speed;
+                
                 SmartDashboard.putNumber("Swerve Speed", speed);
             }
         }

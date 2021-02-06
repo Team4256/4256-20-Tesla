@@ -30,12 +30,12 @@ public class Parameters{
     public static final int TRACTION_MOTOR_B_ID = 22; //Front Right
     public static final int TRACTION_MOTOR_C_ID = 23; // AFT Left
     public static final int TRACTION_MOTOR_D_ID = 24; // AFT Right
-    public static final double TRACTION_MOTORkP = 0.1;
+    public static final double TRACTION_MOTORkP = 0.;
     public static final double TRACTION_MOTORkD = 0.;
-    public static final double TRACTION_MOTORkF = 0.04542; // kF value calculated by F-gain = (100% X 1023) / 22522
+    public static final double TRACTION_MOTORkF = 0.04542; // 0.04542 kF value calculated by F-gain = (100% X 1023) / 22522
     public static final int TRACTION_PID_ID = 0;
     public static final int TRACTION_MOTOR_TIMEOUTMS = 30;
-    public static final double TRACTION_RPM_TO_COUNT_PER_100MS = 2000 * 2048.0 / 600.0;
+    public static final double TRACTION_RPM_TO_COUNT_PER_100MS = 6000 * 2048.0 / 600.0;
    // Color Wheel
     public static final int WHEEL_ARM_MOTOR_ID = 15; // Main
     // public static final int WHEEL_ARM_UP_SOLENOID_CHANNEL = 4; //EXTEND

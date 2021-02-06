@@ -24,6 +24,7 @@ public class Aligner {
     private double heading;
     private Aligner () {
         orientationPID.setTolerance(Parameters.POSITION_TOLERANCE, Parameters.VELOCITY_TOLERANCE);
+        gyroOrientationPID.setTolerance(Parameters.POSITION_TOLERANCE, Parameters.VELOCITY_TOLERANCE);
         swerveSystem = D_Swerve.getInstance();
     }
 
@@ -56,15 +57,19 @@ public class Aligner {
 
     public double getSpinOrentationCommand() {
         double error = gyro.getCurrentAngle() - heading;
-         
-        while (error > 360) {
-            error -= 360;
-        }
-        while (error < -360) {
-           error += 360;
-        }
 
-        return gyroOrientationPID.calculate(error, 0);
+        while (error > 180.0) {
+            error -= 360.0;
+        }
+        while (error < -180.0) {
+           error += 360.0;
+        }
+        SmartDashboard.putNumber("SwerveError", error);
+        SmartDashboard.putNumber("SwerveHeading", heading);
+        double spinSpeed = gyroOrientationPID.calculate(error, 0.0);
+        spinSpeed = Math.max(-.2, Math.min(spinSpeed, .2));
+
+        return spinSpeed;
     }
 
     public void setGyroSnapshot() {

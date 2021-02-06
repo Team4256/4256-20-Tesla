@@ -170,7 +170,7 @@ public class Robot extends TimedRobot {
      swerve.getRPM();
      swerve.getCurrentSwerveAngles();
       // swerve.travelTowards(180);
-      // swerve.setSpeed(.4);
+      // swerve.setSpeed(.8);
     double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
     SmartDashboard.putNumber("distanceTravelled", distanceTravelled);
     SmartDashboard.putNumber("gyroOffset", Parameters.GYRO_OFFSET);
