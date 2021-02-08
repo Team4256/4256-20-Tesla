@@ -39,6 +39,7 @@ public class Gyro extends AHRS {
 	public double getCurrentAngle() {return Compass.validate((double)getAngle()) ;}
 	
 	
+	
 	/**
 	 * Uses <code>compass.legalPath(start, end)</code> to find the most efficient arc from <code>getCurrentAngle()</code> to target
 	 * @param target angle, designated in degrees
@@ -54,4 +55,6 @@ public class Gyro extends AHRS {
 		final double xx_yy = (double)(getWorldLinearAccelX()*getWorldLinearAccelX() + getWorldLinearAccelY()*getWorldLinearAccelY());
 		return Math.sqrt(xx_yy + (double)(getWorldLinearAccelZ()*getWorldLinearAccelZ()));
 	}
+
+	
 }

@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Aligner {
     private PIDController orientationPID = new PIDController(-.0242, 0, 0);
-    private PIDController gyroOrientationPID = new PIDController(-.0242, 0, 0);
+    private PIDController gyroOrientationPID = new PIDController(-.0242, 0, .0001 );
     private PIDController positionPID = new PIDController(0, 0, 0);
     private static D_Swerve swerveSystem;
     public static Aligner instance = null;
@@ -67,8 +67,7 @@ public class Aligner {
         SmartDashboard.putNumber("SwerveError", error);
         SmartDashboard.putNumber("SwerveHeading", heading);
         double spinSpeed = gyroOrientationPID.calculate(error, 0.0);
-        spinSpeed = Math.max(-.2, Math.min(spinSpeed, .2));
-
+        spinSpeed = Math.max(-.4, Math.min(spinSpeed, .4));
         return spinSpeed;
     }
 

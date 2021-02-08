@@ -4,6 +4,7 @@ package frc.robot;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.lang.Math;
 
 public class JoystickControl {
     // Constants
@@ -130,12 +131,18 @@ public class JoystickControl {
                 spin *= spin * Math.signum(spin);
                 swerve.setSpeed(speed);
             if (spin == 0) {
-                if (previousSpinCommand != 0) {
-                    aligner.setGyroSnapshot();
-                }
-                spin = aligner.getSpinOrentationCommand();
-            }
+                    if (previousSpinCommand != 0) {
+                        if (Math.abs(gyro.getInstance().getRate()) <= 1.0) {
+                            aligner.setGyroSnapshot();
+                            previousSpinCommand = 0;
+                        }
+                    } else {
+                        spin = aligner.getSpinOrentationCommand();
+                    }
+            } else {
                 previousSpinCommand = driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);
+            }
+               
                 SmartDashboard.putNumber("spinCommand", spin);
                 swerve.setSpin(spin);
                 swerve.travelTowards(direction);
