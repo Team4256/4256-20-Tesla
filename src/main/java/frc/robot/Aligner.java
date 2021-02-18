@@ -14,14 +14,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Add your docs here.
  */
 public class Aligner {
-    private PIDController orientationPID = new PIDController(-.0242, 0, 0);
-    private PIDController gyroOrientationPID = new PIDController(-.0242, 0, .0001 );
+    private PIDController orientationPID = new PIDController(-.0242, 0, 0); //Values must be negative
+    private PIDController gyroOrientationPID = new PIDController(-.035, 0, -.003); //Values must be negative
     private PIDController positionPID = new PIDController(0, 0, 0);
     private static D_Swerve swerveSystem;
     public static Aligner instance = null;
     Limelight camera = Limelight.getInstance();
     Gyro gyro = Gyro.getInstance();
-    private double heading;
+    private double target;
     private Aligner () {
         orientationPID.setTolerance(Parameters.POSITION_TOLERANCE, Parameters.VELOCITY_TOLERANCE);
         gyroOrientationPID.setTolerance(Parameters.POSITION_TOLERANCE, Parameters.VELOCITY_TOLERANCE);
@@ -56,7 +56,7 @@ public class Aligner {
 
 
     public double getSpinOrentationCommand() {
-        double error = gyro.getCurrentAngle() - heading;
+        double error = target - gyro.getCurrentAngle();
 
         while (error > 180.0) {
             error -= 360.0;
@@ -65,15 +65,22 @@ public class Aligner {
            error += 360.0;
         }
         SmartDashboard.putNumber("SwerveError", error);
-        SmartDashboard.putNumber("SwerveHeading", heading);
+        SmartDashboard.putNumber("SwerveTarget", target);
+        SmartDashboard.putNumber("PIDPositonError", gyroOrientationPID.getPositionError());
+        SmartDashboard.putNumber("PIDVelocityError", gyroOrientationPID.getVelocityError());
         double spinSpeed = gyroOrientationPID.calculate(error, 0.0);
-        spinSpeed = Math.max(-.4, Math.min(spinSpeed, .4));
+        if (gyroOrientationPID.atSetpoint()) {
+            spinSpeed = 0;
+        } else {
+            spinSpeed = Math.max(-.4, Math.min(spinSpeed, .4));
+        }
+        
         return spinSpeed;
     }
 
     public void setGyroSnapshot() {
         gyroOrientationPID.reset();
-        heading = gyro.getCurrentAngle();
+        target = gyro.getCurrentAngle();
     }
 
 

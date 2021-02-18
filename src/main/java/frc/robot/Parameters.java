@@ -118,14 +118,14 @@ public class Parameters{
             // public static final double angleEncoderTareVoltage[] = {3.527,2.863,2.382,1.335};
 
             //COMPETITION ROBOT
-            public static final double angleEncoderMinVoltage[] = {0.0085, 0.0122, 0.0073, 0.0122};
-            public static final double angleEncoderMaxVoltage[] = {4.9243, 4.9243, 4.9157, 4.9218};
-            public static final double angleEncoderTareVoltage[] = {1.046142471, 4.826659662, 4.831542474, 3.804931251};
+            public static final double angleEncoderMinVoltage[] = {0.0085, 0.004883, 0.0073, 0.0122};
+            public static final double angleEncoderMaxVoltage[] = {4.9243,4.916992, 4.9157, 4.9218};
+            public static final double angleEncoderTareVoltage[] = {3.494873, 2.937011, 2.385254, 1.353760};
      
     // Aligner tolerances
 
-    public static final double POSITION_TOLERANCE = 5.00;
-    public static final double VELOCITY_TOLERANCE = 5.00;
+    public static final double POSITION_TOLERANCE = 2.00;
+    public static final double VELOCITY_TOLERANCE = 30.00;
 
 
 

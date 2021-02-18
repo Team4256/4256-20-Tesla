@@ -95,7 +95,7 @@ public class JoystickControl {
         speed = driver.getCurrentRadius(Xbox.STICK_LEFT, true);
         SmartDashboard.putNumber("Swerve Speed", speed);
         direction = driver.getCurrentAngle((Xbox.STICK_LEFT), true);
-        spin = -0.8 * driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);// normal mode
+        spin = 0.8 * driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);// normal mode
         
         final boolean turbo = driver.getRawButton(Xbox.BUTTON_STICK_LEFT);
 
@@ -137,19 +137,21 @@ public class JoystickControl {
                             previousSpinCommand = 0;
                         }
                     } else {
-                        spin = aligner.getSpinOrentationCommand();
+                        double spinIfPID = aligner.getSpinOrentationCommand();
+                        SmartDashboard.putNumber("spinIfPID", spinIfPID);
+                        spin = spinIfPID;
                     }
             } else {
                 previousSpinCommand = driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);
             }
-               
+                    
                 SmartDashboard.putNumber("spinCommand", spin);
                 swerve.setSpin(spin);
                 swerve.travelTowards(direction);
                 swerve.completeLoopUpdate();
-                
+
                 SmartDashboard.putNumber("Swerve Speed", speed);
-            }
+            }       
         }
         // SmartDashboard.putNumber("Xposition", gyro.getDisplacementX());
         // SmartDashboard.putNumber("Yposition", gyro.getDisplacementY());
