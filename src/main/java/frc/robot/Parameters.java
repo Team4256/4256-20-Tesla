@@ -124,8 +124,8 @@ public class Parameters{
      
     // Aligner tolerances
 
-    public static final double POSITION_TOLERANCE = 2.00;
-    public static final double VELOCITY_TOLERANCE = 30.00;
+    public static final double POSITION_TOLERANCE = 0.00;
+    public static final double VELOCITY_TOLERANCE = 0.00;
 
 
 

@@ -84,10 +84,10 @@ public final class D_Swerve implements Drivetrain {
 		double encoderValueC = moduleC.getIntegratedSensorENcoderCounts();
 		double encoderValueD = moduleD.getIntegratedSensorENcoderCounts();
 
-		SmartDashboard.putNumber("Swerve A Value", encoderValueA);
-		SmartDashboard.putNumber("Swerve B Value", encoderValueB);
-		SmartDashboard.putNumber("Swerve C Value", encoderValueC);
-		SmartDashboard.putNumber("Swerve D Value", encoderValueD);
+		// SmartDashboard.putNumber("Swerve A Value", encoderValueA);
+		// SmartDashboard.putNumber("Swerve B Value", encoderValueB);
+		// SmartDashboard.putNumber("Swerve C Value", encoderValueC);
+		// SmartDashboard.putNumber("Swerve D Value", encoderValueD);
 
 	}
 	public void getRPM() {
@@ -96,10 +96,10 @@ public final class D_Swerve implements Drivetrain {
 		double encoderVelocityC = moduleC.getRPM();
 		double encoderVelocityD = moduleD.getRPM();
 		
-		SmartDashboard.putNumber("encoderVelocityA", encoderVelocityA);
-		SmartDashboard.putNumber("encoderVelocityB", encoderVelocityB);
-		SmartDashboard.putNumber("encoderVelocityC", encoderVelocityC);
-		SmartDashboard.putNumber("encoderVelocityD", encoderVelocityD);
+		// SmartDashboard.putNumber("encoderVelocityA", encoderVelocityA);
+		// SmartDashboard.putNumber("encoderVelocityB", encoderVelocityB);
+		// SmartDashboard.putNumber("encoderVelocityC", encoderVelocityC);
+		// SmartDashboard.putNumber("encoderVelocityD", encoderVelocityD);
 
 		
 	}
@@ -111,10 +111,10 @@ public final class D_Swerve implements Drivetrain {
 		double encoderAngleC = moduleC.getAngle();
 		double encoderAngleD = moduleD.getAngle();
 
-		SmartDashboard.putNumber("encoderAngleA", encoderAngleA);
-		SmartDashboard.putNumber("encoderAngleB", encoderAngleB);
-		SmartDashboard.putNumber("encoderAngleC", encoderAngleC);
-		SmartDashboard.putNumber("encoderAngleD", encoderAngleD);
+		// SmartDashboard.putNumber("encoderAngleA", encoderAngleA);
+		// SmartDashboard.putNumber("encoderAngleB", encoderAngleB);
+		// SmartDashboard.putNumber("encoderAngleC", encoderAngleC);
+		// SmartDashboard.putNumber("encoderAngleD", encoderAngleD);
 	}
 
 	
@@ -155,10 +155,10 @@ public final class D_Swerve implements Drivetrain {
 			for (int i = 0; i < 4; i++) {
 				modules[i].set(speeds_final[i]);// control traction if good and there
 			}
-			SmartDashboard.putNumber("Module A Input", speeds_final[0]);
-			SmartDashboard.putNumber("Module B Input", speeds_final[1]);
-			SmartDashboard.putNumber("Module C Input", speeds_final[2]);
-			SmartDashboard.putNumber("Module D Input", speeds_final[3]);
+			// SmartDashboard.putNumber("Module A Input", speeds_final[0]);
+			// SmartDashboard.putNumber("Module B Input", speeds_final[1]);
+			// SmartDashboard.putNumber("Module C Input", speeds_final[2]);
+			// SmartDashboard.putNumber("Module D Input", speeds_final[3]);
 
 		} else
 			stop();// otherwise, stop traction

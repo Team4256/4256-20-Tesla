@@ -6,7 +6,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.lang.Math;
 
-public class JoystickControl {
+public class RobotControl {
     // Constants
 
     private Xbox driver = new Xbox(0);
@@ -44,7 +44,7 @@ public class JoystickControl {
     private boolean leftTriggerPrevPressed = false;
     private double previousSpinCommand = 1;
 
-    public JoystickControl() {
+    public RobotControl() {
         nt = NetworkTableInstance.getDefault();
         zeus = nt.getTable("Zeus");
     }
@@ -92,10 +92,19 @@ public class JoystickControl {
     // Swerve Periodic
 
     public void swervePeriodic() {
-        speed = driver.getCurrentRadius(Xbox.STICK_LEFT, true);
+        if ( driver.getRawButton(Xbox.BUTTON_X)){
+            speed = .2;
+            direction = 0;
+            spin = 0.0;
+        } else {
+            speed = driver.getCurrentRadius(Xbox.STICK_LEFT, true);
+            direction = driver.getCurrentAngle((Xbox.STICK_LEFT), true);
+            spin = 0.8 * driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);// normal mode
+            speed *= speed;
+            spin *= spin * Math.signum(spin);
+        }
+
         SmartDashboard.putNumber("Swerve Speed", speed);
-        direction = driver.getCurrentAngle((Xbox.STICK_LEFT), true);
-        spin = 0.8 * driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);// normal mode
         
         final boolean turbo = driver.getRawButton(Xbox.BUTTON_STICK_LEFT);
 
@@ -127,8 +136,7 @@ public class JoystickControl {
                 //     speed *= 0.6;
                 // }
                 
-                speed *= speed;
-                spin *= spin * Math.signum(spin);
+                
                 swerve.setSpeed(speed);
             if (spin == 0) {
                     if (previousSpinCommand != 0) {

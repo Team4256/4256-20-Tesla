@@ -30,7 +30,7 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static double gyroHeading = 0.0;
-  private JoystickControl subsystems = new JoystickControl();
+  private RobotControl subsystems = new RobotControl();
   private static Gyro gyro = Gyro.getInstance();
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   Limelight camera = Limelight.getInstance();
@@ -55,7 +55,8 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("middle", middle);
     m_chooser.addOption("port", port);
     m_chooser.addOption("backUp", backUp);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    //SmartDashboard.putData("Auto choices", m_chooser);
+    //
     SmartDashboard.putNumber("SwerveSpeed", 0);
     gyro.setAngleAdjustment(Parameters.GYRO_OFFSET);
     gyro.reset();

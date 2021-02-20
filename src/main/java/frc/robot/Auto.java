@@ -54,8 +54,6 @@ public class Auto {
     private boolean crossWhiteLine(){
       double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
       
-      //SmartDashboard.putNumber("distance travelled", distanceTravelled);
-      
       if(distanceTravelled < Parameters.CROSS_WHITE_LINE_DISTANCE_IN_INCHES) {
         swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
         swerve.travelTowards(180);
@@ -97,9 +95,9 @@ public class Auto {
 
     private boolean drivingToPorts(double distance){
       double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
-      //SmartDashboard.putNumber("To Ports Distance", distanceTravelled);
+      
       if(distanceTravelled < distance){
-      // swerve.setSpin(.30);
+      
       swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
       swerve.travelTowards(270);// ask if the value is right 
       return false;
@@ -154,10 +152,7 @@ public class Auto {
     // mode1: start from the right 
     //might take out the driving to ports function
     public void mode1(){
-     // SmartDashboard.putNumber("distance travelled", Math.abs(swerve.getAverageIntegratedSensorPosition()));
-      //SmartDashboard.putNumber("timer", stopWatch.getElapsedTime());
-      //SmartDashboard.putNumber("distance to target" , limelight.getDistanceToTarget());
-      //SmartDashboard.putString("Autonomus phase","Phase 0");
+     
       if(phase1 == PhaseStates.NOT_STARTED){ // Starts the shooter motors
         phase1 = PhaseStates.STARTED;
         shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED_LINE);
@@ -168,7 +163,7 @@ public class Auto {
           phase1 = PhaseStates.ENDED; 
         }
        else{
-        SmartDashboard.putString("Autonomus phase","Phase 1");
+        //SmartDashboard.putString("Autonomus phase","Phase 1");
           return;
         }
       }
@@ -182,7 +177,7 @@ public class Auto {
           phase2 = PhaseStates.ENDED;
         }
         else {
-          SmartDashboard.putString("Autonomus phase","Phase 2");
+          //SmartDashboard.putString("Autonomus phase","Phase 2");
           return;
         }
       }
@@ -200,7 +195,7 @@ public class Auto {
             
           }
           else {
-            SmartDashboard.putString("Autonomus phase","Phase 3");
+            //SmartDashboard.putString("Autonomus phase","Phase 3");
             return;
       }
     }
@@ -220,7 +215,7 @@ public class Auto {
           
           swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
           swerve.travelTowards(180);
-          SmartDashboard.putString("Autonomus phase","Phase 4");
+          //SmartDashboard.putString("Autonomus phase","Phase 4");
           return;
        } 
       }
@@ -228,7 +223,7 @@ public class Auto {
         phase5 = PhaseStates.STARTED;
         stopWatch.resetTimer();
         limelight.setPipeline(2);
-        //SmartDashboard.putNumber("limelight distance", limelight.getDistanceToTarget());
+        
       }
 
       if(phase5 == PhaseStates.STARTED){
@@ -241,7 +236,7 @@ public class Auto {
           limelight.turnLEDOff();
         }
         else {
-          SmartDashboard.putString("Autonomus phase","Phase 5" );
+          //SmartDashboard.putString("Autonomus phase","Phase 5" );
           return;
         }
       }
@@ -266,8 +261,8 @@ public class Auto {
     
     // mode2: start in front of the ports
     public void mode2(){
-      SmartDashboard.putNumber("distance travelled", Math.abs(swerve.getAverageIntegratedSensorPosition()));
-      SmartDashboard.putNumber("timer", stopWatch.getElapsedTime());
+      //SmartDashboard.putNumber("distance travelled", Math.abs(swerve.getAverageIntegratedSensorPosition()));
+      //SmartDashboard.putNumber("timer", stopWatch.getElapsedTime());
       //SmartDashboard.putNumber("distance to target" , limelight.getDistanceToTarget());
       if(phase1 == PhaseStates.NOT_STARTED){ // Starts the shooter motors
         phase1 = PhaseStates.STARTED;
@@ -281,7 +276,7 @@ public class Auto {
         }
         else{
           moveBack(Parameters.MOVE_BACK_LEFT_TRENCH_DISTANCE_IN_INCHES);
-          SmartDashboard.putString("Autonomus phase","Phase 1");
+          //SmartDashboard.putString("Autonomus phase","Phase 1");
           return;
         }
        
@@ -342,9 +337,9 @@ public class Auto {
 
     // mode3: start from the left
     public void mode3(){
-        SmartDashboard.putNumber("distance travelled", Math.abs(swerve.getAverageIntegratedSensorPosition()));
-        SmartDashboard.putNumber("timer", stopWatch.getElapsedTime());
-        SmartDashboard.putNumber("distance to target" , limelight.getDistanceToTarget());
+        //SmartDashboard.putNumber("distance travelled", Math.abs(swerve.getAverageIntegratedSensorPosition()));
+        //SmartDashboard.putNumber("timer", stopWatch.getElapsedTime());
+        //SmartDashboard.putNumber("distance to target" , limelight.getDistanceToTarget());
         if(phase1 == PhaseStates.NOT_STARTED){ // Starts the shooter motors
           phase1 = PhaseStates.STARTED;
           intake.succ();
@@ -357,7 +352,7 @@ public class Auto {
           }
           else{
             moveBack(Parameters.MOVE_BACK_LEFT_TRENCH_DISTANCE_IN_INCHES);
-            SmartDashboard.putString("Autonomus phase","Phase 1");
+            //SmartDashboard.putString("Autonomus phase","Phase 1");
             return;
           }
          
@@ -381,7 +376,7 @@ public class Auto {
           else {
             swerve.travelTowards(45.0); //angle might be different
             swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
-            SmartDashboard.putString("Autonomus phase","Phase 2");
+            //SmartDashboard.putString("Autonomus phase","Phase 2");
             return;
           }
         }
@@ -396,7 +391,7 @@ public class Auto {
               phase3 = PhaseStates.ENDED;
             }
             else {
-              SmartDashboard.putString("Autonomus phase","Phase 3");
+              //SmartDashboard.putString("Autonomus phase","Phase 3");
               return;
         }
       }
@@ -411,9 +406,9 @@ public class Auto {
 
     // mode4: start right in front of the ports 
     public void mode4(){
-        SmartDashboard.putNumber("distance travelled", Math.abs(swerve.getAverageIntegratedSensorPosition()));
-        SmartDashboard.putNumber("timer", stopWatch.getElapsedTime());
-        SmartDashboard.putNumber("distance to target" , limelight.getDistanceToTarget());
+        //SmartDashboard.putNumber("distance travelled", Math.abs(swerve.getAverageIntegratedSensorPosition()));
+        //SmartDashboard.putNumber("timer", stopWatch.getElapsedTime());
+        //SmartDashboard.putNumber("distance to target" , limelight.getDistanceToTarget());
         if(phase1 == PhaseStates.NOT_STARTED){ // Starts the shooter motors
           phase1 = PhaseStates.STARTED;
           shooter.spinShooterMotors(Parameters.SHOOTER_MOTOR_SPEED_LINE);
@@ -423,7 +418,7 @@ public class Auto {
             phase1 = PhaseStates.ENDED; 
           }
          else{
-          SmartDashboard.putString("Autonomus phase","Phase 1");
+          //SmartDashboard.putString("Autonomus phase","Phase 1");
             return;
           }
         }
@@ -437,7 +432,7 @@ public class Auto {
             phase2 = PhaseStates.ENDED;
           }
           else {
-            SmartDashboard.putString("Autonomus phase","Phase 2");
+            //SmartDashboard.putString("Autonomus phase","Phase 2");
             return;
           }
         }
@@ -461,7 +456,7 @@ public class Auto {
             swerve.faceTo(0.0);
             swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
             swerve.travelTowards(180.0);
-            SmartDashboard.putString("Autonomus phase","Phase 2");
+            //SmartDashboard.putString("Autonomus phase","Phase 2");
             return;
           }
         }
@@ -534,7 +529,7 @@ public class Auto {
         swerve.faceTo(0.0);
         swerve.setSpeed(Parameters.AUTO_SWERVE_TRACTION_SPEED);
         swerve.travelTowards(180.0);
-        SmartDashboard.putString("Autonomus phase","Phase 2");
+        //SmartDashboard.putString("Autonomus phase","Phase 2");
         return;
     }
   }
