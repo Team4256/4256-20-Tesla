@@ -96,10 +96,10 @@ public final class D_Swerve implements Drivetrain {
 		double encoderVelocityC = moduleC.getRPM();
 		double encoderVelocityD = moduleD.getRPM();
 		
-		// SmartDashboard.putNumber("encoderVelocityA", encoderVelocityA);
-		// SmartDashboard.putNumber("encoderVelocityB", encoderVelocityB);
-		// SmartDashboard.putNumber("encoderVelocityC", encoderVelocityC);
-		// SmartDashboard.putNumber("encoderVelocityD", encoderVelocityD);
+		SmartDashboard.putNumber("encoderVelocityA", encoderVelocityA);
+		SmartDashboard.putNumber("encoderVelocityB", encoderVelocityB);
+		SmartDashboard.putNumber("encoderVelocityC", encoderVelocityC);
+		SmartDashboard.putNumber("encoderVelocityD", encoderVelocityD);
 
 		
 	}
@@ -146,7 +146,7 @@ public final class D_Swerve implements Drivetrain {
 			// driver input
 		}
 
-		if (!bad && isThere(10.0)) {
+		if (!bad && isThere(0.0)) {
 			final double[] speeds_final = computeSpeeds(comps_desired);
 			// SmartDashboard.putNumber("speedCommand A", speeds_final[0]);
 			// SmartDashboard.putNumber("speedCommandB", speeds_final[1]);

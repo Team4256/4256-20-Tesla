@@ -104,7 +104,7 @@ public class RobotControl {
             spin *= spin * Math.signum(spin);
         }
 
-        SmartDashboard.putNumber("Swerve Speed", speed);
+        //SmartDashboard.putNumber("Swerve Speed", speed);
         
         final boolean turbo = driver.getRawButton(Xbox.BUTTON_STICK_LEFT);
 
@@ -112,7 +112,7 @@ public class RobotControl {
             if (driver.getRawButtonPressed(Xbox.BUTTON_START)) {
                 swerve.faceTo(90); // gyro align to a position set in the parameters of this method
             }
-            SmartDashboard.putNumber("dist. to target", camera.getDistanceToTarget());
+            //SmartDashboard.putNumber("dist. to target", camera.getDistanceToTarget());
             aligner.camera.turnLEDOn();
             // if (driver.getRawButtonPressed(Xbox.BUTTON_X)) {
             //     cellShooter.ShootAlign();
@@ -122,7 +122,7 @@ public class RobotControl {
             //     cellShooter.stopShooterWheel();
             // }
             if (aligner.camera.hasTarget()) {
-                SmartDashboard.putNumber("TargetOffset", aligner.camera.getTargetOffsetDegrees());
+                //SmartDashboard.putNumber("TargetOffset", aligner.camera.getTargetOffsetDegrees());
             }
 
             if (driver.getRawButtonPressed(driver.BUTTON_B)) {

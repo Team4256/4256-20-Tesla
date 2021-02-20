@@ -57,12 +57,13 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("backUp", backUp);
     //SmartDashboard.putData("Auto choices", m_chooser);
     //
-    SmartDashboard.putNumber("SwerveSpeed", 0);
+    //SmartDashboard.putNumber("SwerveSpeed", 0);
     gyro.setAngleAdjustment(Parameters.GYRO_OFFSET);
     gyro.reset();
+    gyro.resetDisplacement();
     
     subsystems.setSwerveToZero();
-    SmartDashboard.putNumber("ShooterSpeed", 0.0 );
+    //SmartDashboard.putNumber("ShooterSpeed", 0.0 );
     climber.climberInit();
     climber.climberArmDown();
     climber.engageLock();
@@ -87,7 +88,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
       subsystems.displaySwerveAngles();
       updateGyroHeading();
-      SmartDashboard.putNumber("Gyro Heading", Robot.gyroHeading);
+      //SmartDashboard.putNumber("Gyro Heading", Robot.gyroHeading);
       swerve.completeLoopUpdate();
       StopWatch.getInstance().updateTimer(); 
       camera.setSplitView();
@@ -113,7 +114,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    SmartDashboard.updateValues();
+    //SmartDashboard.updateValues();
     m_autoSelected = m_chooser.getSelected();
     //m_autoSelected = SmartDashboard.getString("Auto Selector", rightTrench );
     SmartDashboard.putString("Auto selected: ", m_autoSelected);
@@ -172,11 +173,10 @@ public class Robot extends TimedRobot {
      swerve.getCurrentSwerveAngles();
       // swerve.travelTowards(0);
       // swerve.setSpeed(.3);
-    double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());
-    SmartDashboard.putNumber("distanceTravelled", distanceTravelled);
-    SmartDashboard.putNumber("gyroOffset", Parameters.GYRO_OFFSET);    
-    
-    
+    double distanceTravelled = Math.abs(swerve.getAverageIntegratedSensorPosition());   
+    SmartDashboard.putNumber("GryoXDisplacement", gyro.getDisplacementX());
+    SmartDashboard.putNumber("GryoYDisplacement", gyro.getDisplacementY());
+    SmartDashboard.putNumber("GryoZDisplacement", gyro.getDisplacementZ());
   }
 
   /*

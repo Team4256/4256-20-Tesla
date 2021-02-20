@@ -56,5 +56,9 @@ public class Gyro extends AHRS {
 		return Math.sqrt(xx_yy + (double)(getWorldLinearAccelZ()*getWorldLinearAccelZ()));
 	}
 
+	// public double getXDisplacement() {
+	// return super.getDisplacementX();
+	// }
+
 	
 }
