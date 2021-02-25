@@ -9,7 +9,7 @@ import java.lang.Math;
 public class RobotControl {
     // Constants
 
-    private Xbox driver = new Xbox(0);
+    public static Xbox driver = new Xbox(0);
     private Xbox gunner = new Xbox(1);
     private D_Swerve swerve = D_Swerve.getInstance();
 
@@ -138,23 +138,23 @@ public class RobotControl {
                 
                 
                 swerve.setSpeed(speed);
-            if (spin == 0) {
-                    if (previousSpinCommand != 0) {
-                        if (Math.abs(gyro.getInstance().getRate()) <= 1.0) {
-                            aligner.setGyroSnapshot();
-                            previousSpinCommand = 0;
-                        }
-                    } else {
-                        double spinIfPID = aligner.getSpinOrentationCommand();
-                        SmartDashboard.putNumber("spinIfPID", spinIfPID);
-                        spin = spinIfPID;
-                    }
-            } else {
-                previousSpinCommand = driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);
-            }
+            // if (spin == 0) {
+            //         if (previousSpinCommand != 0) {
+            //             if (Math.abs(gyro.getInstance().getRate()) <= 1.0) {
+            //                 aligner.setGyroSnapshot();
+            //                 previousSpinCommand = 0;
+            //             }
+            //         } else {
+            //             double spinIfPID = aligner.getSpinOrentationCommand();
+            //             SmartDashboard.putNumber("spinIfPID", spinIfPID);
+            //             spin = spinIfPID;
+            //         }
+            // } else {
+            //     previousSpinCommand = driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);
+            // }
                     
                 SmartDashboard.putNumber("spinCommand", spin);
-                swerve.setSpin(spin);
+                swerve.setSpin(aligner.setSwervePIDOn(spin));
                 swerve.travelTowards(direction);
                 swerve.completeLoopUpdate();
 

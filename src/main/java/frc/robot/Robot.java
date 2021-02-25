@@ -39,6 +39,7 @@ public class Robot extends TimedRobot {
   Intake intake = Intake.getInstance();
   private ClimbingControl climber = ClimbingControl.getInstance();
   private static Auto auto = new Auto();
+  private static GalacticSearchAuto galacticAuto = new GalacticSearchAuto();
   public synchronized static void updateGyroHeading() {
     gyroHeading = gyro.getCurrentAngle();
    
@@ -119,7 +120,8 @@ public class Robot extends TimedRobot {
     //m_autoSelected = SmartDashboard.getString("Auto Selector", rightTrench );
     SmartDashboard.putString("Auto selected: ", m_autoSelected);
     m_autoSelected = rightTrench;
-    auto.autoInit();
+    //auto.autoInit();
+    galacticAuto.autoInit();
   }
 
   /**
@@ -127,28 +129,28 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    
-    switch (m_autoSelected) {
-    case rightTrench:
-      auto.mode1();
-      break;
-    case leftTrench:
-      auto.mode2();
-      break;
-      case middle:
-      auto.mode3();
-      break;
-      case port:
-      auto.mode4();
-      break;
-      case backUp:
-      auto.mode5();
-      break;
-  }  
-  //auto.mode1();
-  //auto.mode6();
+    galacticAuto.RedRun();
+  //   switch (m_autoSelected) {
+  //   case rightTrench:
+  //     auto.mode1();
+  //     break;
+  //   case leftTrench:
+  //     auto.mode2();
+  //     break;
+  //     case middle:
+  //     auto.mode3();
+  //     break;
+  //     case port:
+  //     auto.mode4();
+  //     break;
+  //     case backUp:
+  //     auto.mode5();
+  //     break;
+  // }  
+  // //auto.mode1();
+  // //auto.mode6();
   
-  swerve.completeLoopUpdate();
+  // swerve.completeLoopUpdate();
   }
 
   /**

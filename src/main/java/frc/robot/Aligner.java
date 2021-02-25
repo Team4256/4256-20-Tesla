@@ -19,6 +19,7 @@ public class Aligner {
     private PIDController positionPID = new PIDController(0, 0, 0);
     private static D_Swerve swerveSystem;
     public static Aligner instance = null;
+    public double previousSpinCommand = 1;
     Limelight camera = Limelight.getInstance();
     Gyro gyro = Gyro.getInstance();
     private double target;
@@ -81,6 +82,24 @@ public class Aligner {
     public void setGyroSnapshot() {
         gyroOrientationPID.reset();
         target = gyro.getCurrentAngle();
+    }
+
+    public double setSwervePIDOn(double spin){
+        if (spin == 0) {
+            if (previousSpinCommand != 0) {
+                if (Math.abs(gyro.getInstance().getRate()) <= 1.0) {
+                    setGyroSnapshot();
+                    previousSpinCommand = 0;
+                }
+            } else {
+                double spinIfPID = getSpinOrentationCommand();
+                SmartDashboard.putNumber("spinIfPID", spinIfPID);
+                spin = spinIfPID;
+            }
+    } else {
+        previousSpinCommand = RobotControl.driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);
+    }
+    return spin;
     }
 
 

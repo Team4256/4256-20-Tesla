@@ -38,13 +38,13 @@ public class Intake {
     public void intakeDown(){
         intakeSolenoid.set(Value.kReverse);
     }
-    // public boolean isIntakeDown(){
-    //     if (intakeSolenoid.get(intakeSolenoid.Value) == Value.kForward) {
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
+    public boolean isIntakeDown(){
+        if (intakeSolenoid.get() == Value.kForward) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 }
