@@ -73,7 +73,7 @@ public final class D_Swerve implements Drivetrain {
 		double encoderCountsD = Math.abs(moduleD.getIntegratedSensorENcoderCounts());
 
 		double averageEncoderCounts = (encoderCountsA + encoderCountsB + encoderCountsC + encoderCountsD)/4;
-		double averageDistanceTraveled = ((averageEncoderCounts/2048)/8.3121)*12.56637;
+		double averageDistanceTraveled = ((averageEncoderCounts/2048)/8.3121)*12.56637 * 1.2; // 1.2 was measured. Ratio from encoder to real life distance travelled
 
 		return averageDistanceTraveled;
 	}
@@ -203,7 +203,7 @@ public final class D_Swerve implements Drivetrain {
 		//faceSpeed = Math.abs(faceSpeed) <=0.4 *? faceSpeed: Math.signum(faceSpeed )*0.4;
 
 		setSpin(faceSpeed);
-		//SmartDashboard.putNumber("FaceTo", faceSpeed);
+		SmartDashboard.putNumber("FaceTo", direction);
 	}
 	
 	
