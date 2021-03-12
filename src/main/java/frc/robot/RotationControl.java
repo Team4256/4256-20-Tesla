@@ -8,6 +8,7 @@ public class RotationControl{
     private final Motor rotationMotor;
     double TareAngle = 0;
     private double lastLegalDirection = 1.0;
+   
 
 
 

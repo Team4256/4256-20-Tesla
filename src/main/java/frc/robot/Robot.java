@@ -40,6 +40,7 @@ public class Robot extends TimedRobot {
   private ClimbingControl climber = ClimbingControl.getInstance();
   private static Auto auto = new Auto();
   private static GalacticSearchAuto galacticAuto = new GalacticSearchAuto();
+  private static AutoNav autoNav = new AutoNav();
   public synchronized static void updateGyroHeading() {
     gyroHeading = gyro.getCurrentAngle();
    
@@ -122,6 +123,7 @@ public class Robot extends TimedRobot {
     m_autoSelected = rightTrench;
     //auto.autoInit();
     galacticAuto.autoInit();
+    subsystems.autopilot = autoNav;
   }
 
   /**
@@ -129,7 +131,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    galacticAuto.RedRun();
+    //galacticAuto.RedRun();
+    autoNav.barrelPath();
+    subsystems.swervePeriodic();
   //   switch (m_autoSelected) {
   //   case rightTrench:
   //     auto.mode1();
@@ -152,6 +156,19 @@ public class Robot extends TimedRobot {
   
   // swerve.completeLoopUpdate();
   }
+
+ 
+@Override
+public void teleopInit() {
+  // TODO Auto-generated method stub
+  super.teleopInit();
+  subsystems.autopilot = null;
+}
+
+
+
+
+
 
   /**
    * This function is called periodically during operator control.

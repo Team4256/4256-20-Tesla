@@ -12,9 +12,9 @@ public final class D_Swerve implements Drivetrain {
 	private static D_Swerve instance = null;
 
 	private static final double PIVOT_TO_FRONT_X = 12.75, // inches, pivot point to front wheel tip, x
-			PIVOT_TO_FRONT_Y = 11.425, // inches, pivot point to front wheel tip, y
+			PIVOT_TO_FRONT_Y = 11.425, // inches, pivot point to front wheel tip, y  11.425
 			PIVOT_TO_AFT_X = 12.75, // inches, pivot point to aft wheel tip, x
-			PIVOT_TO_AFT_Y = 11.425;// inches, pivot point to aft wheel tip, y
+			PIVOT_TO_AFT_Y = 11.425 ;// inches, pivot point to aft wheel tip, y  11.425
 	private static final double PIVOT_TO_FRONT = Math.hypot(PIVOT_TO_FRONT_X, PIVOT_TO_FRONT_Y),
 			PIVOT_TO_AFT = Math.hypot(PIVOT_TO_AFT_X, PIVOT_TO_AFT_Y);
 
@@ -191,7 +191,7 @@ public final class D_Swerve implements Drivetrain {
 	}
 
 
-	public void faceTo(double direction) {
+	public double faceTo(double direction) {
 		double gyroHeading = Robot.gyroHeading;
 		while(direction-gyroHeading > 180){
 			gyroHeading += 360;
@@ -202,8 +202,8 @@ public final class D_Swerve implements Drivetrain {
 		double faceSpeed = pid.calculate(gyroHeading, direction);
 		//faceSpeed = Math.abs(faceSpeed) <=0.4 *? faceSpeed: Math.signum(faceSpeed )*0.4;
 
-		setSpin(faceSpeed);
 		SmartDashboard.putNumber("FaceTo", direction);
+		return faceSpeed;
 	}
 	
 	

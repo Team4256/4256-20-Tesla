@@ -19,6 +19,7 @@ public class RobotControl {
     private Aligner aligner = Aligner.getInstance();
     private Shooter cellShooter = Shooter.getInstance();
     private Limelight camera = Limelight.getInstance();
+    public Autopilot autopilot;
     
     // private Shooter cellShooter = new Shooter(aligner,
     // Parameters.SHOOTERMOTOR_L_ID, Parameters.SHOOTERMOTOR_R_ID,
@@ -92,7 +93,16 @@ public class RobotControl {
     // Swerve Periodic
 
     public void swervePeriodic() {
-        if ( driver.getRawButton(Xbox.BUTTON_X)){
+        boolean turbo = false;
+        double faceDirection;
+        if (autopilot != null) {
+            speed = autopilot.speed;
+            spin = swerve.faceTo(autopilot.faceDirection);
+            direction = autopilot.travelDirection;
+        }
+
+
+        else if ( driver.getRawButton(Xbox.BUTTON_X)){
             speed = .2;
             direction = 0;
             spin = 0.0;
@@ -102,16 +112,14 @@ public class RobotControl {
             spin = 0.8 * driver.getDeadbandedAxis(Xbox.AXIS_RIGHT_X);// normal mode
             speed *= speed;
             spin *= spin * Math.signum(spin);
+            turbo = driver.getRawButton(Xbox.BUTTON_STICK_LEFT);
+
         }
 
         //SmartDashboard.putNumber("Swerve Speed", speed);
         
-        final boolean turbo = driver.getRawButton(Xbox.BUTTON_STICK_LEFT);
 
         if (true) {
-            if (driver.getRawButtonPressed(Xbox.BUTTON_START)) {
-                swerve.faceTo(90); // gyro align to a position set in the parameters of this method
-            }
             //SmartDashboard.putNumber("dist. to target", camera.getDistanceToTarget());
             aligner.camera.turnLEDOn();
             // if (driver.getRawButtonPressed(Xbox.BUTTON_X)) {

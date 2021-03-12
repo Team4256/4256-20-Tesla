@@ -2,7 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class GalacticSearchAuto {
+public class GalacticSearchAuto extends Autopilot{
    
     private D_Swerve swerve;
     private Gyro gyro;
@@ -56,22 +56,23 @@ public class GalacticSearchAuto {
         //     swerve.setSpeed(.1);
         //     swerve.setSpin(aligner.setSwervePIDOn(0));
         //     swerve.travelTowards(0);
-        // }
+        // }      
         if (phase1 == PhaseStates.NOT_STARTED) {
             phase1 = PhaseStates.STARTED;
             intake.intakeDown();
         }
         if (phase1 == PhaseStates.STARTED) {
             SmartDashboard.putNumber("CurrentPhase", 1);
-            swerve.faceTo(180 + 26.57);
-            if (stopWatch.getElapsedTime() > 3) {
-                intake.succ();
-                phase1 = PhaseStates.ENDED;
-                swerve.resetEncoderPosition();
-            } 
-            else {
-                return;
-            }
+            
+
+            // // if (stopWatch.getElapsedTime() > 3) {
+            // //     intake.succ();
+            // //     phase1 = PhaseStates.ENDED;
+            // //     swerve.resetEncoderPosition();
+            // // } 
+            // else {
+            //     return;
+            // }
         } 
         if (phase2 == PhaseStates.NOT_STARTED) {
             
@@ -82,10 +83,11 @@ public class GalacticSearchAuto {
         if (phase2 == PhaseStates.STARTED) {
             SmartDashboard.putNumber("CurrentPhase", 2);
             stopWatch.resetTimer();
-            swerve.setSpeed(.1);
-            swerve.travelTowards(26.57);
+            speed = .0;
+            travelDirection = 180; // 35
+            faceDirection = (180); // 180 + 35
             if(distanceTravelled > 90) {
-                swerve.setSpeed(0);
+                speed = 0;
                 phase2 = PhaseStates.ENDED;
             } else {
                 return;
@@ -93,15 +95,26 @@ public class GalacticSearchAuto {
         }
         if (phase3 == PhaseStates.NOT_STARTED) {
             phase3 = PhaseStates.STARTED;
+
         }
         if (phase3 == PhaseStates.STARTED) {
             SmartDashboard.putNumber("CurrentPhase", 3);
+            // stopWatch.resetTimer();
+            // swerve.setSpeed(.1);
+            // swerve.setSpin(0);
+            // swerve.travelTowards(35);
+            // swerve.faceTo(180 + 35);
+            // if (gyro.getCurrentAngle() ==180 + 25.57)
+            // {
+            //     swerve.setSpin(0);
+            // }
+
            phase3 = PhaseStates.ENDED;
         } else {
             return;
         }
 
 
-    }
+     }
         
 }
