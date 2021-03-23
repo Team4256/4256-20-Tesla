@@ -1,11 +1,15 @@
 package frc.robot;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoNav extends Autopilot {
     private D_Swerve swerve;
+    private StopWatch stopWatch = StopWatch.getInstance();
     int currentPhase = 0;
-    AutoPhases[] phases = { new AutoPhases(.1, 0, 0, 140), new AutoPhases(.1, 90, 0, 62),
-            new AutoPhases(.1, 180, 0, 62), new AutoPhases(.1, 270, 0, 62) };
+    AutoPhases[] phases = { 
+            new AutoPhases(.6, 0, 0, 110), new AutoPhases(.6, 90, 0, 50), new AutoPhases(.6, 180, 0, 60), new AutoPhases(.6, 270, 0, 60),
+
+            new AutoPhases(.6, 0, 0, 160), new AutoPhases(.6, -90, 0, 60), new AutoPhases(.6, 180, 0, 62), new AutoPhases(.6, 90, 0, 62) };
 
     AutoNav() {
         super();
@@ -15,24 +19,32 @@ public class AutoNav extends Autopilot {
 
     public void barrelPath() {
         SmartDashboard.putNumber("currentBarrelState", currentPhase);
-        if (currentPhase > 3) {
+        SmartDashboard.putNumber("checkEncoderB4Reset", swerve.getAverageIntegratedSensorPosition());
+        if (stopWatch.getElapsedTime() < .25) {
             return;
         }
-        
-        if ( swerve.getAverageIntegratedSensorPosition() > phases[currentPhase].distance) {
+        if (currentPhase > phases.length) {
+            speed = 0;
+            return;
+        }
+
+        if (swerve.getAverageIntegratedSensorPosition() > phases[currentPhase].distance) {
             currentPhase++;
-            
-            if (currentPhase > 3) {
+            speed = 0;
+            stopWatch.resetTimer();
+            if (currentPhase > phases.length) {
+                speed = 0;
                 return;
+
             }
             swerve.resetEncoderPosition();
-
+            SmartDashboard.putNumber("checkEncoderReset", swerve.getAverageIntegratedSensorPosition());
+            return;
         }
         speed = phases[currentPhase].speed;
         travelDirection = phases[currentPhase].direction;
         faceDirection = phases[currentPhase].face;
 
-        
     }
 
 }

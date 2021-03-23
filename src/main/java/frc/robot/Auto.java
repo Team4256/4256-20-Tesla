@@ -166,6 +166,7 @@ public class Auto {
         //SmartDashboard.putString("Autonomus phase","Phase 1");
           return;
         }
+        
       }
       if(phase2 == PhaseStates.NOT_STARTED){ // Aligns and shoots pre loaded power cells
         phase2 = PhaseStates.STARTED;
