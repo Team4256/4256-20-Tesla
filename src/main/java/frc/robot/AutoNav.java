@@ -6,10 +6,11 @@ public class AutoNav extends Autopilot {
     private D_Swerve swerve;
     private StopWatch stopWatch = StopWatch.getInstance();
     int currentPhase = 0;
+    double maxEncoder = 0;
     AutoPhases[] phases = { 
-            new AutoPhases(.6, 0, 0, 110), new AutoPhases(.6, 90, 0, 50), new AutoPhases(.6, 180, 0, 60), new AutoPhases(.6, 270, 0, 60),
+            new AutoPhases(.6, 0, 0, 110)};//, new AutoPhases(.6, 90, 0, 50), new AutoPhases(.6, 180, 0, 60), new AutoPhases(.6, 270, 0, 60),
 
-            new AutoPhases(.6, 0, 0, 160), new AutoPhases(.6, -90, 0, 60), new AutoPhases(.6, 180, 0, 62), new AutoPhases(.6, 90, 0, 62) };
+            //new AutoPhases(.6, 0, 0, 160), new AutoPhases(.6, -90, 0, 60), new AutoPhases(.6, 180, 0, 62), new AutoPhases(.6, 90, 0, 62) };
 
     AutoNav() {
         super();
@@ -20,6 +21,9 @@ public class AutoNav extends Autopilot {
     public void barrelPath() {
         SmartDashboard.putNumber("currentBarrelState", currentPhase);
         SmartDashboard.putNumber("checkEncoderB4Reset", swerve.getAverageIntegratedSensorPosition());
+        maxEncoder = Math.max(maxEncoder, swerve.getAverageIntegratedSensorPosition());
+        SmartDashboard.putNumber("maxEncoder", maxEncoder);
+
         if (stopWatch.getElapsedTime() < .25) {
             return;
         }
@@ -37,14 +41,16 @@ public class AutoNav extends Autopilot {
                 return;
 
             }
-            swerve.resetEncoderPosition();
+            //swerve.resetEncoderPosition();
             SmartDashboard.putNumber("checkEncoderReset", swerve.getAverageIntegratedSensorPosition());
             return;
         }
-        speed = phases[currentPhase].speed;
+
+        //SmartDashboard.putNumber("checkEncoderB4Reset", swerve.getAverageIntegratedSensorPosition());
+        speed = Math.min(phases[currentPhase].speed, .1 + (phases[currentPhase].distance - swerve.getAverageIntegratedSensorPosition()) * .004);
+        
         travelDirection = phases[currentPhase].direction;
         faceDirection = phases[currentPhase].face;
 
     }
-
 }
